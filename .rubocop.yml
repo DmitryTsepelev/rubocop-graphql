@@ -1,0 +1,9 @@
+require:
+  - standard/cop/semantic_blocks
+
+inherit_gem:
+  standard: config/base.yml
+
+Naming/FileName:
+ Exclude:
+   - lib/rubocop-graphql.rb

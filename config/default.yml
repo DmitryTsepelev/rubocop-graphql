@@ -1,0 +1,7 @@
+GraphQL/ResolverMethodLength:
+  Enabled: true
+  Description: 'Avoid resolver methods longer than 10 lines of code.'
+  VersionAdded: '0.80'
+  Max: 10
+  CountComments: false
+  ExcludedMethods: []
