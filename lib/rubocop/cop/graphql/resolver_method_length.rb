@@ -13,7 +13,7 @@ module RuboCop
         LABEL = "ResolverMethod"
 
         def_node_matcher :field_definition, <<~PATTERN
-          (send nil? :field (:sym $...) ...)
+          (send nil? :field (sym $...) ...)
         PATTERN
 
         def on_def(node)

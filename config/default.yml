@@ -1,7 +1,21 @@
+AllCops:
+  GraphQL:
+    Patterns:
+    - "(?:^|/)graphql/"
+
 GraphQL/ResolverMethodLength:
   Enabled: true
-  Description: 'Avoid resolver methods longer than 10 lines of code.'
   VersionAdded: '0.80'
+  Description: 'Avoid resolver methods longer than 10 lines of code.'
   Max: 10
   CountComments: false
   ExcludedMethods: []
+
+GraphQL/FieldDefinitions:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Checks consistency of field definitions'
+  EnforcedStyle: group_definitions
+  SupportedStyles:
+    - group_definitions
+    - define_resolver_after_definition
