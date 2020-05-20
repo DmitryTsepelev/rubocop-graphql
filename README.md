@@ -1,38 +1,77 @@
 # Rubocop::GraphQL
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rubocop/graphql`. To experiment with that code, run `bin/console` for an interactive prompt.
+[Rubocop](https://github.com/rubocop-hq/rubocop) extension for enforcing [graphql-ruby](https://github.com/rmosolgo/graphql-ruby) best practices.
 
-TODO: Delete this and the text above, and describe your gem
+<p align="center">
+  <a href="https://evilmartians.com/?utm_source=graphql-rubocop">
+    <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
+  </a>
+</p>
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Install the gem:
+
+```bash
+gem install rubocop-graphql
+```
+
+If you use bundler put this in your Gemfile:
 
 ```ruby
 gem 'rubocop-graphql', require: false
 ```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install rubocop-graphql
-
 ## Usage
 
-TODO: Write usage instructions here
+You need to tell RuboCop to load the Rails extension. There are three ways to do this:
 
-## Development
+### RuboCop configuration file
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Put this into your `.rubocop.yml`.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```yaml
+require: rubocop-graphql
+```
+
+Alternatively, use the following array notation when specifying multiple extensions.
+
+```yaml
+require:
+  - rubocop-other-extension
+  - rubocop-graphql
+```
+
+Now you can run `rubocop` and it will automatically load the RuboCop Rails cops together with the standard cops.
+
+### Command line
+
+```sh
+rubocop --require rubocop-graphql
+```
+
+### Rake task
+
+```ruby
+RuboCop::RakeTask.new do |task|
+  task.requires << 'rubocop-graphql'
+end
+```
+
+## The Cops
+
+All cops are located under [`lib/rubocop/cop/graphql`](lib/rubocop/cop/graphql), and contain examples and documentation.
+
+In your `.rubocop.yml`, you may treat the Rails cops just like any other cop. For example:
+
+```yaml
+GraphQL/ResolverMethodLength:
+  Max: 3
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rubocop-graphql.
+Bug reports and pull requests are welcome on GitHub at https://github.com/DmitryTsepelev/rubocop-graphql.
 
 ## License
 
