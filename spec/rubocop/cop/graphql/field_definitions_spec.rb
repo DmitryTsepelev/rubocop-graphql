@@ -21,24 +21,43 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)
         class UserType < BaseType
-          field :first_name, String
-          field :last_name, String
+          field :first_name, String, null: true
+          field :last_name, String, null: true
         end
       RUBY
+    end
+
+    context "when resolver methods are after field definitions" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
+            field :last_name, String, null: true
+
+            def first_name
+              object.contact_data.first_name
+            end
+
+            def last_name
+              object.contact_data.last_name
+            end
+          end
+        RUBY
+      end
     end
 
     context "when field definitions are not grouped together" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
-            field :first_name, String
+            field :first_name, String, null: true
 
             def first_name
               object.contact_data.first_name
             end
 
-            field :last_name, String
-            ^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+            field :last_name, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
 
             def last_name
               object.contact_data.last_name
@@ -55,13 +74,13 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)
         class UserType < BaseType
-          field :first_name, String
+          field :first_name, String, null: true
 
           def first_name
             object.contact_data.first_name
           end
 
-          field :last_name, String
+          field :last_name, String, null: true
 
           def last_name
             object.contact_data.last_name
@@ -75,7 +94,7 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
         expect_no_offenses(<<~RUBY)
           class UserType < BaseType
             field :first_name, String, null: true, resolver: FirstNameResolver
-            field :last_name, String
+            field :last_name, String, null: true
 
             def last_name
               object.contact_data.last_name
@@ -90,7 +109,7 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
         expect_no_offenses(<<~RUBY)
           class UserType < BaseType
             field :first_name, String, null: true, method: :contact_first_name
-            field :last_name, String
+            field :last_name, String, null: true
 
             def last_name
               object.contact_data.last_name
@@ -105,7 +124,7 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
         expect_no_offenses(<<~RUBY)
           class UserType < BaseType
             field :first_name, String, null: true, hash_key: :name1
-            field :last_name, String
+            field :last_name, String, null: true
 
             def last_name
               object.contact_data.last_name
@@ -119,10 +138,10 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
       it "registers offenses" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
-            field :first_name, String
-            ^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
-            field :last_name, String
-            ^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+            field :first_name, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+            field :last_name, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
 
             def first_name
               object.contact_data.first_name
@@ -139,10 +158,10 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
         it "registers offenses" do
           expect_offense(<<~RUBY)
             class UserType < BaseType
-              field :first_name, String, resolver_method: :custom_first_name
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
-              field :last_name, String
-              ^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+              field :first_name, String, null: true, resolver_method: :custom_first_name
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+              field :last_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
 
               def custom_first_name
                 object.contact_data.first_name

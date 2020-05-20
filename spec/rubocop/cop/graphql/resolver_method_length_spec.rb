@@ -15,7 +15,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ResolverMethodLength do
   it "not registers an offense" do
     expect_no_offenses(<<~RUBY)
       class UserType < BaseType
-        field :first_name, String
+        field :first_name, String, null: true
 
         def first_name
           line_1
@@ -29,7 +29,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ResolverMethodLength do
     it "registers an offense" do
       expect_offense(<<~RUBY)
         class UserType < BaseType
-          field :first_name, String
+          field :first_name, String, null: true
 
           def first_name
           ^^^^^^^^^^^^^^ ResolverMethod has too many lines. [3/2]
@@ -45,8 +45,8 @@ RSpec.describe RuboCop::Cop::GraphQL::ResolverMethodLength do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
-            field :first_name, String
-            field :last_name, String
+            field :first_name, String, null: true
+            field :last_name, String, null: true
 
             def first_name
             ^^^^^^^^^^^^^^ ResolverMethod has too many lines. [3/2]
@@ -63,7 +63,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ResolverMethodLength do
   context "when method is not a GraphQL resolver method" do
     it "not registers an offense when resolver method is longer than Max lines" do
       expect_no_offenses(<<~RUBY)
-        class User < ApplicationRecord
+        class SomeClass
           def first_name
             line_1
             line_2
