@@ -1,7 +1,7 @@
 AllCops:
   GraphQL:
     Patterns:
-    - "(?:^|/)graphql/"
+      - "(?:^|/)graphql/"
 
 GraphQL/ResolverMethodLength:
   Enabled: true
@@ -19,3 +19,8 @@ GraphQL/FieldDefinitions:
   SupportedStyles:
     - group_definitions
     - define_resolver_after_definition
+
+GraphQL/FieldDescription:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Missing field description'

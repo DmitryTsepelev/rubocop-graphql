@@ -46,10 +46,7 @@ module RuboCop
       #   end
       class FieldDefinitions < Cop
         include ConfigurableEnforcedStyle
-
-        def_node_matcher :field_definition?, <<~PATTERN
-          (send nil? :field ...)
-        PATTERN
+        include RuboCop::GraphQL::NodePattern
 
         def_node_matcher :field_kwargs, <<~PATTERN
           (send nil? :field
@@ -71,7 +68,8 @@ module RuboCop
           when :group_definitions
             check_grouped_field_declarations(node.parent)
           when :define_resolver_after_definition
-            check_resolver_is_defined_after_definition(Field.new(node))
+            field = RuboCop::GraphQL::Field.new(node)
+            check_resolver_is_defined_after_definition(field)
           end
         end
 

@@ -1,64 +1,70 @@
 # frozen_string_literal: true
 
 module RuboCop
-  module Cop
-    module GraphQL
-      class Field
-        extend Forwardable
-        extend NodePattern::Macros
+  module GraphQL
+    class Field
+      extend Forwardable
+      extend RuboCop::NodePattern::Macros
 
-        def_delegators :@node, :sibling_index, :parent
+      def_delegators :@node, :sibling_index, :parent
 
-        def_node_matcher :field_kwargs, <<~PATTERN
-          (send nil? :field
-            ...
-            (hash
-              $...
-            )
+      def_node_matcher :field_kwargs, <<~PATTERN
+        (send nil? :field
+          ...
+          (hash
+            $...
           )
-        PATTERN
+        )
+      PATTERN
 
-        def_node_matcher :field_name, <<~PATTERN
-          (send nil? :field (:sym $...) ...)
-        PATTERN
+      def_node_matcher :field_name, <<~PATTERN
+        (send nil? :field (:sym $...) ...)
+      PATTERN
 
-        def_node_matcher :resolver_kwarg?, <<~PATTERN
-          (pair (sym :resolver) ...)
-        PATTERN
+      def_node_matcher :field_description, <<~PATTERN
+        (send nil? :field _ _ (:str $...) ...)
+      PATTERN
 
-        def_node_matcher :method_kwarg?, <<~PATTERN
-          (pair (sym :method) ...)
-        PATTERN
+      def_node_matcher :resolver_kwarg?, <<~PATTERN
+        (pair (sym :resolver) ...)
+      PATTERN
 
-        def_node_matcher :hash_key_kwarg?, <<~PATTERN
-          (pair (sym :hash_key) ...)
-        PATTERN
+      def_node_matcher :method_kwarg?, <<~PATTERN
+        (pair (sym :method) ...)
+      PATTERN
 
-        attr_reader :node
+      def_node_matcher :hash_key_kwarg?, <<~PATTERN
+        (pair (sym :hash_key) ...)
+      PATTERN
 
-        def initialize(node)
-          @node = node
-        end
+      attr_reader :node
 
-        def name
-          @name ||= field_name(@node).first
-        end
+      def initialize(node)
+        @node = node
+      end
 
-        def kwargs
-          @kwargs ||= field_kwargs(@node) || []
-        end
+      def name
+        @name ||= field_name(@node).first
+      end
 
-        def resolver
-          kwargs.find { |kwarg| resolver_kwarg?(kwarg) }
-        end
+      def description
+        @name ||= field_description(@node)
+      end
 
-        def method
-          kwargs.find { |kwarg| method_kwarg?(kwarg) }
-        end
+      def kwargs
+        @kwargs ||= field_kwargs(@node) || []
+      end
 
-        def hash_key
-          kwargs.find { |kwarg| hash_key_kwarg?(kwarg) }
-        end
+      def resolver
+        kwargs.find { |kwarg| resolver_kwarg?(kwarg) }
+      end
+
+      def method
+        kwargs.find { |kwarg| method_kwarg?(kwarg) }
+      end
+
+      def hash_key
+        kwargs.find { |kwarg| hash_key_kwarg?(kwarg) }
       end
     end
   end
