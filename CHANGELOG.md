@@ -2,6 +2,8 @@
 
 ## master
 
+- Implement 'Patterns' support for config ([@DmitryTsepelev][])
+
 ## 0.1.0 (2020-05-21)
 
 - Initial version ([@DmitryTsepelev][])

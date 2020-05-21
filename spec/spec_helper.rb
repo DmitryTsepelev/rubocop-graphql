@@ -3,6 +3,9 @@
 require "rubocop-graphql"
 require "rubocop/rspec/support"
 
+spec_helper_glob = File.expand_path("{support}/*.rb", __dir__)
+Dir.glob(spec_helper_glob).map(&method(:require))
+
 RSpec.configure do |config|
   config.include RuboCop::RSpec::ExpectOffense
 
@@ -12,5 +15,8 @@ RSpec.configure do |config|
   config.fail_if_no_examples = true
 
   config.order = :random
+
   Kernel.srand config.seed
+
+  config.include(ExpectOffense)
 end
