@@ -51,10 +51,6 @@ module RuboCop
           (send nil? :field ...)
         PATTERN
 
-        def_node_matcher :field_name, <<~PATTERN
-          (send nil? :field (:sym $...) ...)
-        PATTERN
-
         def_node_matcher :field_kwargs, <<~PATTERN
           (send nil? :field
             ...
@@ -62,18 +58,6 @@ module RuboCop
               $...
             )
           )
-        PATTERN
-
-        def_node_matcher :resolver_option?, <<~PATTERN
-          (pair (sym :resolver) ...)
-        PATTERN
-
-        def_node_matcher :method_option?, <<~PATTERN
-          (pair (sym :method) ...)
-        PATTERN
-
-        def_node_matcher :hash_key_option?, <<~PATTERN
-          (pair (sym :hash_key) ...)
         PATTERN
 
         def_node_matcher :resolver_method_option, <<~PATTERN
@@ -87,7 +71,7 @@ module RuboCop
           when :group_definitions
             check_grouped_field_declarations(node.parent)
           when :define_resolver_after_definition
-            check_resolver_is_defined_after_definition(node)
+            check_resolver_is_defined_after_definition(Field.new(node))
           end
         end
 
@@ -108,22 +92,18 @@ module RuboCop
 
         RESOLVER_AFTER_FIELD_MSG = "Define resolver method after field definition."
 
-        def check_resolver_is_defined_after_definition(node)
-          if (kwargs = field_kwargs(node))
-            return if kwargs.any? { |kwarg|
-              resolver_option?(kwarg) || method_option?(kwarg) || hash_key_option?(kwarg)
-            }
+        def check_resolver_is_defined_after_definition(field)
+          return if field.resolver || field.method || field.hash_key
 
-            resolver_method = kwargs.flat_map { |kwarg| resolver_method_option(kwarg) }.compact.first
-          end
+          resolver_method = field.kwargs.flat_map { |kwarg| resolver_method_option(kwarg) }.compact.first
 
-          method_name = resolver_method || field_name(node).first
-          method_definition = node.parent.each_child_node.find { |node|
+          method_name = resolver_method || field.name
+          method_definition = field.parent.each_child_node.find { |node|
             node.def_type? && node.method_name == method_name
           }
 
-          if method_definition.sibling_index - node.sibling_index > 1
-            add_offense(node, message: RESOLVER_AFTER_FIELD_MSG)
+          if method_definition.sibling_index - field.sibling_index > 1
+            add_offense(field.node, message: RESOLVER_AFTER_FIELD_MSG)
           end
         end
       end
