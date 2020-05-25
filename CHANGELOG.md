@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.1.2 (2020-05-25)
+
+- Support fields with block in FieldDefinitions cop ([@DmitryTsepelev][])
+
 ## 0.1.1 (2020-05-25)
 
 - Implement 'Patterns' support for config ([@DmitryTsepelev][])

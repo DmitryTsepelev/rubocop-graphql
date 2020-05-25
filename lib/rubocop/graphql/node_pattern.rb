@@ -8,6 +8,13 @@ module RuboCop
       def_node_matcher :field_definition?, <<~PATTERN
         (send nil? :field ...)
       PATTERN
+
+      def_node_matcher :field_definition_with_body?, <<~PATTERN
+        (block
+          (send nil? :field ...)
+          ...
+        )
+      PATTERN
     end
   end
 end

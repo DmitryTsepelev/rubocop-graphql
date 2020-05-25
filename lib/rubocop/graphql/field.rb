@@ -6,7 +6,7 @@ module RuboCop
       extend Forwardable
       extend RuboCop::NodePattern::Macros
 
-      def_delegators :@node, :sibling_index, :parent
+      def_delegators :@node, :sibling_index, :parent, :ancestors
 
       def_node_matcher :field_kwargs, <<~PATTERN
         (send nil? :field
@@ -37,6 +37,10 @@ module RuboCop
         (pair (sym :hash_key) ...)
       PATTERN
 
+      def_node_matcher :resolver_method_option, <<~PATTERN
+        (pair (sym :resolver_method) (sym $...))
+      PATTERN
+
       attr_reader :node
 
       def initialize(node)
@@ -65,6 +69,10 @@ module RuboCop
 
       def hash_key
         kwargs.find { |kwarg| hash_key_kwarg?(kwarg) }
+      end
+
+      def resolver_method_name
+        @resolver_method_name ||= kwargs.flat_map { |kwarg| resolver_method_option(kwarg) }.compact.first || name
       end
     end
   end

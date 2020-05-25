@@ -57,30 +57,33 @@ module RuboCop
           )
         PATTERN
 
-        def_node_matcher :resolver_method_option, <<~PATTERN
-          (pair (sym :resolver_method) (sym $...))
+        def_node_matcher :class_body, <<~PATTERN
+          (class ... (begin $...))
         PATTERN
 
         def on_send(node)
-          return unless field_definition?(node)
+          return if !field_definition?(node) || style != :define_resolver_after_definition
 
-          case style
-          when :group_definitions
-            check_grouped_field_declarations(node.parent)
-          when :define_resolver_after_definition
-            field = RuboCop::GraphQL::Field.new(node)
-            check_resolver_is_defined_after_definition(field)
-          end
+          field = RuboCop::GraphQL::Field.new(node)
+          check_resolver_is_defined_after_definition(field)
+        end
+
+        def on_class(node)
+          return if style != :group_definitions
+
+          body = class_body(node)
+          check_grouped_field_declarations(body) if body
         end
 
         private
 
         GROUP_DEFS_MSG = "Group all field definitions together."
 
-        def check_grouped_field_declarations(node)
-          fields = node.each_child_node.select { |node| field_definition?(node) }
+        def check_grouped_field_declarations(body)
+          fields = body.select { |node| field_definition?(node) || field_definition_with_body?(node) }
 
           first_field = fields.first
+
           fields.each_with_index do |node, idx|
             next if node.sibling_index == first_field.sibling_index + idx
 
@@ -93,16 +96,31 @@ module RuboCop
         def check_resolver_is_defined_after_definition(field)
           return if field.resolver || field.method || field.hash_key
 
-          resolver_method = field.kwargs.flat_map { |kwarg| resolver_method_option(kwarg) }.compact.first
+          root = field.ancestors.find { |parent| root_node?(parent) }
+          method_definition = find_method_definition(root, field.resolver_method_name)
+          return unless method_definition
 
-          method_name = resolver_method || field.name
-          method_definition = field.parent.each_child_node.find { |node|
-            node.def_type? && node.method_name == method_name
-          }
-
-          if method_definition.sibling_index - field.sibling_index > 1
-            add_offense(field.node, message: RESOLVER_AFTER_FIELD_MSG)
+          field_sibling_index = if field_definition_with_body?(field.parent)
+            field.parent.sibling_index
+          else
+            field.sibling_index
           end
+
+          return if method_definition.sibling_index - field_sibling_index == 1
+
+          add_offense(field.node, message: RESOLVER_AFTER_FIELD_MSG)
+        end
+
+        def find_method_definition(root, method_name)
+          class_body(root).find { |node| node.def_type? && node.method_name == method_name }
+        end
+
+        def root_node?(node)
+          node.parent.nil? || root_with_siblings?(node.parent)
+        end
+
+        def root_with_siblings?(node)
+          node.begin_type? && node.parent.nil?
         end
       end
     end

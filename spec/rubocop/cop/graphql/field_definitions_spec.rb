@@ -27,6 +27,15 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
       RUBY
     end
 
+    context "when class is empty" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+          end
+        RUBY
+      end
+    end
+
     context "when resolver methods are after field definitions" do
       it "not registers an offense" do
         expect_no_offenses(<<~RUBY)
@@ -41,6 +50,21 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
             def last_name
               object.contact_data.last_name
             end
+          end
+        RUBY
+      end
+    end
+
+    context "when field has block" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, ID, null: false
+            field :image_url, String, null: false do
+              argument :width, Integer, required: false
+              argument :height, Integer, required: false
+            end
+            field :last_name, String, null: true
           end
         RUBY
       end
@@ -89,6 +113,22 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
       RUBY
     end
 
+    context "when there is no method definition" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
+
+            def first_name
+              object.contact_data.first_name
+            end
+
+            field :last_name, String, null: true
+          end
+        RUBY
+      end
+    end
+
     context "when :resolver is configured" do
       it "not registers an offense" do
         expect_no_offenses(<<~RUBY)
@@ -134,6 +174,29 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
       end
     end
 
+    context "when field has block" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, ID, null: false
+
+            def first_name
+              object.name
+            end
+
+            field :image_url, String, null: false do
+              argument :width, Integer, required: false
+              argument :height, Integer, required: false
+            end
+
+            def image_url
+              object.url
+            end
+          end
+        RUBY
+      end
+    end
+
     context "when resolver method is not defined right after field definition" do
       it "registers offenses" do
         expect_offense(<<~RUBY)
@@ -169,6 +232,31 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
 
               def last_name
                 object.contact_data.last_name
+              end
+            end
+          RUBY
+        end
+      end
+
+      context "when field has block" do
+        it "not registers an offense" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, ID, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+
+              field :image_url, String, null: false do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+                argument :width, Integer, required: false
+                argument :height, Integer, required: false
+              end
+
+              def first_name
+                object.name
+              end
+
+              def image_url
+                object.url
               end
             end
           RUBY

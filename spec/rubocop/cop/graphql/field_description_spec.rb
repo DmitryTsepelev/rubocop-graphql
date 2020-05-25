@@ -21,4 +21,17 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDescription do
       end
     RUBY
   end
+
+  context "when field has block" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        class UserType < BaseType
+          field :first_name, String, null: true do
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Missing field description
+            argument :short, Boolean, required: false
+          end
+        end
+      RUBY
+    end
+  end
 end
