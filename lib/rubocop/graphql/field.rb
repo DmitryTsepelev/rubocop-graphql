@@ -6,7 +6,7 @@ module RuboCop
       extend Forwardable
       extend RuboCop::NodePattern::Macros
 
-      def_delegators :@node, :sibling_index, :parent, :ancestors
+      def_delegators :@node, :sibling_index, :parent
 
       def_node_matcher :field_kwargs, <<~PATTERN
         (send nil? :field
@@ -18,27 +18,11 @@ module RuboCop
       PATTERN
 
       def_node_matcher :field_name, <<~PATTERN
-        (send nil? :field (:sym $...) ...)
+        (send nil? :field (:sym $_) ...)
       PATTERN
 
       def_node_matcher :field_description, <<~PATTERN
-        (send nil? :field _ _ (:str $...) ...)
-      PATTERN
-
-      def_node_matcher :resolver_kwarg?, <<~PATTERN
-        (pair (sym :resolver) ...)
-      PATTERN
-
-      def_node_matcher :method_kwarg?, <<~PATTERN
-        (pair (sym :method) ...)
-      PATTERN
-
-      def_node_matcher :hash_key_kwarg?, <<~PATTERN
-        (pair (sym :hash_key) ...)
-      PATTERN
-
-      def_node_matcher :resolver_method_option, <<~PATTERN
-        (pair (sym :resolver_method) (sym $...))
+        (send nil? :field _ _ (:str $_) ...)
       PATTERN
 
       attr_reader :node
@@ -48,31 +32,37 @@ module RuboCop
       end
 
       def name
-        @name ||= field_name(@node).first
+        field_name(@node)
       end
 
       def description
-        @name ||= field_description(@node)
-      end
-
-      def kwargs
-        @kwargs ||= field_kwargs(@node) || []
-      end
-
-      def resolver
-        kwargs.find { |kwarg| resolver_kwarg?(kwarg) }
-      end
-
-      def method
-        kwargs.find { |kwarg| method_kwarg?(kwarg) }
-      end
-
-      def hash_key
-        kwargs.find { |kwarg| hash_key_kwarg?(kwarg) }
+        field_description(@node)
       end
 
       def resolver_method_name
-        @resolver_method_name ||= kwargs.flat_map { |kwarg| resolver_method_option(kwarg) }.compact.first || name
+        kwargs.resolver_method_name || name
+      end
+
+      def kwargs
+        @kwargs ||= FieldKwargs.new(field_kwargs(@node))
+      end
+
+      def schema_member
+        @schema_member ||= SchemaMember.new(root_node)
+      end
+
+      private
+
+      def root_node
+        @node.ancestors.find { |parent| root_node?(parent) }
+      end
+
+      def root_node?(node)
+        node.parent.nil? || root_with_siblings?(node.parent)
+      end
+
+      def root_with_siblings?(node)
+        node.begin_type? && node.parent.nil?
       end
     end
   end
