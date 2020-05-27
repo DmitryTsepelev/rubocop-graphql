@@ -57,10 +57,6 @@ module RuboCop
           )
         PATTERN
 
-        def_node_matcher :class_body, <<~PATTERN
-          (class ... (begin $...))
-        PATTERN
-
         def on_send(node)
           return if !field_definition?(node) || style != :define_resolver_after_definition
 
@@ -71,8 +67,11 @@ module RuboCop
         def on_class(node)
           return if style != :group_definitions
 
-          body = class_body(node)
-          check_grouped_field_declarations(body) if body
+          schema_member = RuboCop::GraphQL::SchemaMember.new(node)
+
+          if (body = schema_member.body)
+            check_grouped_field_declarations(body)
+          end
         end
 
         private
@@ -94,10 +93,9 @@ module RuboCop
         RESOLVER_AFTER_FIELD_MSG = "Define resolver method after field definition."
 
         def check_resolver_is_defined_after_definition(field)
-          return if field.resolver || field.method || field.hash_key
+          return if field.kwargs.resolver || field.kwargs.method || field.kwargs.hash_key
 
-          root = field.ancestors.find { |parent| root_node?(parent) }
-          method_definition = find_method_definition(root, field.resolver_method_name)
+          method_definition = field.schema_member.find_method_definition(field.resolver_method_name)
           return unless method_definition
 
           field_sibling_index = if field_definition_with_body?(field.parent)
@@ -109,18 +107,6 @@ module RuboCop
           return if method_definition.sibling_index - field_sibling_index == 1
 
           add_offense(field.node, message: RESOLVER_AFTER_FIELD_MSG)
-        end
-
-        def find_method_definition(root, method_name)
-          class_body(root).find { |node| node.def_type? && node.method_name == method_name }
-        end
-
-        def root_node?(node)
-          node.parent.nil? || root_with_siblings?(node.parent)
-        end
-
-        def root_with_siblings?(node)
-          node.begin_type? && node.parent.nil?
         end
       end
     end

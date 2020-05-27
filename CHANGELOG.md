@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#6](https://github.com/DmitryTsepelev/rubocop-graphql/pull/6) Implement FieldMethod cop ([@DmitryTsepelev][])
+
 ## 0.1.2 (2020-05-25)
 
 - Support fields with block in FieldDefinitions cop ([@DmitryTsepelev][])

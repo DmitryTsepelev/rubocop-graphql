@@ -6,7 +6,7 @@ AllCops:
 GraphQL/ResolverMethodLength:
   Enabled: true
   VersionAdded: '0.80'
-  Description: 'Avoid resolver methods longer than 10 lines of code.'
+  Description: 'Checks resolver methods are not too long'
   Max: 10
   CountComments: false
   ExcludedMethods: []
@@ -23,4 +23,9 @@ GraphQL/FieldDefinitions:
 GraphQL/FieldDescription:
   Enabled: true
   VersionAdded: '0.80'
-  Description: 'Missing field description'
+  Description: 'Ensures all fields have a description'
+
+GraphQL/FieldMethod:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Checks :method option is used for appropriate fields'

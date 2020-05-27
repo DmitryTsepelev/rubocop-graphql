@@ -113,6 +113,16 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
       RUBY
     end
 
+    context "when class has single field" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
+          end
+        RUBY
+      end
+    end
+
     context "when there is no method definition" do
       it "not registers an offense" do
         expect_no_offenses(<<~RUBY)
