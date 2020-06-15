@@ -15,6 +15,10 @@ module RuboCop
           ...
         )
       PATTERN
+
+      def field?(node)
+        field_definition?(node) || field_definition_with_body?(node)
+      end
     end
   end
 end
