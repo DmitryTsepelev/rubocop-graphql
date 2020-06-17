@@ -66,6 +66,8 @@ module RuboCop
             next unless field.underscore_name.include?("_")
 
             prefix = field.underscore_name.split("_").first
+            next if good_prefix?(prefix)
+
             acc[prefix] ||= []
             acc[prefix] << field
           end
@@ -73,6 +75,10 @@ module RuboCop
 
         def message(prefix, field_names)
           format(MSG, field_names: field_names, prefix: prefix)
+        end
+
+        def good_prefix?(word)
+          cop_config["Prefixes"].include?(word)
         end
       end
     end

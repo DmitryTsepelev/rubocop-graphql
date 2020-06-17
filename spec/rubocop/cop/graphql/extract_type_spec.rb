@@ -6,7 +6,8 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractType do
   let(:config) do
     RuboCop::Config.new(
       "GraphQL/ExtractType" => {
-        "MaxFields" => 2
+        "MaxFields" => 2,
+        "Prefixes" => %w[is avg min max]
       }
     )
   end
@@ -71,6 +72,19 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractType do
             field :contactFirstName, String, null: false
             field :contactLastName, String, null: false
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Consider moving contactFirstName, contactLastName to a new type and adding the `contact` field instead
+          end
+        RUBY
+      end
+    end
+
+    context "when common prefix include in config Prefixes" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :registered_at, String, null: false
+
+            field :is_admin, String, null: false
+            field :is_director, String, null: false
           end
         RUBY
       end

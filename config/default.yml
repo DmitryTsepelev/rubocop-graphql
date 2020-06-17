@@ -35,3 +35,9 @@ GraphQL/ExtractType:
   VersionAdded: '0.80'
   Description: 'Checks fields on common prefix groups'
   MaxFields: 2
+  Prefixes:
+    - is
+    - with
+    - avg
+    - min
+    - max
