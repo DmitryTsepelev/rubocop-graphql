@@ -2,7 +2,7 @@
 
 ## master
 
-- [PR#7](https://github.com/DmitryTsepelev/rubocop-graphql/pull/7) Implement ExtractType cop ([@0legovich](https://github.com/0legovich))
+- [PR#7](https://github.com/DmitryTsepelev/rubocop-graphql/pull/7) Implement ExtractType cop ([@0legovich][])
 
 ## 0.1.3 (2020-06-01 ☀️)
 
@@ -21,3 +21,4 @@
 - Initial version ([@DmitryTsepelev][])
 
 [@DmitryTsepelev]: https://github.com/DmitryTsepelev
+[@0legovich](https://github.com/0legovich)

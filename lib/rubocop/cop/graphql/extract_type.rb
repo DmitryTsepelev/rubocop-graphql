@@ -49,17 +49,19 @@ module RuboCop
 
         def check_fields_prefixes(body)
           sorted_prefixes = fractured(body).sort_by { |k, _| k.size }.reverse
-          outdated = []
+          already_offenced_fields = []
 
           sorted_prefixes.each do |prefix, fields|
-            fields -= outdated
+            fields -= already_offenced_fields
+
             next if fields.count < cop_config["MaxFields"]
 
-            outdated += fields
             add_offense(
               fields.last.node,
               message: message(prefix, fields.map(&:name).join(", "))
             )
+
+            already_offenced_fields += fields
           end
         end
 
@@ -70,16 +72,15 @@ module RuboCop
             field = RuboCop::GraphQL::Field.new(node)
             next unless field.underscore_name.include?("_")
 
-            prefixes = field.underscore_name.split("_")[0..-2]
+            *prefixes, _ = field.underscore_name.split("_")
 
-            prev_prefix = ""
-            prefixes.each do |prefix|
-              prefix = prev_prefix + prefix
-              next if good_prefix?(prefix)
+            prefixes.each_with_object([]) do |prefix, prev_prefix|
+              prefix = (prev_prefix + [prefix]).join("_")
+              break if ignored_prefix?(prefix)
 
-              acc[prefix] ||= []
-              acc[prefix] << field
-              prev_prefix = prefix + "_"
+              (acc[prefix] ||= []) << field
+
+              prev_prefix << prefix
             end
           end
         end
@@ -88,7 +89,7 @@ module RuboCop
           format(MSG, field_names: field_names, prefix: prefix)
         end
 
-        def good_prefix?(word)
+        def ignored_prefix?(word)
           cop_config["Prefixes"].include?(word)
         end
       end

@@ -20,7 +20,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractType do
     RUBY
   end
 
-  context "when count fields with common prefix equal Max fields" do
+  context "when count of fields with common prefix equals to Max fields" do
     it "registers an offense" do
       expect_offense(<<~RUBY)
         class UserType < BaseType
@@ -33,7 +33,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractType do
       RUBY
     end
 
-    context "when field with body" do
+    context "when field has body" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
@@ -49,7 +49,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractType do
       end
     end
 
-    context "when one field name in camel-case notation" do
+    context "when one field name is in camel-case notation" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
@@ -63,7 +63,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractType do
       end
     end
 
-    context "when all field names in camel-case notation" do
+    context "when all field names are in camel-case notation" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
@@ -77,7 +77,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractType do
       end
     end
 
-    context "when common prefix include in config Prefixes" do
+    context "when common prefix is listed in Prefixes" do
       it "not registers an offense" do
         expect_no_offenses(<<~RUBY)
           class UserType < BaseType
@@ -105,7 +105,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractType do
     end
   end
 
-  context "when count fields with common prefix more than Max fields" do
+  context "when count of fields with common prefix is more than Max fields" do
     it "registers an offense" do
       expect_offense(<<~RUBY)
         class UserType < BaseType
