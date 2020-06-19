@@ -79,7 +79,7 @@ module RuboCop
         GROUP_DEFS_MSG = "Group all field definitions together."
 
         def check_grouped_field_declarations(body)
-          fields = body.select { |node| field_definition?(node) || field_definition_with_body?(node) }
+          fields = body.select { |node| field?(node) }
 
           first_field = fields.first
 

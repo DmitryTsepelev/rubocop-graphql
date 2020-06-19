@@ -29,3 +29,15 @@ GraphQL/FieldMethod:
   Enabled: true
   VersionAdded: '0.80'
   Description: 'Checks :method option is used for appropriate fields'
+
+GraphQL/ExtractType:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Checks fields on common prefix groups'
+  MaxFields: 2
+  Prefixes:
+    - is
+    - with
+    - avg
+    - min
+    - max

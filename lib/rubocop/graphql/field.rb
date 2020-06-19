@@ -21,6 +21,11 @@ module RuboCop
         (send nil? :field (:sym $_) ...)
       PATTERN
 
+      def_node_matcher :field_with_body_name, <<~PATTERN
+        (block
+        (send nil? :field (:sym $_) ...)...)
+      PATTERN
+
       def_node_matcher :field_description, <<~PATTERN
         (send nil? :field _ _ (:str $_) ...)
       PATTERN
@@ -32,7 +37,18 @@ module RuboCop
       end
 
       def name
-        field_name(@node)
+        @name ||= field_name(@node) || field_with_body_name(@node)
+      end
+
+      def underscore_name
+        @underscore_name ||= begin
+          word = name.to_s.dup
+          word.gsub!(/([A-Z\d]+)([A-Z][a-z])/, '\1_\2')
+          word.gsub!(/([a-z\d])([A-Z])/, '\1_\2')
+          word.tr!("-", "_")
+          word.downcase!
+          word
+        end
       end
 
       def description
