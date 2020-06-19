@@ -47,6 +47,7 @@ module RuboCop
       class FieldDefinitions < Cop
         include ConfigurableEnforcedStyle
         include RuboCop::GraphQL::NodePattern
+        include RuboCop::Cop::RangeHelp
 
         def_node_matcher :field_kwargs, <<~PATTERN
           (send nil? :field
@@ -74,6 +75,17 @@ module RuboCop
           end
         end
 
+        def autocorrect(node)
+          lambda do |corrector|
+            case style
+            when :define_resolver_after_definition
+              place_resolver_after_definitions(corrector, node)
+            when :group_definitions
+              group_field_declarations(corrector, node)
+            end
+          end
+        end
+
         private
 
         GROUP_DEFS_MSG = "Group all field definitions together."
@@ -88,6 +100,20 @@ module RuboCop
 
             add_offense(node, message: GROUP_DEFS_MSG)
           end
+        end
+
+        def group_field_declarations(corrector, node)
+          field = RuboCop::GraphQL::Field.new(node)
+
+          first_field = field.schema_member.body.find { |node|
+            field_definition?(node) || field_definition_with_body?(node)
+          }
+
+          source_to_insert = "\n" + indent(node) + node.source
+          corrector.insert_after(first_field.loc.expression, source_to_insert)
+
+          range = range_with_surrounding_space(range: node.loc.expression, side: :left)
+          corrector.remove(range)
         end
 
         RESOLVER_AFTER_FIELD_MSG = "Define resolver method after field definition."
@@ -107,6 +133,25 @@ module RuboCop
           return if method_definition.sibling_index - field_sibling_index == 1
 
           add_offense(field.node, message: RESOLVER_AFTER_FIELD_MSG)
+        end
+
+        def place_resolver_after_definitions(corrector, node)
+          field = RuboCop::GraphQL::Field.new(node)
+
+          method_definition = field.schema_member.find_method_definition(field.resolver_method_name)
+
+          field_definition = field_definition_with_body?(node.parent) ? node.parent : node
+
+          source_to_insert = indent(method_definition) + field_definition.source + "\n\n"
+          method_range = range_by_whole_lines(method_definition.loc.expression)
+          corrector.insert_before(method_range, source_to_insert)
+
+          range_to_remove = range_with_surrounding_space(range: field_definition.loc.expression, side: :left)
+          corrector.remove(range_to_remove)
+        end
+
+        def indent(node)
+          " " * node.location.column
         end
       end
     end

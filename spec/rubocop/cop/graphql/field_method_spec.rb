@@ -36,6 +36,37 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldMethod do
           end
         end
       RUBY
+
+      expect_correction(<<~RUBY)
+        class UserType < BaseType
+          field :phone, String, null: true, method: :home_phone
+        end
+      RUBY
+    end
+
+    context "when there are valid fields around" do
+      it "registers an offense" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :name, String, null: false
+            field :phone, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use method: :home_phone
+            field :address, String, null: true
+
+            def phone
+              object.home_phone
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :name, String, null: false
+            field :phone, String, null: true, method: :home_phone
+            field :address, String, null: true
+          end
+        RUBY
+      end
     end
   end
 

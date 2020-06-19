@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#10](https://github.com/DmitryTsepelev/rubocop-graphql/pull/10) Add autocorrect to FieldMethod and FieldDefinitions cops ([@DmitryTsepelev][])
 - [PR#7](https://github.com/DmitryTsepelev/rubocop-graphql/pull/7) Implement ExtractType cop ([@0legovich][])
 
 ## 0.1.3 (2020-06-01 ☀️)

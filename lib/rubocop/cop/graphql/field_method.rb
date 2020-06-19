@@ -25,6 +25,7 @@ module RuboCop
       #
       class FieldMethod < Cop
         include RuboCop::GraphQL::NodePattern
+        include RuboCop::Cop::RangeHelp
 
         def_node_matcher :method_to_use, <<~PATTERN
           (def
@@ -42,12 +43,23 @@ module RuboCop
           return unless field_definition?(node)
 
           field = RuboCop::GraphQL::Field.new(node)
+          method_definition = suggest_method_name_for(field)
 
-          method_name = field.resolver_method_name
-          method_definition = field.schema_member.find_method_definition(method_name)
+          if (suggested_method_name = method_to_use(method_definition))
+            add_offense(node, message: message(suggested_method_name))
+          end
+        end
 
-          if (method_name = method_to_use(method_definition))
-            add_offense(node, message: message(method_name))
+        def autocorrect(node)
+          lambda do |corrector|
+            field = RuboCop::GraphQL::Field.new(node)
+            method_definition = suggest_method_name_for(field)
+            suggested_method_name = method_to_use(method_definition)
+
+            corrector.insert_after(node.loc.expression, ", method: :#{suggested_method_name}")
+
+            range = range_with_surrounding_space(range: method_definition.loc.expression, side: :left)
+            corrector.remove(range)
           end
         end
 
@@ -55,6 +67,11 @@ module RuboCop
 
         def message(method_name)
           format(MSG, method_name: method_name)
+        end
+
+        def suggest_method_name_for(field)
+          method_name = field.resolver_method_name
+          field.schema_member.find_method_definition(method_name)
         end
       end
     end
