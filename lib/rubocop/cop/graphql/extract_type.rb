@@ -48,9 +48,14 @@ module RuboCop
         MSG = "Consider moving %<field_names>s to a new type and adding the `%<prefix>s` field instead"
 
         def check_fields_prefixes(body)
-          fractured(body).each do |prefix, fields|
+          sorted_prefixes = fractured(body).sort_by { |k, _| k.size }.reverse
+          outdated = []
+
+          sorted_prefixes.each do |prefix, fields|
+            fields -= outdated
             next if fields.count < cop_config["MaxFields"]
 
+            outdated += fields
             add_offense(
               fields.last.node,
               message: message(prefix, fields.map(&:name).join(", "))
@@ -65,11 +70,17 @@ module RuboCop
             field = RuboCop::GraphQL::Field.new(node)
             next unless field.underscore_name.include?("_")
 
-            prefix = field.underscore_name.split("_").first
-            next if good_prefix?(prefix)
+            prefixes = field.underscore_name.split("_")[0..-2]
 
-            acc[prefix] ||= []
-            acc[prefix] << field
+            prev_prefix = ""
+            prefixes.each do |prefix|
+              prefix = prev_prefix + prefix
+              next if good_prefix?(prefix)
+
+              acc[prefix] ||= []
+              acc[prefix] << field
+              prev_prefix = prefix + "_"
+            end
           end
         end
 
