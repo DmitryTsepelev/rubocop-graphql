@@ -88,6 +88,21 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
             end
           end
         RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
+            field :last_name, String, null: true
+
+            def first_name
+              object.contact_data.first_name
+            end
+
+            def last_name
+              object.contact_data.last_name
+            end
+          end
+        RUBY
       end
     end
   end
@@ -225,6 +240,23 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
             end
           end
         RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+
+            field :first_name, String, null: true
+
+            def first_name
+              object.contact_data.first_name
+            end
+
+            field :last_name, String, null: true
+
+            def last_name
+              object.contact_data.last_name
+            end
+          end
+        RUBY
       end
 
       context "when custom :resolver_method is configured for field" do
@@ -245,11 +277,28 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
               end
             end
           RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+
+              field :first_name, String, null: true, resolver_method: :custom_first_name
+
+              def custom_first_name
+                object.contact_data.first_name
+              end
+
+              field :last_name, String, null: true
+
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
         end
       end
 
       context "when field has block" do
-        it "not registers an offense" do
+        it "registers an offense" do
           expect_offense(<<~RUBY)
             class UserType < BaseType
               field :first_name, ID, null: false
@@ -263,6 +312,26 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
 
               def first_name
                 object.name
+              end
+
+              def image_url
+                object.url
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+
+              field :first_name, ID, null: false
+
+              def first_name
+                object.name
+              end
+
+              field :image_url, String, null: false do
+                argument :width, Integer, required: false
+                argument :height, Integer, required: false
               end
 
               def image_url
