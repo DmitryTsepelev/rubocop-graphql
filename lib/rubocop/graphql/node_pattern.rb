@@ -16,6 +16,10 @@ module RuboCop
         )
       PATTERN
 
+      def_node_matcher :argument_definition?, <<~PATTERN
+        (send nil? :argument ...)
+      PATTERN
+
       def field?(node)
         field_definition?(node) || field_definition_with_body?(node)
       end

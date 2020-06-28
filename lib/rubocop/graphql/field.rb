@@ -8,15 +8,6 @@ module RuboCop
 
       def_delegators :@node, :sibling_index, :parent
 
-      def_node_matcher :field_kwargs, <<~PATTERN
-        (send nil? :field
-          ...
-          (hash
-            $...
-          )
-        )
-      PATTERN
-
       def_node_matcher :field_name, <<~PATTERN
         (send nil? :field (:sym $_) ...)
       PATTERN
@@ -52,7 +43,7 @@ module RuboCop
       end
 
       def description
-        field_description(@node)
+        @description ||= field_description(@node) || kwargs.description || block.description
       end
 
       def resolver_method_name
@@ -60,7 +51,11 @@ module RuboCop
       end
 
       def kwargs
-        @kwargs ||= FieldKwargs.new(field_kwargs(@node))
+        @kwargs ||= Field::Kwargs.new(@node)
+      end
+
+      def block
+        @block ||= Field::Block.new(@node.parent)
       end
 
       def schema_member

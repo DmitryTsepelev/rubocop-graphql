@@ -3,6 +3,11 @@ AllCops:
     Patterns:
       - "(?:^|/)graphql/"
 
+GraphQL/ArgumentDescription:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Ensures all arguments have a description'
+
 GraphQL/ResolverMethodLength:
   Enabled: true
   VersionAdded: '0.80'
