@@ -5,12 +5,36 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDescription do
 
   let(:config) { RuboCop::Config.new }
 
-  it "not registers an offense" do
-    expect_no_offenses(<<~RUBY)
-      class UserType < BaseType
-        field :first_name, String, "First name", null: true
-      end
-    RUBY
+  context "when description is passed as argument" do
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :first_name, String, "First name", null: true
+        end
+      RUBY
+    end
+  end
+
+  context "when description is passed as kwarg" do
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :first_name, String, description: "First name", null: true
+        end
+      RUBY
+    end
+  end
+
+  context "when description is passed inside block" do
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :first_name, String, null: true do
+            description "First name"
+          end
+        end
+      RUBY
+    end
   end
 
   it "registers an offense" do
