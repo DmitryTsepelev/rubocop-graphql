@@ -24,7 +24,7 @@ module RuboCop
         MSG = "Missing argument description"
 
         def on_send(node)
-          return unless argument_definition?(node)
+          return unless argument?(node)
 
           argument = RuboCop::GraphQL::Argument.new(node)
 

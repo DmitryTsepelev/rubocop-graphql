@@ -14,7 +14,7 @@ module RuboCop
         #     field :contact, Types::ContactType, null: false
         #
         #     def contact
-        #      self
+        #       self
         #     end
         #   end
         #
