@@ -35,10 +35,16 @@ GraphQL/FieldMethod:
   VersionAdded: '0.80'
   Description: 'Checks :method option is used for appropriate fields'
 
+GraphQL/ExtractInputType:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Suggests using input type instead of many arguments'
+  MaxArguments: 2
+
 GraphQL/ExtractType:
   Enabled: true
   VersionAdded: '0.80'
-  Description: 'Checks fields on common prefix groups'
+  Description: 'Suggests extracting fields with common prefixes to the separate type'
   MaxFields: 2
   Prefixes:
     - is

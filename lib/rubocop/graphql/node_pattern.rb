@@ -16,7 +16,7 @@ module RuboCop
         )
       PATTERN
 
-      def_node_matcher :argument_definition?, <<~PATTERN
+      def_node_matcher :argument?, <<~PATTERN
         (send nil? :argument ...)
       PATTERN
 
