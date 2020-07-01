@@ -8,6 +8,11 @@ GraphQL/ArgumentDescription:
   VersionAdded: '0.80'
   Description: 'Ensures all arguments have a description'
 
+GraphQL/ArgumentName:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'This cop checks whether argument names are snake_case'
+
 GraphQL/ResolverMethodLength:
   Enabled: true
   VersionAdded: '0.80'
@@ -34,6 +39,11 @@ GraphQL/FieldMethod:
   Enabled: true
   VersionAdded: '0.80'
   Description: 'Checks :method option is used for appropriate fields'
+
+GraphQL/FieldName:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'This cop checks whether field names are snake_case'
 
 GraphQL/ExtractInputType:
   Enabled: true

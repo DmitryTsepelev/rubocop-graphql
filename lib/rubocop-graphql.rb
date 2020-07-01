@@ -2,6 +2,8 @@
 
 require "rubocop"
 
+require_relative "rubocop/graphql/ext/snake_case"
+
 require_relative "rubocop/graphql"
 require_relative "rubocop/graphql/version"
 require_relative "rubocop/graphql/inject"
