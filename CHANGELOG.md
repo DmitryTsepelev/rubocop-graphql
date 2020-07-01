@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#13](https://github.com/DmitryTsepelev/rubocop-graphql/pull/13) Implement field name and argument name cops ([@DmitryTsepelev][])
 - [PR#12](https://github.com/DmitryTsepelev/rubocop-graphql/pull/12) Implement extract input type cop ([@DmitryTsepelev][])
 - [PR#11](https://github.com/DmitryTsepelev/rubocop-graphql/pull/11) Implement argument description cop, tweak field description cop  ([@DmitryTsepelev][])
 - [PR#10](https://github.com/DmitryTsepelev/rubocop-graphql/pull/10) Add autocorrect to FieldMethod and FieldDefinitions cops ([@DmitryTsepelev][])

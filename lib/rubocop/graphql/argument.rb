@@ -9,10 +9,18 @@ module RuboCop
         (send nil? :argument _ _ (:str $_) ...)
       PATTERN
 
+      def_node_matcher :argument_name, <<~PATTERN
+        (send nil? :argument (:sym $_) ...)
+      PATTERN
+
       attr_reader :node
 
       def initialize(node)
         @node = node
+      end
+
+      def name
+        @name ||= argument_name(@node)
       end
 
       def description
