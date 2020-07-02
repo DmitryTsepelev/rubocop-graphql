@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.2.0 (2020-07-02)
+
 - [PR#13](https://github.com/DmitryTsepelev/rubocop-graphql/pull/13) Implement field name and argument name cops ([@DmitryTsepelev][])
 - [PR#12](https://github.com/DmitryTsepelev/rubocop-graphql/pull/12) Implement extract input type cop ([@DmitryTsepelev][])
 - [PR#11](https://github.com/DmitryTsepelev/rubocop-graphql/pull/11) Implement argument description cop, tweak field description cop  ([@DmitryTsepelev][])
