@@ -34,7 +34,7 @@ module RuboCop
         PATTERN
 
         def_node_matcher :interface?, <<~PATTERN
-          (send nil? :include (const (const nil? :Types) :BaseInterface))
+          (send nil? :include (const ...))
         PATTERN
 
         def on_class(node)
