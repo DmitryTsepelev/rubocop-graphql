@@ -212,4 +212,33 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
       end
     end
   end
+
+  context "when with fields" do
+    context "when with description" do
+      it "does not register an offense" do
+        expect_no_offenses(<<~RUBY)
+          class Types::UserType < Types::BaseObject
+            graphql_name "UserType"
+
+            description "Represents application user"
+
+            field :first_name, String, null: true, description: "User's first name"
+          end
+        RUBY
+      end
+    end
+
+    context "when without description" do
+      it "registers an offense" do
+        expect_offense(<<~RUBY)
+          class Types::UserType < Types::BaseObject
+                ^^^^^^^^^^^^^^^ Missing type description
+            graphql_name "UserType"
+
+            field :first_name, String, null: true, description: "User's first name"
+          end
+        RUBY
+      end
+    end
+  end
 end
