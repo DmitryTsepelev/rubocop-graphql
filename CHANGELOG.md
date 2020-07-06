@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#15](https://github.com/DmitryTsepelev/rubocop-graphql/pull/15) Fix example for GraphQL/ArgumentDescription ([@kiskoza ][])
+
 ## 0.2.0 (2020-07-02)
 
 - [PR#13](https://github.com/DmitryTsepelev/rubocop-graphql/pull/13) Implement field name and argument name cops ([@DmitryTsepelev][])
@@ -28,3 +30,4 @@
 
 [@DmitryTsepelev]: https://github.com/DmitryTsepelev
 [@0legovich](https://github.com/0legovich)
+[@kiskoza](https://github.com/kiskoza)
