@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#14](https://github.com/DmitryTsepelev/rubocop-graphql/pull/14) Implement ObjectDescription cop ([@yaorlov][])
+
 ## 0.2.0 (2020-07-02)
 
 - [PR#13](https://github.com/DmitryTsepelev/rubocop-graphql/pull/13) Implement field name and argument name cops ([@DmitryTsepelev][])
@@ -28,3 +30,4 @@
 
 [@DmitryTsepelev]: https://github.com/DmitryTsepelev
 [@0legovich](https://github.com/0legovich)
+[@yaorlov](https://github.com/yaorlov)
