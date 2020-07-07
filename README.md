@@ -24,7 +24,7 @@ gem 'rubocop-graphql', require: false
 
 ## Usage
 
-You need to tell RuboCop to load the Rails extension. There are three ways to do this:
+You need to tell RuboCop to load the GraphQL extension. There are three ways to do this:
 
 ### RuboCop configuration file
 
@@ -42,7 +42,7 @@ require:
   - rubocop-graphql
 ```
 
-Now you can run `rubocop` and it will automatically load the RuboCop Rails cops together with the standard cops.
+Now you can run `rubocop` and it will automatically load the RuboCop GraphQL cops together with the standard cops.
 
 ### Command line
 
@@ -62,7 +62,7 @@ end
 
 All cops are located under [`lib/rubocop/cop/graphql`](lib/rubocop/cop/graphql), and contain examples and documentation.
 
-In your `.rubocop.yml`, you may treat the Rails cops just like any other cop. For example:
+In your `.rubocop.yml`, you may treat the GraphQL cops just like any other cop. For example:
 
 ```yaml
 GraphQL/ResolverMethodLength:
