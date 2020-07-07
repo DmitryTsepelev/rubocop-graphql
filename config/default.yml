@@ -69,3 +69,4 @@ GraphQL/ObjectDescription:
   Description: 'Ensures all types have a description'
   Exclude:
     - '**/*_schema.rb'
+    - '**/base_*.rb'
