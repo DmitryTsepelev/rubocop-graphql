@@ -1,4 +1,4 @@
-# Rubocop::GraphQL
+# RuboCop::GraphQL
 
 [Rubocop](https://github.com/rubocop-hq/rubocop) extension for enforcing [graphql-ruby](https://github.com/rmosolgo/graphql-ruby) best practices.
 
