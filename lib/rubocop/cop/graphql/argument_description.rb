@@ -9,13 +9,13 @@ module RuboCop
       #   # good
       #
       #   class BanUser < BaseMutation
-      #     argument :uuid, ID, required: true
+      #     argument :uuid, ID, required: true, description: "UUID of the user to ban"
       #   end
       #
       #   # bad
       #
       #   class BanUser < BaseMutation
-      #     argument :uuid, ID, required: true, description: "UUID of the user to ban"
+      #     argument :uuid, ID, required: true
       #   end
       #
       class ArgumentDescription < Cop
