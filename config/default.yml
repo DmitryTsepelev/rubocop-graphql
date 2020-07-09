@@ -62,3 +62,11 @@ GraphQL/ExtractType:
     - avg
     - min
     - max
+
+GraphQL/ObjectDescription:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Ensures all types have a description'
+  Exclude:
+    - '**/*_schema.rb'
+    - '**/base_*.rb'

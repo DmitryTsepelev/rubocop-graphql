@@ -3,6 +3,7 @@
 ## master
 
 - [PR#15](https://github.com/DmitryTsepelev/rubocop-graphql/pull/15) Fix example for GraphQL/ArgumentDescription ([@kiskoza ][])
+- [PR#14](https://github.com/DmitryTsepelev/rubocop-graphql/pull/14) Implement ObjectDescription cop ([@yaorlov][])
 
 ## 0.2.0 (2020-07-02)
 
@@ -31,3 +32,4 @@
 [@DmitryTsepelev]: https://github.com/DmitryTsepelev
 [@0legovich](https://github.com/0legovich)
 [@kiskoza](https://github.com/kiskoza)
+[@yaorlov](https://github.com/yaorlov)
