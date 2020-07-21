@@ -2,7 +2,11 @@
 
 ## master
 
-- [PR#15](https://github.com/DmitryTsepelev/rubocop-graphql/pull/15) Fix example for GraphQL/ArgumentDescription ([@kiskoza ][])
+## 0.3.0 (2020-07-21)
+
+- [PR#20](https://github.com/DmitryTsepelev/rubocop-graphql/pull/20) Fix NodePattern for fields without a name ([@swalkinshaw][])
+- [PR#19](https://github.com/DmitryTsepelev/rubocop-graphql/pull/19) Gracefully handle fields/arguments without kwargs ([@swalkinshaw][])
+- [PR#15](https://github.com/DmitryTsepelev/rubocop-graphql/pull/15) Fix example for GraphQL/ArgumentDescription ([@kiskoza][])
 - [PR#14](https://github.com/DmitryTsepelev/rubocop-graphql/pull/14) Implement ObjectDescription cop ([@yaorlov][])
 
 ## 0.2.0 (2020-07-02)
@@ -30,6 +34,7 @@
 - Initial version ([@DmitryTsepelev][])
 
 [@DmitryTsepelev]: https://github.com/DmitryTsepelev
-[@0legovich](https://github.com/0legovich)
-[@kiskoza](https://github.com/kiskoza)
-[@yaorlov](https://github.com/yaorlov)
+[@0legovich]: https://github.com/0legovich
+[@kiskoza]: https://github.com/kiskoza
+[@yaorlov]: https://github.com/yaorlov
+[@swalkinshaw]: https://github.com/swalkinshaw
