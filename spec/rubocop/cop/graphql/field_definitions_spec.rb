@@ -55,6 +55,16 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
       end
     end
 
+    context "when field has no kwargs" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, ID
+          end
+        RUBY
+      end
+    end
+
     context "when field has block" do
       it "not registers an offense" do
         expect_no_offenses(<<~RUBY)
