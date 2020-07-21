@@ -36,7 +36,7 @@ module RuboCop
         PATTERN
 
         def initialize(field_node)
-          @nodes = field_kwargs(field_node)
+          @nodes = field_kwargs(field_node) || []
         end
 
         def resolver
