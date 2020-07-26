@@ -269,6 +269,46 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
         RUBY
       end
 
+      it "registers offenses when type classes are nested within a module" do
+        expect_offense(<<~RUBY)
+          module Types
+            class UserType < BaseType
+              field :first_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+              field :last_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+
+              def first_name
+                object.contact_data.first_name
+              end
+
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          module Types
+            class UserType < BaseType
+
+              field :first_name, String, null: true
+
+              def first_name
+                object.contact_data.first_name
+              end
+
+              field :last_name, String, null: true
+
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          end
+        RUBY
+      end
+
       context "when custom :resolver_method is configured for field" do
         it "registers offenses" do
           expect_offense(<<~RUBY)
