@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.3.1 (2020-07-26)
+
+- [PR#21](https://github.com/DmitryTsepelev/rubocop-graphql/pull/21) Support type classes nested in modules ([@swalkinshaw][])
+
 ## 0.3.0 (2020-07-21)
 
 - [PR#20](https://github.com/DmitryTsepelev/rubocop-graphql/pull/20) Fix NodePattern for fields without a name ([@swalkinshaw][])
