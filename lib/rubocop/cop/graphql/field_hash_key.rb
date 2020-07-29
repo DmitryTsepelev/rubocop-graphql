@@ -1,0 +1,66 @@
+# frozen_string_literal: true
+
+module RuboCop
+  module Cop
+    module GraphQL
+      #  This cop prevents defining unnecessary resolver methods in cases
+      #  when :hash_key option can be used
+      #
+      # @example
+      #   # good
+      #
+      #   class Types::UserType < Types::BaseObject
+      #     field :phone, String, null: true, hash_key: :home_phone
+      #   end
+      #
+      #   # bad
+      #
+      #   class Types::UserType < Types::BaseObject
+      #     field :phone, String, null: true
+      #
+      #     def phone
+      #       object[:home_phone]
+      #     end
+      #   end
+      #
+      class FieldHashKey < Cop
+        include RuboCop::GraphQL::NodePattern
+
+        def_node_matcher :hash_key_to_use, <<~PATTERN
+          (def
+            _
+            (args)
+            (send
+              (send nil? :object) :[]
+              (_type $_)
+            )
+          )
+        PATTERN
+
+        MSG = "Use hash_key: %<hash_key>p"
+
+        def on_send(node)
+          return unless field_definition?(node)
+
+          field = RuboCop::GraphQL::Field.new(node)
+          method_definition = resolver_method_definition_for(field)
+
+          if (suggested_hash_key_name = hash_key_to_use(method_definition))
+            add_offense(node, message: message(suggested_hash_key_name))
+          end
+        end
+
+        private
+
+        def message(hash_key)
+          format(MSG, hash_key: hash_key)
+        end
+
+        def resolver_method_definition_for(field)
+          method_name = field.resolver_method_name
+          field.schema_member.find_method_definition(method_name)
+        end
+      end
+    end
+  end
+end
