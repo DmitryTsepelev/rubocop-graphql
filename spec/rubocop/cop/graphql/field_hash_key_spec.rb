@@ -36,6 +36,12 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldHashKey do
           end
         end
       RUBY
+
+      expect_correction(<<~RUBY)
+        class UserType < BaseType
+          field :phone, String, null: true, hash_key: :home_phone
+        end
+      RUBY
     end
 
     context "when hash key is a string" do
@@ -48,6 +54,12 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldHashKey do
             def phone
               object["home_phone"]
             end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :phone, String, null: true, hash_key: "home_phone"
           end
         RUBY
       end
@@ -65,6 +77,14 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldHashKey do
             def phone
               object[:home_phone]
             end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :name, String, null: false
+            field :phone, String, null: true, hash_key: :home_phone
+            field :address, String, null: true
           end
         RUBY
       end

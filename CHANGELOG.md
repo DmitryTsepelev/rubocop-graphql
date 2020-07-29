@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#22](https://github.com/DmitryTsepelev/rubocop-graphql/pull/22) Add FieldHashKey cop with autocorrect ([@adelnabiullin][])
+
 ## 0.3.1 (2020-07-26)
 
 - [PR#21](https://github.com/DmitryTsepelev/rubocop-graphql/pull/21) Support type classes nested in modules ([@swalkinshaw][])
@@ -42,3 +44,4 @@
 [@kiskoza]: https://github.com/kiskoza
 [@yaorlov]: https://github.com/yaorlov
 [@swalkinshaw]: https://github.com/swalkinshaw
+[@adelnabiullin]: https://github.com/adelnabiullin

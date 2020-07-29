@@ -25,6 +25,7 @@ module RuboCop
       #
       class FieldHashKey < Cop
         include RuboCop::GraphQL::NodePattern
+        include RuboCop::Cop::RangeHelp
 
         def_node_matcher :hash_key_to_use, <<~PATTERN
           (def
@@ -47,6 +48,19 @@ module RuboCop
 
           if (suggested_hash_key_name = hash_key_to_use(method_definition))
             add_offense(node, message: message(suggested_hash_key_name))
+          end
+        end
+
+        def autocorrect(node)
+          lambda do |corrector|
+            field = RuboCop::GraphQL::Field.new(node)
+            method_definition = resolver_method_definition_for(field)
+            suggested_hash_key_name = hash_key_to_use(method_definition)
+
+            corrector.insert_after(node.loc.expression, ", hash_key: #{suggested_hash_key_name.inspect}")
+
+            range = range_with_surrounding_space(range: method_definition.loc.expression, side: :left)
+            corrector.remove(range)
           end
         end
 
