@@ -35,6 +35,11 @@ GraphQL/FieldDescription:
   VersionAdded: '0.80'
   Description: 'Ensures all fields have a description'
 
+GraphQL/FieldHashKey:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Checks :hash_key option is used for appropriate fields'
+
 GraphQL/FieldMethod:
   Enabled: true
   VersionAdded: '0.80'
