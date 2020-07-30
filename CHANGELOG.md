@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.4.0 (2020-07-30)
+
 - [PR#22](https://github.com/DmitryTsepelev/rubocop-graphql/pull/22) Add FieldHashKey cop with autocorrect ([@adelnabiullin][])
 
 ## 0.3.1 (2020-07-26)
