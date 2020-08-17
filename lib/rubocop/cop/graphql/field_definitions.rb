@@ -105,9 +105,9 @@ module RuboCop
         def group_field_declarations(corrector, node)
           field = RuboCop::GraphQL::Field.new(node)
 
-          first_field = field.schema_member.body.find { |node|
+          first_field = field.schema_member.body.find do |node|
             field_definition?(node) || field_definition_with_body?(node)
-          }
+          end
 
           source_to_insert = "\n" + indent(node) + node.source
           corrector.insert_after(first_field.loc.expression, source_to_insert)
@@ -124,11 +124,12 @@ module RuboCop
           method_definition = field.schema_member.find_method_definition(field.resolver_method_name)
           return unless method_definition
 
-          field_sibling_index = if field_definition_with_body?(field.parent)
-            field.parent.sibling_index
-          else
-            field.sibling_index
-          end
+          field_sibling_index =
+            if field_definition_with_body?(field.parent)
+              field.parent.sibling_index
+            else
+              field.sibling_index
+            end
 
           return if method_definition.sibling_index - field_sibling_index == 1
 
@@ -146,7 +147,9 @@ module RuboCop
           method_range = range_by_whole_lines(method_definition.loc.expression)
           corrector.insert_before(method_range, source_to_insert)
 
-          range_to_remove = range_with_surrounding_space(range: field_definition.loc.expression, side: :left)
+          range_to_remove = range_with_surrounding_space(
+            range: field_definition.loc.expression, side: :left
+          )
           corrector.remove(range_to_remove)
         end
 

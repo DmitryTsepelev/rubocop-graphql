@@ -7,10 +7,7 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
     RuboCop::Config.new(
       "GraphQL/FieldDefinitions" => {
         "EnforcedStyle" => enforced_style,
-        "SupportedStyles" => [
-          "group_definitions",
-          "define_resolver_after_definition"
-        ]
+        "SupportedStyles" => %w[group_definitions define_resolver_after_definition]
       }
     )
   end

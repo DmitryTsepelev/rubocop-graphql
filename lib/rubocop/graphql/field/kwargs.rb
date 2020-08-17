@@ -56,7 +56,8 @@ module RuboCop
         end
 
         def resolver_method_name
-          @resolver_method_name ||= @nodes.flat_map { |kwarg| resolver_method_option(kwarg) }.compact.first
+          @resolver_method_name ||=
+            @nodes.flat_map { |kwarg| resolver_method_option(kwarg) }.compact.first
         end
       end
     end

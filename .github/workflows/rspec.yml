@@ -20,7 +20,7 @@ jobs:
       matrix:
         ruby: [2.5, 2.6, 2.7]
         gemfile: [
-          "gemfiles/rubocop_0.71.0.gemfile",
+          "gemfiles/rubocop_0.87.0.gemfile",
           "gemfiles/rubocop_0.89.0.gemfile",
           "gemfiles/rubocop_edge.gemfile"
         ]
@@ -44,7 +44,6 @@ jobs:
       run: |
         bundle config path /home/runner/bundle
         bundle config --global gemfile ${{ matrix.gemfile }}
-        bundle config set without 'development'
         bundle install
         bundle update
     - name: Run RSpec

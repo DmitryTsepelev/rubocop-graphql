@@ -22,9 +22,11 @@ Gem::Specification.new do |spec|
   spec.files = `git ls-files -z config lib LICENSE.txt README.md`.split("\x0")
   spec.require_paths = ["lib"]
 
+  spec.required_ruby_version = ">= 2.4"
+
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "standard", "0.4.7"
+  spec.add_development_dependency "rspec", "~> 3.9"
 
-  spec.add_runtime_dependency "rubocop", "~> 0.73"
+  spec.add_runtime_dependency "rubocop", "~> 0.87"
 end

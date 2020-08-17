@@ -1,4 +1,3 @@
 source "https://rubygems.org" do
-  gem "standard", "0.4.7"
   gem "rubocop-md", "~> 0.3"
 end
