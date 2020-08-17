@@ -45,7 +45,8 @@ module RuboCop
 
         private
 
-        MSG = "Consider moving %<field_names>s to a new type and adding the `%<prefix>s` field instead"
+        MSG = "Consider moving %<field_names>s to a new type and " \
+              "adding the `%<prefix>s` field instead"
 
         def check_fields_prefixes(body)
           sorted_prefixes = fractured(body).sort_by { |k, _| k.size }.reverse

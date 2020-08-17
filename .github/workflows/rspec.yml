@@ -2,9 +2,11 @@ name: RSpec
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master support-0.83.1 ]
   pull_request:
     branches: [ master ]
+  schedule:
+    - cron: "0 10 * * *"
 
 jobs:
   rspec:
@@ -17,10 +19,15 @@ jobs:
       fail-fast: false
       matrix:
         ruby: [2.5, 2.6, 2.7]
+        gemfile: [
+          "gemfiles/rubocop_0.87.0.gemfile",
+          "gemfiles/rubocop_0.89.0.gemfile",
+          "gemfiles/rubocop_edge.gemfile"
+        ]
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/cache@v1
+    - uses: actions/cache@v2
       with:
         path: /home/runner/bundle
         key: bundle-${{ matrix.ruby }}-${{ matrix.gemfile }}-${{ hashFiles(matrix.gemfile) }}-${{ hashFiles('**/*.gemspec') }}

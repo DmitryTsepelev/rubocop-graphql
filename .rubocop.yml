@@ -1,9 +1,40 @@
-require:
-  - standard/cop/semantic_blocks
+AllCops:
+  TargetRubyVersion: 2.4
 
-inherit_gem:
-  standard: config/base.yml
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 100
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Lint/ShadowingOuterLocalVariable:
+  Enabled: false
 
 Naming/FileName:
  Exclude:
    - lib/rubocop-graphql.rb
+
+Naming/PredicateName:
+  Enabled: false

@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#24](https://github.com/DmitryTsepelev/rubocop-graphql/pull/24) Support rubocop 0.89, remove standard ([@DmitryTsepelev][])
+
 ## 0.4.0 (2020-07-30)
 
 - [PR#22](https://github.com/DmitryTsepelev/rubocop-graphql/pull/22) Add FieldHashKey cop with autocorrect ([@adelnabiullin][])

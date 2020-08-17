@@ -3,7 +3,8 @@
 module RuboCop
   module Cop
     module GraphQL
-      #  This cop checks if a type (object, input, interface, scalar, union, mutation, subscription, and resolver) has a description.
+      #  This cop checks if a type (object, input, interface, scalar, union,
+      #  mutation, subscription, and resolver) has a description.
       #
       # @example
       #   # good
@@ -45,7 +46,9 @@ module RuboCop
         def on_module(node)
           return if child_nodes(node).none? { |child_node| interface?(child_node) }
 
-          add_offense(node.identifier) if child_nodes(node).none? { |child_node| has_description?(child_node) }
+          if child_nodes(node).none? { |child_node| has_description?(child_node) }
+            add_offense(node.identifier)
+          end
         end
 
         private

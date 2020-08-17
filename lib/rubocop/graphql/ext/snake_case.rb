@@ -4,7 +4,7 @@ module RuboCop
   module GraphQL
     module Ext
       module SnakeCase
-        SNAKE_CASE = /^[\da-z_]+[!?=]?$/
+        SNAKE_CASE = /^[\da-z_]+[!?=]?$/.freeze
 
         refine Symbol do
           def snake_case?

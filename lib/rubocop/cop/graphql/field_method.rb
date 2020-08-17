@@ -58,7 +58,9 @@ module RuboCop
 
             corrector.insert_after(node.loc.expression, ", method: :#{suggested_method_name}")
 
-            range = range_with_surrounding_space(range: method_definition.loc.expression, side: :left)
+            range = range_with_surrounding_space(
+              range: method_definition.loc.expression, side: :left
+            )
             corrector.remove(range)
           end
         end

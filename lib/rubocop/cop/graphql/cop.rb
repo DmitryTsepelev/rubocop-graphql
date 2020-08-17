@@ -12,8 +12,7 @@ module RuboCop
       # class will invoke the inherited hook instead
       class << self
         undef inherited
-        def inherited(*)
-        end
+        def inherited(*); end
       end
 
       # Special case `Module#<` so that the rspec support rubocop exports
