@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.4.1 (2020-08-17)
+
 - [PR#24](https://github.com/DmitryTsepelev/rubocop-graphql/pull/24) Support rubocop 0.89, remove standard ([@DmitryTsepelev][])
 
 ## 0.4.0 (2020-07-30)

@@ -2,7 +2,7 @@ name: RSpec
 
 on:
   push:
-    branches: [ master support-0.83.1 ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
   schedule:
