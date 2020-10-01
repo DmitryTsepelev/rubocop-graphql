@@ -19,6 +19,20 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields do
     end
   end
 
+  context "when each individual groups are alphabetically sorted" do
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :birthdate, Int, null: true
+          field :name, Staring, null: true
+
+          field :email, String, null: true
+          field :phone, String, null: true
+        end
+      RUBY
+    end
+  end
+
   context "when fields are not alphabetically sorted" do
     it "registers an offense" do
       expect_offense(<<~RUBY)
@@ -40,6 +54,20 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields do
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `name` should appear before `phone`.
             argument :something, String, required: false
           end
+        end
+      RUBY
+    end
+  end
+
+  context "when a unordered field declaration take several lines" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        class UserType < BaseType
+          field :phone,
+                String,
+                null: true
+          field :name, Staring, null: true
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `name` should appear before `phone`.
         end
       RUBY
     end
