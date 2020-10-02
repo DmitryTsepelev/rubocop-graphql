@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.5.0 (2020-10-02)
+
 - [PR#25](https://github.com/DmitryTsepelev/rubocop-graphql/pull/25) Add OrderedFields cop ([@kiskoza][])
 
 ## 0.4.1 (2020-08-17)
