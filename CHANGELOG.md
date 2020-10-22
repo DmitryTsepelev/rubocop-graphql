@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#26](https://github.com/DmitryTsepelev/rubocop-graphql/pull/26) Support rubocop 1.0 ([@DmitryTsepelev][])
+
 ## 0.5.0 (2020-10-02)
 
 - [PR#25](https://github.com/DmitryTsepelev/rubocop-graphql/pull/25) Add OrderedFields cop ([@kiskoza][])
