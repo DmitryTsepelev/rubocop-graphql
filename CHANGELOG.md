@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.6.1 (2020-10-31 🎃)
+
 - [PR#27](https://github.com/DmitryTsepelev/rubocop-graphql/pull/27) Relax rubocop version ([@DmitryTsepelev][])
 
 ## 0.6.0 (2020-10-22)
