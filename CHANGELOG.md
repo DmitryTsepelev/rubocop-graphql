@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.6.2 (2021-03-03)
+
 - [PR#31](https://github.com/DmitryTsepelev/rubocop-graphql/pull/31) ObjectDescription cop handles multiline descriptions ([@DmitryTsepelev][])
 
 ## 0.6.1 (2020-10-31 🎃)
