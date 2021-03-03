@@ -32,7 +32,12 @@ module RuboCop
           if (body = schema_member.body)
             arguments = body.select { |node| argument?(node) }
 
-            add_offense(arguments.last) if arguments.count > cop_config["MaxArguments"]
+            excess_arguments = arguments.count - cop_config["MaxArguments"]
+            return unless excess_arguments.positive?
+
+            arguments.last(excess_arguments).each do |excess_argument|
+              add_offense(excess_argument)
+            end
           end
         end
       end
