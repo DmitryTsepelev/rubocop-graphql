@@ -33,6 +33,10 @@ module RuboCop
           (send nil? :description (:str $_))
         PATTERN
 
+        def_node_matcher :has_multiline_string_description?, <<~PATTERN
+          (send nil? :description (:dstr ...))
+        PATTERN
+
         def_node_matcher :interface?, <<~PATTERN
           (send nil? :include (const ...))
         PATTERN
@@ -54,7 +58,9 @@ module RuboCop
         private
 
         def has_description?(node)
-          has_i18n_description?(node) || has_string_description?(node)
+          has_i18n_description?(node) ||
+            has_string_description?(node) ||
+            has_multiline_string_description?(node)
         end
 
         def child_nodes(node)

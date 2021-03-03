@@ -6,7 +6,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   let(:config) { RuboCop::Config.new }
 
   context "when object" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           class Types::UserType < Types::BaseObject
@@ -14,9 +14,32 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           end
         RUBY
       end
+
+      context "when description is multiline" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::UserType < Types::BaseObject
+              description "Represents application " \
+                          "user"
+            end
+          RUBY
+        end
+      end
+
+      context "when description is heredoc" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::UserType < Types::BaseObject
+              description <<~MSG
+                Represents application user
+              MSG
+            end
+          RUBY
+        end
+      end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class Types::UserType < Types::BaseObject
@@ -28,7 +51,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   end
 
   context "when mutation" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           class Mutations::User::Create < Mutations::BaseMutation
@@ -36,9 +59,32 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           end
         RUBY
       end
+
+      context "when description is multiline" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Mutations::User::Create < Mutations::BaseMutation
+              description "Creates a " \
+                          "user"
+            end
+          RUBY
+        end
+      end
+
+      context "when description is heredoc" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Mutations::User::Create < Mutations::BaseMutation
+              description <<~MSG
+                Creates a user
+              MSG
+            end
+          RUBY
+        end
+      end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class Mutations::User::Create < Mutations::BaseMutation
@@ -50,7 +96,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   end
 
   context "when subscription" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           class Subscriptions::MessageWasPosted < Subscriptions::BaseSubscription
@@ -58,9 +104,32 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           end
         RUBY
       end
+
+      context "when description is multiline" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Subscriptions::MessageWasPosted < Subscriptions::BaseSubscription
+              description "Subscribes to " \
+                          "messages"
+            end
+          RUBY
+        end
+      end
+
+      context "when description is heredoc" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Subscriptions::MessageWasPosted < Subscriptions::BaseSubscription
+              description <<~MSG
+                Subscribes to messages
+              MSG
+            end
+          RUBY
+        end
+      end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class Subscriptions::MessageWasPosted < Subscriptions::BaseSubscription
@@ -72,7 +141,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   end
 
   context "when resolver" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           class Resolvers::User < Resolvers::Base
@@ -80,9 +149,32 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           end
         RUBY
       end
+
+      context "when description is multiline" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Resolvers::User < Resolvers::Base
+              description "Returns the " \
+                          "user"
+            end
+          RUBY
+        end
+      end
+
+      context "when description is heredoc" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Resolvers::User < Resolvers::Base
+              description <<~MSG
+                Returns the user
+              MSG
+            end
+          RUBY
+        end
+      end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class Resolvers::User < Resolvers::Base
@@ -94,7 +186,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   end
 
   context "when input" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           class Types::User::CreateInput < Types::BaseInputObject
@@ -102,9 +194,32 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           end
         RUBY
       end
+
+      context "when description is multiline" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::User::CreateInput < Types::BaseInputObject
+              description "Attributes for creating a " \
+                          "user"
+            end
+          RUBY
+        end
+      end
+
+      context "when description is heredoc" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::User::CreateInput < Types::BaseInputObject
+              description <<~MSG
+                Attributes for creating a user
+              MSG
+            end
+          RUBY
+        end
+      end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class Types::User::CreateInput < Types::BaseInputObject
@@ -116,7 +231,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   end
 
   context "when interface" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           module Types::NodeInterface
@@ -125,9 +240,34 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           end
         RUBY
       end
+
+      context "when description is multiline" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            module Types::NodeInterface
+              include Types::BaseInterface
+              description "An object with an " \
+                          "ID"
+            end
+          RUBY
+        end
+      end
+
+      context "when description is heredoc" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            module Types::NodeInterface
+              include Types::BaseInterface
+              description <<~MSG
+                An object with an ID
+              MSG
+            end
+          RUBY
+        end
+      end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           module Types::NodeInterface
@@ -140,7 +280,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   end
 
   context "when scalar" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           class Types::Money < Types::BaseScalar
@@ -148,9 +288,32 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           end
         RUBY
       end
+
+      context "when description is multiline" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::Money < Types::BaseScalar
+              description "A monetary value " \
+                          "number"
+            end
+          RUBY
+        end
+      end
+
+      context "when description is heredoc" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::Money < Types::BaseScalar
+              description <<~MSG
+                A monetary value number
+              MSG
+            end
+          RUBY
+        end
+      end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class Types::Money < Types::BaseScalar
@@ -162,7 +325,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   end
 
   context "when union" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           class Types::CommentSubject < Types::BaseUnion
@@ -170,9 +333,32 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           end
         RUBY
       end
+
+      context "when description is multiline" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::CommentSubject < Types::BaseUnion
+              description "Objects which may be commented " \
+                          "on"
+            end
+          RUBY
+        end
+      end
+
+      context "when description is heredoc" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::Money < Types::BaseScalar
+              description <<~MSG
+              Objects which may be commented on
+              MSG
+            end
+          RUBY
+        end
+      end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class Types::CommentSubject < Types::BaseUnion
@@ -184,7 +370,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   end
 
   context "when namespaced" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           module Types
@@ -198,7 +384,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
       end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           module Types
@@ -214,7 +400,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
   end
 
   context "when with fields" do
-    context "when with description" do
+    context "when description is filled" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)
           class Types::UserType < Types::BaseObject
@@ -228,7 +414,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
       end
     end
 
-    context "when without description" do
+    context "when description is not filled" do
       it "registers an offense" do
         expect_offense(<<~RUBY)
           class Types::UserType < Types::BaseObject
