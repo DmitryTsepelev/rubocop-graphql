@@ -109,7 +109,7 @@ module RuboCop
             field_definition?(node) || field_definition_with_body?(node)
           end
 
-          source_to_insert = "\n" + indent(node) + node.source
+          source_to_insert = "\n#{indent(node)}#{node.source}"
           corrector.insert_after(first_field.loc.expression, source_to_insert)
 
           range = range_with_surrounding_space(range: node.loc.expression, side: :left)
@@ -143,7 +143,7 @@ module RuboCop
 
           field_definition = field_definition_with_body?(node.parent) ? node.parent : node
 
-          source_to_insert = indent(method_definition) + field_definition.source + "\n\n"
+          source_to_insert = "#{indent(method_definition)}#{field_definition.source}\n\n"
           method_range = range_by_whole_lines(method_definition.loc.expression)
           corrector.insert_before(method_range, source_to_insert)
 

@@ -12,7 +12,7 @@ module RuboCop
       # class will invoke the inherited hook instead
       class << self
         undef inherited
-        def inherited(*); end
+        def inherited(*); end # rubocop:disable Lint/MissingSuper
       end
 
       # Special case `Module#<` so that the rspec support rubocop exports
@@ -47,7 +47,7 @@ module RuboCop
         )
 
         # Invoke the original inherited hook so our cops are recognized
-        def self.inherited(subclass)
+        def self.inherited(subclass)  # rubocop:disable Lint/MissingSuper
           RuboCop::Cop::Cop.inherited(subclass)
         end
 
