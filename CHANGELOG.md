@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#34](https://github.com/DmitryTsepelev/rubocop-graphql/pull/34) Add OrderedArguments cop ([@kiskoza][])
+
 ## 0.6.2 (2021-03-03)
 
 - [PR#31](https://github.com/DmitryTsepelev/rubocop-graphql/pull/31) ObjectDescription cop handles multiline descriptions ([@DmitryTsepelev][])
