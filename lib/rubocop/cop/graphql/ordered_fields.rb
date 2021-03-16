@@ -47,6 +47,19 @@ module RuboCop
             end
         end
 
+        def autocorrect(node)
+          declarations = field_declarations(processed_source.ast)
+          node_index = declarations.map(&:location).find_index(node.location)
+          previous_declaration = declarations.to_a[node_index - 1]
+
+          current_range = declaration(node)
+          previous_range = declaration(previous_declaration)
+
+          lambda do |corrector|
+            swap_range(corrector, current_range, previous_range)
+          end
+        end
+
         private
 
         def register_offense(previous, current)
@@ -68,6 +81,21 @@ module RuboCop
 
         def consecutive_lines(previous, current)
           previous.source_range.last_line == current.source_range.first_line - 1
+        end
+
+        def declaration(node)
+          buffer = processed_source.buffer
+          begin_pos = node.source_range.begin_pos
+          end_line = buffer.line_for_position(node.loc.expression.end_pos)
+          end_pos = buffer.line_range(end_line).end_pos
+          Parser::Source::Range.new(buffer, begin_pos, end_pos)
+        end
+
+        def swap_range(corrector, range1, range2)
+          src1 = range1.source
+          src2 = range2.source
+          corrector.replace(range1, src2)
+          corrector.replace(range2, src1)
         end
 
         def_node_search :field_declarations, <<~PATTERN
