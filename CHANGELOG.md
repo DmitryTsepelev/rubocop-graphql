@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.0 (2021-03-17)
+
 - [PR#34](https://github.com/DmitryTsepelev/rubocop-graphql/pull/34) Add OrderedArguments cop ([@kiskoza][])
 - [PR#33](https://github.com/DmitryTsepelev/rubocop-graphql/pull/33) Add autocorrect for OrderedFields cop ([@kiskoza][])
 
