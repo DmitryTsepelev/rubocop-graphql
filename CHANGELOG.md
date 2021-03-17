@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#33](https://github.com/DmitryTsepelev/rubocop-graphql/pull/33) Add autocorrect for OrderedFields cop ([@kiskoza][])
+
 ## 0.6.2 (2021-03-03)
 
 - [PR#31](https://github.com/DmitryTsepelev/rubocop-graphql/pull/31) ObjectDescription cop handles multiline descriptions ([@DmitryTsepelev][])

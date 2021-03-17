@@ -42,6 +42,13 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields do
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `name` should appear before `phone`.
         end
       RUBY
+
+      expect_correction(<<~RUBY)
+        class UserType < BaseType
+          field :name, String, null: true
+          field :phone, String, null: true
+        end
+      RUBY
     end
   end
 
@@ -56,6 +63,15 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields do
           end
         end
       RUBY
+
+      expect_correction(<<~RUBY)
+        class UserType < BaseType
+          field :name, String, null: true do
+            argument :something, String, required: false
+          end
+          field :phone, String, null: true
+        end
+      RUBY
     end
   end
 
@@ -66,8 +82,17 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields do
           field :phone,
                 String,
                 null: true
-          field :name, Staring, null: true
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `name` should appear before `phone`.
+          field :name, String, null: true
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `name` should appear before `phone`.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class UserType < BaseType
+          field :name, String, null: true
+          field :phone,
+                String,
+                null: true
         end
       RUBY
     end
