@@ -7,6 +7,7 @@ require_relative "rubocop/graphql/ext/snake_case"
 require_relative "rubocop/graphql"
 require_relative "rubocop/graphql/version"
 require_relative "rubocop/graphql/inject"
+require_relative "rubocop/graphql/description_method"
 require_relative "rubocop/graphql/node_pattern"
 
 require_relative "rubocop/graphql/argument"

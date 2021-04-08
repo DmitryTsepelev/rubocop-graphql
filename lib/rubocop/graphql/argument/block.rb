@@ -5,6 +5,7 @@ module RuboCop
     class Argument
       class Block
         extend RuboCop::NodePattern::Macros
+        include DescriptionMethod
 
         def_node_matcher :argument_block, <<~PATTERN
           (block
@@ -14,16 +15,12 @@ module RuboCop
           )
         PATTERN
 
-        def_node_matcher :description_kwarg?, <<~PATTERN
-          (send nil? :description (str ...))
-        PATTERN
-
         def initialize(argument_node)
           @nodes = argument_block(argument_node) || []
         end
 
         def description
-          @nodes.find { |kwarg| description_kwarg?(kwarg) }
+          find_description_method(@nodes)
         end
       end
     end

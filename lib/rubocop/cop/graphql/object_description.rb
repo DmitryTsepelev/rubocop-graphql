@@ -22,19 +22,12 @@ module RuboCop
       #
       class ObjectDescription < Cop
         include RuboCop::GraphQL::NodePattern
+        include RuboCop::GraphQL::DescriptionMethod
 
         MSG = "Missing type description"
 
         def_node_matcher :has_i18n_description?, <<~PATTERN
           (send nil? :description (send (const nil? :I18n) :t ...))
-        PATTERN
-
-        def_node_matcher :has_string_description?, <<~PATTERN
-          (send nil? :description (:str $_))
-        PATTERN
-
-        def_node_matcher :has_multiline_string_description?, <<~PATTERN
-          (send nil? :description (:dstr ...))
         PATTERN
 
         def_node_matcher :interface?, <<~PATTERN
@@ -59,8 +52,7 @@ module RuboCop
 
         def has_description?(node)
           has_i18n_description?(node) ||
-            has_string_description?(node) ||
-            has_multiline_string_description?(node)
+            description_kwarg?(node)
         end
 
         def child_nodes(node)

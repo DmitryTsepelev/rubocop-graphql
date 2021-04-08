@@ -5,6 +5,7 @@ module RuboCop
     class Field
       class Block
         extend RuboCop::NodePattern::Macros
+        include DescriptionMethod
 
         def_node_matcher :field_block, <<~PATTERN
           (block
@@ -14,16 +15,12 @@ module RuboCop
           )
         PATTERN
 
-        def_node_matcher :description_kwarg?, <<~PATTERN
-          (send nil? :description (str ...))
-        PATTERN
-
         def initialize(field_node)
           @nodes = field_block(field_node) || []
         end
 
         def description
-          @nodes.find { |kwarg| description_kwarg?(kwarg) }
+          find_description_method(@nodes)
         end
       end
     end
