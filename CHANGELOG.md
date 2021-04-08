@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.8.0 (2021-03-17)
+
+- [PR#32](https://github.com/DmitryTsepelev/rubocop-graphql/pull/32) ExtractInputType: show all excess args in offense ([@bessey][])
+
 ## 0.7.0 (2021-03-17)
 
 - [PR#34](https://github.com/DmitryTsepelev/rubocop-graphql/pull/34) Add OrderedArguments cop ([@kiskoza][])
@@ -72,3 +76,4 @@
 [@yaorlov]: https://github.com/yaorlov
 [@swalkinshaw]: https://github.com/swalkinshaw
 [@adelnabiullin]: https://github.com/adelnabiullin
+[@bessey]: https://github.com/bessey
