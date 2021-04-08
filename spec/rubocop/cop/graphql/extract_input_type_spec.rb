@@ -34,12 +34,13 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractInputType do
   end
 
   context "when count of fields is more than Max fields" do
-    it "registers an offense" do
+    it "registers an offense for each line over Max fields" do
       expect_offense(<<~RUBY)
         class UpdateUser < BaseMutation
           argument :uuid, ID, required: true
           argument :first_name, String, required: true
           argument :last_name, String, required: true
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Consider moving arguments to a new input type
           argument :email, String, required: true
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Consider moving arguments to a new input type
         end
