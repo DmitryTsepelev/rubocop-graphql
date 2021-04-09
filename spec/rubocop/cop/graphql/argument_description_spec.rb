@@ -85,6 +85,58 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentDescription do
       end
     end
 
+    context "when description is passed inside block as a single line heredoc" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class User < BaseType
+            field :avatar_url, String do
+              argument :size, Integer, required: true do
+                description <<~EOT
+                  Size of avatar
+                EOT
+              end
+            end
+          end
+        RUBY
+      end
+    end
+
+    context "when description is passed inside block as a multiline heredoc" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class User < BaseType
+            field :avatar_url, String do
+              argument :size, Integer, required: true do
+                description <<~EOT
+                  Size
+                  of
+                  avatar
+                EOT
+              end
+            end
+          end
+        RUBY
+      end
+    end
+
+    context "when description is passed inside block as a processed multiline heredoc" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class User < BaseType
+            field :avatar_url, String do
+              argument :size, Integer, required: true do
+                description <<-EOT.strip
+                  Size
+                  of
+                  avatar
+                EOT
+              end
+            end
+          end
+        RUBY
+      end
+    end
+
     it "registers an offense" do
       expect_offense(<<~RUBY)
         class User < BaseType

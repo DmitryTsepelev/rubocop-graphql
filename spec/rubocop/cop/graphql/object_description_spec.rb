@@ -26,11 +26,24 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
         end
       end
 
-      context "when description is heredoc" do
+      context "when description is multiline heredoc" do
         it "does not register an offense" do
           expect_no_offenses(<<~RUBY)
             class Types::UserType < Types::BaseObject
               description <<~MSG
+                Represents application
+                user
+              MSG
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a processed heredoc" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::UserType < Types::BaseObject
+              description <<-MSG.strip
                 Represents application user
               MSG
             end
