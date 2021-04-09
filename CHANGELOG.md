@@ -2,7 +2,11 @@
 
 ## master
 
-## 0.8.0 (2021-03-17)
+## 0.8.1 (2021-04-09)
+
+- [PR#35](https://github.com/DmitryTsepelev/rubocop-graphql/pull/35) Improve multiline description detection ([@bessey][])
+
+## 0.8.0 (2021-04-08)
 
 - [PR#32](https://github.com/DmitryTsepelev/rubocop-graphql/pull/32) ExtractInputType: show all excess args in offense ([@bessey][])
 
