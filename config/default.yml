@@ -1,7 +1,6 @@
-AllCops:
-  GraphQL:
-    Patterns:
-      - "(?:^|/)graphql/"
+GraphQL:
+  Include:
+    - "**/graphql/**/*"
 
 GraphQL/ArgumentDescription:
   Enabled: true
