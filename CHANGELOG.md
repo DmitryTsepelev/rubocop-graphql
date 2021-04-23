@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.8.2 (2021-04-23)
+
 - [PR#36](https://github.com/DmitryTsepelev/rubocop-graphql/pull/36) Remove hacks around base class, use built-in Include to filter files ([@DmitryTsepelev][])
 
 ## 0.8.1 (2021-04-09)
