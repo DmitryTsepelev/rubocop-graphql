@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "graphql/cop"
-
 require_relative "graphql/argument_description"
 require_relative "graphql/argument_name"
 require_relative "graphql/extract_input_type"
