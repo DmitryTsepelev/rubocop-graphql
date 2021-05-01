@@ -22,6 +22,7 @@ jobs:
         gemfile: [
           "gemfiles/rubocop_0.87.0.gemfile",
           "gemfiles/rubocop_0.89.0.gemfile",
+          "gemfiles/rubocop_1.0.gemfile",
           "gemfiles/rubocop_edge.gemfile"
         ]
 
