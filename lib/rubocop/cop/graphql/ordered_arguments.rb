@@ -48,15 +48,16 @@ module RuboCop
       #     end
       #   end
       #
-      class OrderedArguments < Cop
+      class OrderedArguments < Base
+        extend AutoCorrector
+
+        include RuboCop::GraphQL::SwapRange
+
         MSG = "Arguments should be sorted in an alphabetical order within their section. " \
               "Field `%<current>s` should appear before `%<previous>s`."
 
-        def investigate(processed_source)
-          return if processed_source.blank?
-
-          argument_declarations(processed_source.ast)
-            .each_cons(2) do |previous, current|
+        def on_class(node)
+          argument_declarations(node).each_cons(2) do |previous, current|
             next unless consecutive_lines(previous, current)
             next if argument_name(current) > argument_name(previous)
 
@@ -64,35 +65,7 @@ module RuboCop
           end
         end
 
-        def autocorrect(node)
-          declarations = argument_declarations(processed_source.ast)
-          node_index = declarations.map(&:location).find_index(node.location)
-          previous_declaration = declarations.to_a[node_index - 1]
-
-          current_range = declaration(node)
-          previous_range = declaration(previous_declaration)
-
-          lambda do |corrector|
-            swap_range(corrector, current_range, previous_range)
-          end
-        end
-
         private
-
-        def declaration(node)
-          buffer = processed_source.buffer
-          begin_pos = node.source_range.begin_pos
-          end_line = buffer.line_for_position(node.loc.expression.end_pos)
-          end_pos = buffer.line_range(end_line).end_pos
-          Parser::Source::Range.new(buffer, begin_pos, end_pos)
-        end
-
-        def swap_range(corrector, range1, range2)
-          src1 = range1.source
-          src2 = range2.source
-          corrector.replace(range1, src2)
-          corrector.replace(range2, src1)
-        end
 
         def register_offense(previous, current)
           message = format(
@@ -100,7 +73,10 @@ module RuboCop
             previous: argument_name(previous),
             current: argument_name(current)
           )
-          add_offense(current, message: message)
+
+          add_offense(current, message: message) do |corrector|
+            swap_range(corrector, current, previous)
+          end
         end
 
         def argument_name(node)

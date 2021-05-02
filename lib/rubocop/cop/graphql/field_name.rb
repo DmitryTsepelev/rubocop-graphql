@@ -18,7 +18,7 @@ module RuboCop
       #     field :firstName, String, null: true
       #   end
       #
-      class FieldName < Cop
+      class FieldName < Base
         include RuboCop::GraphQL::NodePattern
 
         using RuboCop::GraphQL::Ext::SnakeCase

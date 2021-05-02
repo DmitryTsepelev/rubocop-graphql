@@ -44,7 +44,8 @@ module RuboCop
       #       object.contact_data.last_name
       #     end
       #   end
-      class FieldDefinitions < Cop
+      class FieldDefinitions < Base
+        extend AutoCorrector
         include ConfigurableEnforcedStyle
         include RuboCop::GraphQL::NodePattern
         include RuboCop::Cop::RangeHelp
@@ -75,17 +76,6 @@ module RuboCop
           end
         end
 
-        def autocorrect(node)
-          lambda do |corrector|
-            case style
-            when :define_resolver_after_definition
-              place_resolver_after_definitions(corrector, node)
-            when :group_definitions
-              group_field_declarations(corrector, node)
-            end
-          end
-        end
-
         private
 
         GROUP_DEFS_MSG = "Group all field definitions together."
@@ -98,7 +88,9 @@ module RuboCop
           fields.each_with_index do |node, idx|
             next if node.sibling_index == first_field.sibling_index + idx
 
-            add_offense(node, message: GROUP_DEFS_MSG)
+            add_offense(node, message: GROUP_DEFS_MSG) do |corrector|
+              group_field_declarations(corrector, node)
+            end
           end
         end
 
@@ -133,7 +125,9 @@ module RuboCop
 
           return if method_definition.sibling_index - field_sibling_index == 1
 
-          add_offense(field.node, message: RESOLVER_AFTER_FIELD_MSG)
+          add_offense(field.node, message: RESOLVER_AFTER_FIELD_MSG) do |corrector|
+            place_resolver_after_definitions(corrector, field.node)
+          end
         end
 
         def place_resolver_after_definitions(corrector, node)

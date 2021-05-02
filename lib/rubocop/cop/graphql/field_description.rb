@@ -18,7 +18,7 @@ module RuboCop
       #     field :name, String, null: true
       #   end
       #
-      class FieldDescription < Cop
+      class FieldDescription < Base
         include RuboCop::GraphQL::NodePattern
 
         MSG = "Missing field description"

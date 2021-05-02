@@ -18,7 +18,7 @@ module RuboCop
       #     argument :userId, ID, required: true
       #   end
       #
-      class ArgumentName < Cop
+      class ArgumentName < Base
         include RuboCop::GraphQL::NodePattern
 
         using RuboCop::GraphQL::Ext::SnakeCase
