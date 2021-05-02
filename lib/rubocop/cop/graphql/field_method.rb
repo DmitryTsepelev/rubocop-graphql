@@ -23,7 +23,8 @@ module RuboCop
       #     end
       #   end
       #
-      class FieldMethod < Cop
+      class FieldMethod < Base
+        extend AutoCorrector
         include RuboCop::GraphQL::NodePattern
         include RuboCop::Cop::RangeHelp
 
@@ -46,22 +47,9 @@ module RuboCop
           method_definition = suggest_method_name_for(field)
 
           if (suggested_method_name = method_to_use(method_definition))
-            add_offense(node, message: message(suggested_method_name))
-          end
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
-            field = RuboCop::GraphQL::Field.new(node)
-            method_definition = suggest_method_name_for(field)
-            suggested_method_name = method_to_use(method_definition)
-
-            corrector.insert_after(node.loc.expression, ", method: :#{suggested_method_name}")
-
-            range = range_with_surrounding_space(
-              range: method_definition.loc.expression, side: :left
-            )
-            corrector.remove(range)
+            add_offense(node, message: message(suggested_method_name)) do |corrector|
+              autocorrect(corrector, node)
+            end
           end
         end
 
@@ -69,6 +57,19 @@ module RuboCop
 
         def message(method_name)
           format(MSG, method_name: method_name)
+        end
+
+        def autocorrect(corrector, node)
+          field = RuboCop::GraphQL::Field.new(node)
+          method_definition = suggest_method_name_for(field)
+          suggested_method_name = method_to_use(method_definition)
+
+          corrector.insert_after(node.loc.expression, ", method: :#{suggested_method_name}")
+
+          range = range_with_surrounding_space(
+            range: method_definition.loc.expression, side: :left
+          )
+          corrector.remove(range)
         end
 
         def suggest_method_name_for(field)

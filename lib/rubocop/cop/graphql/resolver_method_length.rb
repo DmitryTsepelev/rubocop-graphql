@@ -7,7 +7,7 @@ module RuboCop
       # Comment lines can optionally be ignored.
       #
       # The maximum allowed length is configurable using the Max option.
-      class ResolverMethodLength < Cop
+      class ResolverMethodLength < Base
         include RuboCop::Cop::ConfigurableMax
         include RuboCop::Cop::CodeLength
 

@@ -18,7 +18,7 @@ module RuboCop
       #     argument :uuid, ID, required: true
       #   end
       #
-      class ArgumentDescription < Cop
+      class ArgumentDescription < Base
         include RuboCop::GraphQL::NodePattern
 
         MSG = "Missing argument description"

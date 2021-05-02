@@ -30,33 +30,21 @@ module RuboCop
       #     field :name, String, null: true
       #   end
       #
-      class OrderedFields < Cop
+      class OrderedFields < Base
+        extend AutoCorrector
+
+        include RuboCop::GraphQL::SwapRange
+
         MSG = "Fields should be sorted in an alphabetical order within their "\
               "section. "\
               "Field `%<current>s` should appear before `%<previous>s`."
 
-        def investigate(processed_source)
-          return if processed_source.blank?
+        def on_class(node)
+          field_declarations(node).each_cons(2) do |previous, current|
+            next unless consecutive_lines(previous, current)
+            next if field_name(current) > field_name(previous)
 
-          field_declarations(processed_source.ast)
-            .each_cons(2) do |previous, current|
-              next unless consecutive_lines(previous, current)
-              next if field_name(current) > field_name(previous)
-
-              register_offense(previous, current)
-            end
-        end
-
-        def autocorrect(node)
-          declarations = field_declarations(processed_source.ast)
-          node_index = declarations.map(&:location).find_index(node.location)
-          previous_declaration = declarations.to_a[node_index - 1]
-
-          current_range = declaration(node)
-          previous_range = declaration(previous_declaration)
-
-          lambda do |corrector|
-            swap_range(corrector, current_range, previous_range)
+            register_offense(previous, current)
           end
         end
 
@@ -68,7 +56,10 @@ module RuboCop
             previous: field_name(previous),
             current: field_name(current)
           )
-          add_offense(current, message: message)
+
+          add_offense(current, message: message) do |corrector|
+            swap_range(corrector, current, previous)
+          end
         end
 
         def field_name(node)
@@ -81,21 +72,6 @@ module RuboCop
 
         def consecutive_lines(previous, current)
           previous.source_range.last_line == current.source_range.first_line - 1
-        end
-
-        def declaration(node)
-          buffer = processed_source.buffer
-          begin_pos = node.source_range.begin_pos
-          end_line = buffer.line_for_position(node.loc.expression.end_pos)
-          end_pos = buffer.line_range(end_line).end_pos
-          Parser::Source::Range.new(buffer, begin_pos, end_pos)
-        end
-
-        def swap_range(corrector, range1, range2)
-          src1 = range1.source
-          src2 = range2.source
-          corrector.replace(range1, src2)
-          corrector.replace(range2, src1)
         end
 
         def_node_search :field_declarations, <<~PATTERN
