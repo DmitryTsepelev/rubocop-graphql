@@ -24,7 +24,7 @@ module RuboCop
         end
 
         def description
-          @nodes.find { |kwarg| description_kwarg?(kwarg) }
+          @nodes&.find { |kwarg| description_kwarg?(kwarg) }
         end
       end
     end
