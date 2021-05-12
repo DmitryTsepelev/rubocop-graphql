@@ -148,4 +148,15 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentDescription do
       RUBY
     end
   end
+
+  context "when description is not passed in for legacy DSL define style" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        UserType = GraphQL::InputObjectType.define do
+          argument :id, ID
+          ^^^^^^^^^^^^^^^^ Missing argument description
+        end
+      RUBY
+    end
+  end
 end
