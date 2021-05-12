@@ -25,7 +25,7 @@ module RuboCop
       PATTERN
 
       def find_description_method(nodes)
-        nodes&.find { |kwarg| description_kwarg?(kwarg) }
+        nodes.find { |kwarg| description_kwarg?(kwarg) }
       end
     end
   end
