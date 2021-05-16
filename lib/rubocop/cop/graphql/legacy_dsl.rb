@@ -14,7 +14,7 @@ module RuboCop
         MSG = "Avoid using legacy based type-based definitions. Use class-based defintions instead."
 
         def on_send(node)
-          return unless legacy_dsl?(node)
+          add_offense(node) if legacy_dsl?(node)
         end
       end
     end

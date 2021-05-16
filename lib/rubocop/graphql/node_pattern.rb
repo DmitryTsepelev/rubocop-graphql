@@ -24,7 +24,7 @@ module RuboCop
         (block
           (send
             (const
-              (const nil :GraphQL) ...) :define)
+              (const nil? :GraphQL) ...) :define)
           (args) nil)
       PATTERN
 
