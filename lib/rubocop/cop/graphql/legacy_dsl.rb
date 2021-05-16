@@ -11,7 +11,7 @@ module RuboCop
       class LegacyDsl < Base
         include RuboCop::GraphQL::NodePattern
 
-        MSG = 'Avoid using legacy based type-based definitions. Use class-based defintions instead.'
+        MSG = "Avoid using legacy based type-based definitions. Use class-based defintions instead."
 
         def on_send(node)
           return unless legacy_dsl?(node)
