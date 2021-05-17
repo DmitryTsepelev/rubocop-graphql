@@ -1,15 +1,23 @@
 # frozen_string_literal: true
 
 module RuboCop
-  module GraphQL
+  module Cop
     # Matches the legacy DSL object behavior for GraphQL 1.8x and below
     # Example = GraphQL::ObjectType.define do
     #   ....
     #   ....
     # end
-    module Cop
+    module GraphQL
       class LegacyDsl < Base
-        include RuboCop::GraphQL::NodePattern
+        extend RuboCop::NodePattern::Macros
+
+        def_node_matcher :legacy_dsl?, <<~PATTERN
+          (block
+            (send
+              (const
+                (const nil? :GraphQL) ...) :define)
+            (args) nil)
+        PATTERN
 
         MSG = "Avoid using legacy based type-based definitions. Use class-based defintions instead."
 

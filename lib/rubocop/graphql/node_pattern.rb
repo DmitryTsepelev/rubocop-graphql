@@ -20,14 +20,6 @@ module RuboCop
         (send nil? :argument (:sym _) ...)
       PATTERN
 
-      def_node_matcher :legacy_dsl?, <<~PATTERN
-        (block
-          (send
-            (const
-              (const nil? :GraphQL) ...) :define)
-          (args) nil)
-      PATTERN
-
       def field?(node)
         field_definition?(node) || field_definition_with_body?(node)
       end
