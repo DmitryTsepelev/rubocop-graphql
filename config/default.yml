@@ -29,6 +29,11 @@ GraphQL/FieldDefinitions:
     - group_definitions
     - define_resolver_after_definition
 
+GraphQL/LegacyDsl:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Checks that types are defined with class-based API'
+
 GraphQL/FieldDescription:
   Enabled: true
   VersionAdded: '0.80'
