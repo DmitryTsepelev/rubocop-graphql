@@ -2,11 +2,22 @@
 
 module RuboCop
   module Cop
-    # Matches the legacy DSL object behavior for GraphQL 1.8x and below
-    # Example = GraphQL::ObjectType.define do
-    #   ....
-    #   ....
-    # end
+    # This cop checks whether type definitions are class-based or legacy.
+    #
+    # @example
+    #   # good
+    #
+    #   class Example < BaseType
+    #     ....
+    #   end
+    #
+    #   # bad
+    #
+    #   Example = GraphQL::ObjectType.define do
+    #     ....
+    #     ....
+    #   end
+    #
     module GraphQL
       class LegacyDsl < Base
         def_node_matcher :legacy_dsl?, <<~PATTERN
