@@ -21,9 +21,12 @@ module RuboCop
     module GraphQL
       class LegacyDsl < Base
         def_node_matcher :legacy_dsl?, <<~PATTERN
-          (send
-            (const
-              (const nil? :GraphQL) _) :define)
+          (block
+            (send
+              (const
+                (const nil? :GraphQL) _) :define)
+            ...
+          )
         PATTERN
 
         MSG = "Avoid using legacy based type-based definitions. Use class-based defintions instead."
@@ -31,7 +34,7 @@ module RuboCop
         def on_send(node)
           return unless node.parent.type == :block
 
-          add_offense(node) if legacy_dsl?(node)
+          add_offense(node.parent) if legacy_dsl?(node.parent)
         end
       end
     end

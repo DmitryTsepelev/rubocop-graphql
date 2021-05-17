@@ -9,7 +9,7 @@ RSpec.describe RuboCop::Cop::GraphQL::LegacyDsl do
     it "registers an offense" do
       expect_offense(<<~RUBY)
         User = GraphQL::Object.define do
-               ^^^^^^^^^^^^^^^^^^^^^^ Avoid using legacy based type-based definitions. Use class-based defintions instead.
+               ^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid using legacy based type-based definitions. Use class-based defintions instead.
                field :foo, type.String
         end
       RUBY
