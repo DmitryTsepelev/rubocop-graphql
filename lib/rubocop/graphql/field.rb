@@ -51,11 +51,11 @@ module RuboCop
       end
 
       def kwargs
-        @kwargs ||= Field::Kwargs.new(@node) || []
+        @kwargs ||= Field::Kwargs.new(@node)
       end
 
       def block
-        @block ||= Field::Block.new(@node.parent) || []
+        @block ||= Field::Block.new(@node.parent)
       end
 
       def schema_member

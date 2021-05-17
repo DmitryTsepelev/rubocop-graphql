@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'pry'
+
 module RuboCop
   module Cop
     # Matches the legacy DSL object behavior for GraphQL 1.8x and below

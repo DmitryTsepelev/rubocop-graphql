@@ -28,11 +28,11 @@ module RuboCop
       end
 
       def kwargs
-        @kwargs ||= Argument::Kwargs.new(@node) || []
+        @kwargs ||= Argument::Kwargs.new(@node)
       end
 
       def block
-        @block ||= Argument::Block.new(@node.parent) || []
+        @block ||= Argument::Block.new(@node.parent)
       end
     end
   end
