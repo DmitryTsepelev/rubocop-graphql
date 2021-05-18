@@ -2,6 +2,9 @@
 
 ## master
 
+## 0.9.0 (2021-05-18)
+
+- [PR#39](https://github.com/DmitryTsepelev/rubocop-graphql/pull/39) Implement Rubocop for detecting legacy DSL types ([@danielvdao][])
 - [PR#37](https://github.com/DmitryTsepelev/rubocop-graphql/pull/37) Use new Base for cops ([@DmitryTsepelev][])
 
 ## 0.8.2 (2021-04-23)
@@ -87,3 +90,4 @@
 [@swalkinshaw]: https://github.com/swalkinshaw
 [@adelnabiullin]: https://github.com/adelnabiullin
 [@bessey]: https://github.com/bessey
+[@danielvdao]: https://github.com/danielvdao
