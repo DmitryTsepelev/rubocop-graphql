@@ -20,7 +20,7 @@ module RuboCop
         PATTERN
 
         def initialize(argument_node)
-          @nodes = argument_kwargs(argument_node)
+          @nodes = argument_kwargs(argument_node) || []
         end
 
         def description

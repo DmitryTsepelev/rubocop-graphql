@@ -67,6 +67,11 @@ GraphQL/ExtractType:
     - min
     - max
 
+GraphQL/LegacyDsl:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Checks that types are defined with class-based API'
+
 GraphQL/ObjectDescription:
   Enabled: true
   VersionAdded: '0.80'
