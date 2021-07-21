@@ -45,6 +45,12 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldName do
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use snake_case for field names
         end
       RUBY
+
+      expect_correction(<<~RUBY)
+        class UserType < BaseType
+          field :first_name, String, null: true
+        end
+      RUBY
     end
   end
 end
