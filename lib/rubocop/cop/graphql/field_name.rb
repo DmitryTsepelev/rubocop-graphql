@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require_relative "../../../refinements/underscore_string"
+
+using UnderscoreString unless String.method_defined?(:underscore)
+
 module RuboCop
   module Cop
     module GraphQL
@@ -19,6 +23,7 @@ module RuboCop
       #   end
       #
       class FieldName < Base
+        extend AutoCorrector
         include RuboCop::GraphQL::NodePattern
 
         using RuboCop::GraphQL::Ext::SnakeCase
@@ -31,7 +36,17 @@ module RuboCop
           field = RuboCop::GraphQL::Field.new(node)
           return if field.name.snake_case?
 
-          add_offense(node)
+          add_offense(node) do |corrector|
+            rename_field_name(corrector, field, node)
+          end
+        end
+
+        private
+
+        def rename_field_name(corrector, field, node)
+          name_field = field.name.to_s
+          new_line = node.source.sub(name_field, name_field.underscore)
+          corrector.replace(node, new_line)
         end
       end
     end

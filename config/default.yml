@@ -48,6 +48,7 @@ GraphQL/FieldName:
   Enabled: true
   VersionAdded: '0.80'
   Description: 'This cop checks whether field names are snake_case'
+  SafeAutoCorrect: false
 
 GraphQL/ExtractInputType:
   Enabled: true
