@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.10.0 (2021-07-23)
+
+- [PR#40](https://github.com/DmitryTsepelev/rubocop-graphql/pull/40) Autocorrect field names ([@drapergeek][])
+
 ## 0.9.0 (2021-05-18)
 
 - [PR#39](https://github.com/DmitryTsepelev/rubocop-graphql/pull/39) Implement Rubocop for detecting legacy DSL types ([@danielvdao][])
@@ -91,3 +95,4 @@
 [@adelnabiullin]: https://github.com/adelnabiullin
 [@bessey]: https://github.com/bessey
 [@danielvdao]: https://github.com/danielvdao
+[@drapergeek]: https://github.com/drapergeek
