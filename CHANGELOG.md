@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.10.1 (2021-08-19)
+
+- [PR#44](https://github.com/DmitryTsepelev/rubocop-graphql/pull/44)  FieldHashKey only matches symbol or string keys ([@aaronfrary][])
+
 ## 0.10.0 (2021-07-23)
 
 - [PR#40](https://github.com/DmitryTsepelev/rubocop-graphql/pull/40) Autocorrect field names ([@drapergeek][])
@@ -96,3 +100,4 @@
 [@bessey]: https://github.com/bessey
 [@danielvdao]: https://github.com/danielvdao
 [@drapergeek]: https://github.com/drapergeek
+[@aaronfrary]: https://github.com/aaronfrary
