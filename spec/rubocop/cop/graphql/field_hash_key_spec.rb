@@ -65,6 +65,20 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldHashKey do
       end
     end
 
+    context "when hash key is an integer" do
+      it "does not register an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :phone, String, null: true
+
+            def phone
+              object[0]
+            end
+          end
+        RUBY
+      end
+    end
+
     context "when there are valid fields around" do
       it "registers an offense" do
         expect_offense(<<~RUBY)

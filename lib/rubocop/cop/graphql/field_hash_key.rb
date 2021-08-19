@@ -34,7 +34,7 @@ module RuboCop
             (args)
             (send
               (send nil? :object) :[]
-              (_type $_)
+              ({sym str} $_)
             )
           )
         PATTERN
