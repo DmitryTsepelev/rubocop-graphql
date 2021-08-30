@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.10.2 (2021-08-30)
+
 - [PR#45](https://github.com/DmitryTsepelev/rubocop-graphql/pull/45) Fix false-positive in FieldDescription when field has block with begin node ([@DmitryTsepelev][])
 
 ## 0.10.1 (2021-08-19)
