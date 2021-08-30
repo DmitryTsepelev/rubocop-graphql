@@ -35,6 +35,20 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDescription do
         end
       RUBY
     end
+
+    context "when block also contains something else" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true do
+              description "First name"
+
+              argument :capitalized, String, required: false
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   it "registers an offense" do

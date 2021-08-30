@@ -11,7 +11,7 @@ module RuboCop
           (block
             (send nil? :field ...)
             (args)
-            $...
+            {(begin $...)|$...}
           )
         PATTERN
 
