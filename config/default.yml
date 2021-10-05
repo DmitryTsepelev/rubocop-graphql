@@ -55,7 +55,9 @@ GraphQL/ExtractInputType:
   VersionAdded: '0.80'
   Description: 'Suggests using input type instead of many arguments'
   MaxArguments: 2
-
+  Exclude:
+      - 'app/graphql/types/**/*.rb'
+      
 GraphQL/ExtractType:
   Enabled: true
   VersionAdded: '0.80'
