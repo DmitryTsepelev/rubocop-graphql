@@ -80,3 +80,13 @@ GraphQL/ObjectDescription:
   Exclude:
     - '**/*_schema.rb'
     - '**/base_*.rb'
+
+GraphQL/OrderedArguments:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Arguments should be alphabetically sorted within groups'
+
+GraphQL/OrderedFields:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'Fields should be alphabetically sorted within groups'

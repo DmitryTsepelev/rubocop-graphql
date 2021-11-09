@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.10.3 (2021-1-09)
+
+- Add `GraphQL/OrderedFields` and `GraphQL/OrderedArguments` to `default.yml` ([@DmitryTsepelev][])
+
 ## 0.10.2 (2021-08-30)
 
 - [PR#45](https://github.com/DmitryTsepelev/rubocop-graphql/pull/45) Fix false-positive in FieldDescription when field has block with begin node ([@DmitryTsepelev][])

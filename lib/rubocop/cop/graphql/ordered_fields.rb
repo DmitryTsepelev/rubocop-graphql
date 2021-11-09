@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module GraphQL
-      # Field should be alphabetically sorted within groups.
+      # Fields should be alphabetically sorted within groups.
       #
       # @example
       #   # good

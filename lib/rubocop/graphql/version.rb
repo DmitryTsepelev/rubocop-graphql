@@ -1,5 +1,5 @@
 module RuboCop
   module GraphQL
-    VERSION = "0.10.2".freeze
+    VERSION = "0.10.3".freeze
   end
 end
