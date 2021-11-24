@@ -2,6 +2,7 @@
 
 require_relative "graphql/argument_description"
 require_relative "graphql/argument_name"
+require_relative "graphql/argument_uniqueness"
 require_relative "graphql/extract_input_type"
 require_relative "graphql/extract_type"
 require_relative "graphql/field_definitions"
