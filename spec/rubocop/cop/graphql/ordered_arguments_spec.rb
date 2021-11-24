@@ -16,6 +16,18 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedArguments do
     end
   end
 
+  context "when duplicate arguments are alphabetically sorted" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UpdateProfile < BaseMutation
+          argument :email, String, required: false
+          argument :name, String, required: false
+          argument :name, String, required: false
+        end
+      RUBY
+    end
+  end
+
   context "when each individual groups are alphabetically sorted" do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)
@@ -55,6 +67,30 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedArguments do
 
       expect_correction(<<~RUBY)
         class UpdateProfile < BaseMutation
+          argument :email, String, required: false
+          argument :name, String, required: false
+          argument :uuid, ID, required: true
+        end
+      RUBY
+    end
+  end
+
+  context "when duplicate arguments are not alphabetically sorted" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        class UpdateProfile < BaseMutation
+          argument :uuid, ID, required: true
+          argument :email, String, required: false
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `email` should appear before `uuid`.
+          argument :name, String, required: false
+          argument :email, String, required: false
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `email` should appear before `name`.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class UpdateProfile < BaseMutation
+          argument :email, String, required: false
           argument :email, String, required: false
           argument :name, String, required: false
           argument :uuid, ID, required: true
