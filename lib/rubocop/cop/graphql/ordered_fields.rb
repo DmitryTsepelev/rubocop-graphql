@@ -42,7 +42,7 @@ module RuboCop
         def on_class(node)
           field_declarations(node).each_cons(2) do |previous, current|
             next unless consecutive_lines(previous, current)
-            next if field_name(current) > field_name(previous)
+            next if field_name(current) >= field_name(previous)
 
             register_offense(previous, current)
           end
