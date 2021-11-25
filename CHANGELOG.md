@@ -2,7 +2,11 @@
 
 ## master
 
-## 0.10.3 (2021-1-09)
+## 0.11.0 (2021-11-25)
+
+- [PR#50](https://github.com/DmitryTsepelev/rubocop-graphql/pull/50) Implement `GraphQL/FieldUniqueness` and `GraphQL/ArgumentUniqueness` cops ([@justisb][])
+
+## 0.10.3 (2021-11-09)
 
 - Add `GraphQL/OrderedFields` and `GraphQL/OrderedArguments` to `default.yml` ([@DmitryTsepelev][])
 
@@ -109,3 +113,4 @@
 [@danielvdao]: https://github.com/danielvdao
 [@drapergeek]: https://github.com/drapergeek
 [@aaronfrary]: https://github.com/aaronfrary
+[@justisb]: https://github.com/justisb

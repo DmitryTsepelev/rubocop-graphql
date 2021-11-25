@@ -16,6 +16,21 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness do
     end
   end
 
+  context "when arguments are duplicated between field and root" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UpdateProfile < BaseMutation
+          argument :email, String, required: false
+          argument :name, String, required: false
+
+          field :photos, PhotoType do
+            argument :name, String, required: false
+          end
+        end
+      RUBY
+    end
+  end
+
   context "when arguments are duplicated across different field definitions" do
     it "does not register an offense" do
       expect_no_offenses(<<~RUBY)

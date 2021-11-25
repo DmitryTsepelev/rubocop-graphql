@@ -51,11 +51,7 @@ module RuboCop
 
         def register_offense(current)
           current_field_name = field_name(current)
-          field_name_message = if current_field_name
-                                 " in field `#{current_field_name}`"
-                               else
-                                 ""
-                               end
+          field_name_message = " in field `#{current_field_name}`" if current_field_name
 
           message = format(
             self.class::MSG,

@@ -12,6 +12,11 @@ GraphQL/ArgumentName:
   VersionAdded: '0.80'
   Description: 'This cop checks whether argument names are snake_case'
 
+GraphQL/ArgumentUniqueness:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'This cop enforces arguments to be defined once per block'
+
 GraphQL/ResolverMethodLength:
   Enabled: true
   VersionAdded: '0.80'
@@ -49,6 +54,11 @@ GraphQL/FieldName:
   VersionAdded: '0.80'
   Description: 'This cop checks whether field names are snake_case'
   SafeAutoCorrect: false
+
+GraphQL/FieldUniqueness:
+  Enabled: true
+  VersionAdded: '0.80'
+  Description: 'This cop enforces fields to be defined once'
 
 GraphQL/ExtractInputType:
   Enabled: true
@@ -90,3 +100,5 @@ GraphQL/OrderedFields:
   Enabled: true
   VersionAdded: '0.80'
   Description: 'Fields should be alphabetically sorted within groups'
+
+
