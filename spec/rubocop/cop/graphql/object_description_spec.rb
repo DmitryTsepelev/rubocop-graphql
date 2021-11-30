@@ -50,6 +50,26 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           RUBY
         end
       end
+
+      context "when description is a constant" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::UserType < Types::BaseObject
+              description USER_TYPE_DESCRIPTION
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant hash" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::UserType < Types::BaseObject
+              description DESCRIPTION[:user_type]
+            end
+          RUBY
+        end
+      end
     end
 
     context "when description is not filled" do
@@ -91,6 +111,26 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
               description <<~MSG
                 Creates a user
               MSG
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Mutations::User::Create < Mutations::BaseMutation
+              description USER_CREATE_MUTATION_DESCRIPTION
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant hash" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Mutations::User::Create < Mutations::BaseMutation
+              description DESCRIPTION[:user_create_mutation]
             end
           RUBY
         end
@@ -140,6 +180,26 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           RUBY
         end
       end
+
+      context "when description is a constant" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Subscriptions::MessageWasPosted < Subscriptions::BaseSubscription
+              description MESSAGE_WAS_POSTED_DESCRIPTION
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant hash" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Subscriptions::MessageWasPosted < Subscriptions::BaseSubscription
+              description DESCRIPTION[:message_was_posted]
+            end
+          RUBY
+        end
+      end
     end
 
     context "when description is not filled" do
@@ -185,6 +245,26 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           RUBY
         end
       end
+
+      context "when description is a constant" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Resolvers::User < Resolvers::Base
+              description USER_RESOLVER_DESCRIPTION
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant hash" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Resolvers::User < Resolvers::Base
+              description DESCRIPTION[:user_resolver]
+            end
+          RUBY
+        end
+      end
     end
 
     context "when description is not filled" do
@@ -226,6 +306,26 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
               description <<~MSG
                 Attributes for creating a user
               MSG
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::User::CreateInput < Types::BaseInputObject
+              description USER_CREATE_INPUT_DESCRIPTION
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant hash" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::User::CreateInput < Types::BaseInputObject
+              description DESCRIPTION[:user_create_input]
             end
           RUBY
         end
@@ -278,6 +378,28 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           RUBY
         end
       end
+
+      context "when description is a constant" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            module Types::NodeInterface
+              include Types::BaseInterface
+              description NODE_INTERFACE_DESCRIPTION
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant hash" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            module Types::NodeInterface
+              include Types::BaseInterface
+              description DESCRIPTION[:base_interface]
+            end
+          RUBY
+        end
+      end
     end
 
     context "when description is not filled" do
@@ -324,6 +446,26 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
           RUBY
         end
       end
+
+      context "when description is a constant" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::Money < Types::BaseScalar
+              description MONEY_DESCRIPTION
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant hash" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::Money < Types::BaseScalar
+              description DESCRIPTION[:money]
+            end
+          RUBY
+        end
+      end
     end
 
     context "when description is not filled" do
@@ -365,6 +507,26 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription do
               description <<~MSG
               Objects which may be commented on
               MSG
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::CommentSubject < Types::BaseUnion
+              description COMMENT_SUBJECT_DESCRIPTION
+            end
+          RUBY
+        end
+      end
+
+      context "when description is a constant hash" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::CommentSubject < Types::BaseUnion
+              description DESCRIPTION[:comment_subject]
             end
           RUBY
         end
