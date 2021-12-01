@@ -21,7 +21,8 @@ module RuboCop
       extend RuboCop::NodePattern::Macros
 
       def_node_matcher :description_kwarg?, <<~PATTERN
-        (send nil? :description {({str|dstr} ...)|(send ({str|dstr} ...) _)})
+        (send nil? :description
+          {({str|dstr|const} ...)|(send const ...)|(send ({str|dstr} ...) _)})
       PATTERN
 
       def find_description_method(nodes)
