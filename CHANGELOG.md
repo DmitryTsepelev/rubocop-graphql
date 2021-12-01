@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.11.1 (2021-12-01)
+
+- [PR#52](https://github.com/DmitryTsepelev/rubocop-graphql/pull/52) Allow object description to be a constant ([@nevesenin][])
+
 ## 0.11.0 (2021-11-25)
 
 - [PR#50](https://github.com/DmitryTsepelev/rubocop-graphql/pull/50) Implement `GraphQL/FieldUniqueness` and `GraphQL/ArgumentUniqueness` cops ([@justisb][])
@@ -114,3 +118,4 @@
 [@drapergeek]: https://github.com/drapergeek
 [@aaronfrary]: https://github.com/aaronfrary
 [@justisb]: https://github.com/justisb
+[@nevesenin]: https://github.com/nevesenin
