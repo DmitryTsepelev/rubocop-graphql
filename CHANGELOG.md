@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#55](https://github.com/DmitryTsepelev/rubocop-graphql/pull/55) Exclude spec directories for all cops ([@DmitryTsepelev][])
+
 ## 0.11.1 (2021-12-01)
 
 - [PR#52](https://github.com/DmitryTsepelev/rubocop-graphql/pull/52) Allow object description to be a constant ([@nevesenin][])
