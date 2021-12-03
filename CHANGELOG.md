@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.11.2 (2021-12-03)
+
 - [PR#55](https://github.com/DmitryTsepelev/rubocop-graphql/pull/55) Exclude spec directories for all cops ([@DmitryTsepelev][])
 
 ## 0.11.1 (2021-12-01)
