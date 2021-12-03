@@ -1,6 +1,9 @@
 GraphQL:
   Include:
     - "**/graphql/**/*"
+  Exclude:
+    - "spec/**/*"
+    - "test/**/*"
 
 GraphQL/ArgumentDescription:
   Enabled: true
