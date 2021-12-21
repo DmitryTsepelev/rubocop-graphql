@@ -31,9 +31,13 @@ module RuboCop
               "Field `%<current>s` is duplicated."
 
         def on_class(node)
-          field_names = Set.new
+          return if nested_class?(node)
+
+          field_names_by_class = Hash.new { |h, k| h[k] = Set.new }
 
           field_declarations(node).each do |current|
+            current_class = current_class_name(current)
+            field_names = field_names_by_class[current_class]
             current_field_name = field_name(current)
 
             unless field_names.include?(current_field_name)
@@ -47,6 +51,10 @@ module RuboCop
 
         private
 
+        def nested_class?(node)
+          node.each_ancestor(:class).any?
+        end
+
         def register_offense(current)
           message = format(
             self.class::MSG,
@@ -58,6 +66,10 @@ module RuboCop
 
         def field_name(node)
           node.first_argument.value.to_s
+        end
+
+        def current_class_name(node)
+          node.each_ancestor(:class).first.defined_module_name
         end
 
         def_node_search :field_declarations, <<~PATTERN
