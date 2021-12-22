@@ -64,4 +64,40 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldUniqueness do
       RUBY
     end
   end
+
+  context "when duplicated field name belongs to a nested class" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          class UserPhone < BaseType
+            field :phone, String
+            field :ext, String, null: true
+          end
+
+          field :name, String, null: true
+          field :phone, UserPhone, null: true
+        end
+      RUBY
+    end
+  end
+
+  context "when fields are duplicated in both root and nested classes" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        class ParentType < BaseType
+          class ChildType < BaseType
+            field :name, String, null: true
+            field :name, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Field names should only be defined once per type. Field `name` is duplicated.
+
+          end
+
+          field :name, String
+          field :child, ChildType
+          field :child, ChildType
+          ^^^^^^^^^^^^^^^^^^^^^^^ Field names should only be defined once per type. Field `child` is duplicated.
+        end
+      RUBY
+    end
+  end
 end
