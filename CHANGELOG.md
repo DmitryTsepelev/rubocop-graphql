@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.11.3 (2021-12-22)
+
+- [PR#57](https://github.com/DmitryTsepelev/rubocop-graphql/pull/55) [FieldUniqueness] Do not consider nested class fields as violations ([@nvasilevski][])
+
 ## 0.11.2 (2021-12-03)
 
 - [PR#55](https://github.com/DmitryTsepelev/rubocop-graphql/pull/55) Exclude spec directories for all cops ([@DmitryTsepelev][])
@@ -123,3 +127,4 @@
 [@aaronfrary]: https://github.com/aaronfrary
 [@justisb]: https://github.com/justisb
 [@nevesenin]: https://github.com/nevesenin
+[@nvasilevski]: https://github.com/nvasilevski
