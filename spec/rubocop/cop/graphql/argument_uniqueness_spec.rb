@@ -91,4 +91,49 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness do
       RUBY
     end
   end
+
+  context "when duplicated field names belong to different nested classes" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        class RootMutationClass < BaseMutation
+          argument :test_argument, String, required: false
+
+          field :test_field, TestType do
+            argument :test_argument, String, required: false
+          end
+
+          class NestedInputType < TestType
+            argument :test_argument, String, required: false
+
+            field :test_field, TestType do
+              argument :test_argument, String, required: false
+            end
+          end
+        end
+      RUBY
+    end
+
+    context "when duplicated field names belong to a nested class" do
+      it "registers an offence" do
+        expect_offense(<<~RUBY)
+          class RootMutationClass < BaseMutation
+            argument :unique_argument, NestedInputType, required: false
+
+            class NestedInputType < TestType
+              argument :test_argument, String, required: false
+              argument :test_argument, String, required: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Argument names should only be defined once per block. Argument `test_argument` is duplicated.
+
+              field :test_field, TestType do
+                argument :field_arg, String, required: false
+                argument :field_arg, String, required: false
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Argument names should only be defined once per block. Argument `field_arg` is duplicated in field `test_field`.
+
+              end
+            end
+          end
+        RUBY
+      end
+    end
+  end
 end

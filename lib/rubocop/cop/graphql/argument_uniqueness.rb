@@ -24,19 +24,25 @@ module RuboCop
               "Argument `%<current>s` is duplicated%<field_name>s."
 
         def on_class(node)
-          global_argument_names = Set.new
-          argument_names_by_field = {}
+          return if nested_class?(node)
+
+          # { "MyClassName" => { "test_field" => <Set: {"field_arg_name"}> } }
+          argument_names_by_field_by_class = Hash.new do |h, k|
+            h[k] = Hash.new do |h1, k1|
+              h1[k1] = Set.new
+            end
+          end
 
           argument_declarations(node).each do |current|
             current_field_name = field_name(current)
             current_argument_name = argument_name(current)
+            class_name = current_class_name(current)
 
-            if current_field_name
-              argument_names_by_field[current_field_name] ||= Set.new
-              argument_names = argument_names_by_field[current_field_name]
-            else
-              argument_names = global_argument_names
-            end
+            argument_names = if current_field_name
+                               argument_names_by_field_by_class[class_name][current_field_name]
+                             else
+                               argument_names_by_field_by_class[class_name][:root]
+                             end
 
             unless argument_names.include?(current_argument_name)
               argument_names.add(current_argument_name)
@@ -48,6 +54,14 @@ module RuboCop
         end
 
         private
+
+        def current_class_name(node)
+          node.each_ancestor(:class).first.defined_module_name
+        end
+
+        def nested_class?(node)
+          node.each_ancestor(:class).any?
+        end
 
         def register_offense(current)
           current_field_name = field_name(current)
