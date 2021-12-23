@@ -1,4 +1,5 @@
 GraphQL:
+  Enabled: true
   Include:
     - "**/graphql/**/*"
   Exclude:
