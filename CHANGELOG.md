@@ -2,9 +2,11 @@
 
 ## master
 
+- [PR#60](https://github.com/DmitryTsepelev/rubocop-graphql/pull/60) [ArgumentUniqueness] Scope argument definitions per class name ([@nvasilevski][])
+
 ## 0.11.3 (2021-12-22)
 
-- [PR#57](https://github.com/DmitryTsepelev/rubocop-graphql/pull/55) [FieldUniqueness] Do not consider nested class fields as violations ([@nvasilevski][])
+- [PR#57](https://github.com/DmitryTsepelev/rubocop-graphql/pull/57) [FieldUniqueness] Do not consider nested class fields as violations ([@nvasilevski][])
 
 ## 0.11.2 (2021-12-03)
 
