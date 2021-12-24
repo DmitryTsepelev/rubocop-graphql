@@ -80,6 +80,31 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
     end
   end
 
+  context "when not all args are used, but some args declared twice" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        class SomeResolver < Resolvers::Base
+          argument :arg1, String, required: true
+          argument :arg2, String, required: true
+          argument :arg2, String, required: true
+
+          def resolve(arg1:); end
+          ^^^^^^^^^^^^^^^^^^^^^^^ Argument `arg2:` should be listed in the resolve signature.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class SomeResolver < Resolvers::Base
+          argument :arg1, String, required: true
+          argument :arg2, String, required: true
+          argument :arg2, String, required: true
+
+          def resolve(arg1:, arg2:); end
+        end
+      RUBY
+    end
+  end
+
   context "when args are not used at all" do
     it "registers an offense" do
       expect_offense(<<~RUBY)
