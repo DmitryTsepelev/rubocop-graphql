@@ -68,10 +68,14 @@ module RuboCop
           return if resolve_method_node.arguments.any?(&:arg_type?)
           return if resolve_method_node.arguments.any?(&:kwrestarg_type?)
 
-          declared_args_nodes = argument_declarations(node)
-          return unless declared_args_nodes.any?
+          declared_arg_nodes = argument_declarations(node)
+          return unless declared_arg_nodes.any?
 
-          unresolved_args = find_unresolved_args(resolve_method_node, declared_args_nodes)
+          declared_args = declared_arg_nodes.map do |declared_arg_node|
+            RuboCop::GraphQL::Argument.new(declared_arg_node)
+          end
+
+          unresolved_args = find_unresolved_args(resolve_method_node, declared_args)
           if unresolved_args.any?
             register_offense(resolve_method_node, unresolved_args)
           end
@@ -86,11 +90,9 @@ module RuboCop
           resolve_method_nodes.to_a.last
         end
 
-        def find_unresolved_args(actual_resolve_method_node, declared_args_nodes)
+        def find_unresolved_args(actual_resolve_method_node, declared_args)
           resolve_method_kwargs = actual_resolve_method_node.arguments.select(&:kwarg_type?).map(&:name).to_set
-          declared_args = declared_args_nodes.map(&:first_argument).map(&:value)
-
-          declared_args.select { |declared_arg| !resolve_method_kwargs.include?(declared_arg) }
+          declared_args.map(&:name).select { |declared_arg| !resolve_method_kwargs.include?(declared_arg) }
         end
 
         def register_offense(node, unresolved_args)
