@@ -91,7 +91,7 @@ module RuboCop
 
         def find_unresolved_args(actual_resolve_method_node, declared_args)
           resolve_method_kwargs = actual_resolve_method_node.arguments.select(&:kwarg_type?).map(&:name).to_set
-          declared_args.map(&:name).uniq.select { |declared_arg| !resolve_method_kwargs.include?(declared_arg) }
+          declared_args.map(&:name).uniq.reject { |declared_arg| resolve_method_kwargs.include?(declared_arg) }
         end
 
         def register_offense(node, unresolved_args)
