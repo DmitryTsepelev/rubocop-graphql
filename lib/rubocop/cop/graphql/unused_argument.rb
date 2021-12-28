@@ -84,7 +84,7 @@ module RuboCop
 
         def find_resolve_method_node(node)
           resolve_method_nodes = resolve_method_definition(node)
-          return unless resolve_method_nodes.any?
+          return if resolve_method_nodes.empty?
 
           resolve_method_nodes.to_a.last
         end
