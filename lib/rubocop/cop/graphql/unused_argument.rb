@@ -64,9 +64,8 @@ module RuboCop
 
         def on_class(node)
           resolve_method_node = find_resolve_method_node(node)
-          return if resolve_method_node.nil?
-          return if resolve_method_node.arguments.any?(&:arg_type?)
-          return if resolve_method_node.arguments.any?(&:kwrestarg_type?)
+          return if resolve_method_node.nil? ||
+                        resolve_method_node.arguments.any? { |arg| arg.arg_type? || arg.kwrestarg_type? }
 
           declared_arg_nodes = argument_declarations(node)
           return unless declared_arg_nodes.any?
