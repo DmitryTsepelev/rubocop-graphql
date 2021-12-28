@@ -90,7 +90,7 @@ module RuboCop
         end
 
         def find_unresolved_args(actual_resolve_method_node, declared_args)
-          resolve_method_kwargs = actual_resolve_method_node.arguments.select(&:kwarg_type?).map(&:name).to_set
+          resolve_method_kwargs = actual_resolve_method_node.arguments.select(&:kwarg_type?).map {|node| node.node_parts[0] }.to_set
           declared_args.map(&:name).uniq.reject { |declared_arg| resolve_method_kwargs.include?(declared_arg) }
         end
 
@@ -107,9 +107,13 @@ module RuboCop
             if node.arguments?
               corrector.insert_after(arg_end(node.arguments.last), ", #{unresolved_args_source}")
             else
-              corrector.insert_before(args_begin(node), "(#{unresolved_args_source})")
+              corrector.insert_after(method_name(node), "(#{unresolved_args_source})")
             end
           end
+        end
+
+        def method_name(node)
+          node.loc.keyword.end.resize(node.method_name.to_s.size + 1)
         end
 
         def arg_end(node)
