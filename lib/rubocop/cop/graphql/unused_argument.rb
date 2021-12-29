@@ -68,7 +68,7 @@ module RuboCop
                         resolve_method_node.arguments.any? { |arg| arg.arg_type? || arg.kwrestarg_type? }
 
           declared_arg_nodes = argument_declarations(node)
-          return if declared_arg_nodes.empty?
+          return unless declared_arg_nodes.any?
 
           declared_args = declared_arg_nodes.map do |declared_arg_node|
             RuboCop::GraphQL::Argument.new(declared_arg_node)
@@ -84,9 +84,7 @@ module RuboCop
 
         def find_resolve_method_node(node)
           resolve_method_nodes = resolve_method_definition(node)
-          return if resolve_method_nodes.empty?
-
-          resolve_method_nodes.to_a.last
+          resolve_method_nodes.to_a.last if resolve_method_nodes.any?
         end
 
         def find_unresolved_args(actual_resolve_method_node, declared_args)
