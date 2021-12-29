@@ -65,19 +65,15 @@ module RuboCop
         def on_class(node)
           resolve_method_node = find_resolve_method_node(node)
           return if resolve_method_node.nil? ||
-                        resolve_method_node.arguments.any? { |arg| arg.arg_type? || arg.kwrestarg_type? }
+                    resolve_method_node.arguments.any? do |arg|
+                      arg.arg_type? || arg.kwrestarg_type?
+                    end
 
           declared_arg_nodes = argument_declarations(node)
           return unless declared_arg_nodes.any?
 
-          declared_args = declared_arg_nodes.map do |declared_arg_node|
-            RuboCop::GraphQL::Argument.new(declared_arg_node)
-          end
-
-          unresolved_args = find_unresolved_args(resolve_method_node, declared_args)
-          if unresolved_args.any?
-            register_offense(resolve_method_node, unresolved_args)
-          end
+          unresolved_args = find_unresolved_args(resolve_method_node, declared_arg_nodes)
+          register_offense(resolve_method_node, unresolved_args) if unresolved_args.any?
         end
 
         private
@@ -87,18 +83,23 @@ module RuboCop
           resolve_method_nodes.to_a.last if resolve_method_nodes.any?
         end
 
-        def find_unresolved_args(actual_resolve_method_node, declared_args)
-          resolve_method_kwargs = actual_resolve_method_node.arguments.select(&:kwarg_type?).map {|node| node.node_parts[0] }.to_set
-          declared_args.map(&:name).uniq.reject { |declared_arg| resolve_method_kwargs.include?(declared_arg) }
+        def find_unresolved_args(method_node, declared_arg_nodes)
+          resolve_method_kwargs = method_node.arguments.select(&:kwarg_type?).map do |node|
+            node.node_parts[0]
+          end.to_set
+          declared_args = declared_arg_nodes.map { |node| RuboCop::GraphQL::Argument.new(node) }
+          declared_args.map(&:name).uniq.reject do |declared_arg|
+            resolve_method_kwargs.include?(declared_arg)
+          end
         end
 
         def register_offense(node, unresolved_args)
-          unresolved_args_source = unresolved_args.map{|v| "#{v}:"}.join(', ')
+          unresolved_args_source = unresolved_args.map { |v| "#{v}:" }.join(", ")
 
           message = format(
             self.class::MSG,
             unresolved_args: unresolved_args_source,
-            ending: unresolved_args.size == 1 ? '' : 's'
+            ending: unresolved_args.size == 1 ? "" : "s"
           )
 
           add_offense(node, message: message) do |corrector|
