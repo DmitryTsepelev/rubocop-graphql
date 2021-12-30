@@ -2,7 +2,10 @@
 
 ## master
 
-- [PR#60](https://github.com/DmitryTsepelev/rubocop-graphql/pull/60) [ArgumentUniqueness] Scope argument definitions per class name ([@nvasilevski][])
+## 0.12.0 (2021-12-30 🎄)
+
+- [PR#61](https://github.com/DmitryTsepelev/rubocop-graphql/pull/61) Implement UnusedArgument cop ([@aishek][])
+- [PR#60](https://github.com/DmitryTsepelev/rubocop-graphql/pull/60) `ArgumentUniqueness` Scope argument definitions per class name ([@nvasilevski][])
 
 ## 0.11.3 (2021-12-22)
 
@@ -130,3 +133,4 @@
 [@justisb]: https://github.com/justisb
 [@nevesenin]: https://github.com/nevesenin
 [@nvasilevski]: https://github.com/nvasilevski
+[@aishek]: https://github.com/aishek
