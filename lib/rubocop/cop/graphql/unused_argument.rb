@@ -10,16 +10,18 @@ module RuboCop
       #
       #   class SomeResolver < Resolvers::Base
       #     argument :arg1, String, required: true
-      #     argument :arg2, String, required: true
+      #     argument :user_id, String, required: true, loads: Types::UserType
+      #     argument :comment_ids, String, loads: Types::CommentType
       #
-      #     def resolve(arg1:, arg2:); end
+      #     def resolve(arg1:, user:, comments:); end
       #   end
       #
       #   # good
       #
       #   class SomeResolver < Resolvers::Base
       #     argument :arg1, String, required: true
-      #     argument :arg2, String, required: true
+      #     argument :user_id, String, required: true, loads: Types::UserType
+      #     argument :comment_ids, String, loads: Types::CommentType
       #
       #     def resolve(arg1:, **rest); end
       #   end
@@ -88,7 +90,14 @@ module RuboCop
             node.node_parts[0]
           end.to_set
           declared_args = declared_arg_nodes.map { |node| RuboCop::GraphQL::Argument.new(node) }
-          declared_args.map(&:name).uniq.reject do |declared_arg|
+          declared_arg_names = declared_args.map do |declared_arg|
+            if declared_arg.kwargs.loads.nil?
+              declared_arg.name
+            else
+              inferred_arg_name(declared_arg.name.to_s)
+            end
+          end.uniq
+          declared_arg_names.reject do |declared_arg|
             resolve_method_kwargs.include?(declared_arg)
           end
         end
@@ -117,6 +126,19 @@ module RuboCop
 
         def arg_end(node)
           node.loc.expression.end
+        end
+
+        def inferred_arg_name(name_as_string)
+          case name_as_string
+          when /_id$/
+            name_as_string.sub(/_id$/, "").to_sym
+          when /_ids$/
+            name_as_string.sub(/_ids$/, "")
+                          .sub(/([^s])$/, "\\1s")
+                          .to_sym
+          else
+            name
+          end
         end
 
         def_node_search :argument_declarations, <<~PATTERN
