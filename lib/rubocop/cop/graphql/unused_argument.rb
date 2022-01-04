@@ -11,9 +11,10 @@ module RuboCop
       #   class SomeResolver < Resolvers::Base
       #     argument :arg1, String, required: true
       #     argument :user_id, String, required: true, loads: Types::UserType
+      #     argument :post_id, String, loads: Types::PostType, as: :article
       #     argument :comment_ids, String, loads: Types::CommentType
       #
-      #     def resolve(arg1:, user:, comments:); end
+      #     def resolve(arg1:, user:, article:, comments:); end
       #   end
       #
       #   # good
@@ -90,13 +91,7 @@ module RuboCop
             node.node_parts[0]
           end.to_set
           declared_args = declared_arg_nodes.map { |node| RuboCop::GraphQL::Argument.new(node) }
-          declared_arg_names = declared_args.map do |declared_arg|
-            if declared_arg.kwargs.loads.nil?
-              declared_arg.name
-            else
-              inferred_arg_name(declared_arg.name.to_s)
-            end
-          end.uniq
+          declared_arg_names = declared_args.map(&method(:arg_name)).uniq
           declared_arg_names.reject do |declared_arg|
             resolve_method_kwargs.include?(declared_arg)
           end
@@ -138,6 +133,14 @@ module RuboCop
                           .to_sym
           else
             name
+          end
+        end
+
+        def arg_name(declared_arg)
+          if declared_arg.kwargs.loads.nil?
+            declared_arg.name
+          else
+            declared_arg.as || inferred_arg_name(declared_arg.name.to_s)
           end
         end
 
