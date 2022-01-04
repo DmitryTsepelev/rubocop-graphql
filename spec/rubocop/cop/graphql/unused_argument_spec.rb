@@ -37,8 +37,10 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
         class SomeResolver < Resolvers::Base
           argument :post_id, String, loads: Types::PostType
           argument :comment_ids, String, loads: Types::CommentType
+          argument :user_id, String, loads: Types::UserType, as: :owner
+          argument :notes_ids, String, loads: Types::NoteType, as: :remarks
 
-          def resolve(post:, comments:); end
+          def resolve(post:, comments:, owner:, remarks:); end
         end
       RUBY
     end
@@ -126,9 +128,11 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
           argument :arg2, String, required: true
           argument :user_id, String, loads: Types::UserType
           argument :card_ids, String, loads: Types::CardType
+          argument :post_id, String, loads: Types::PostType, as: :article
+          argument :comment_ids, String, loads: Types::CommentType, as: :notes
 
           def resolve; end
-          ^^^^^^^^^^^^^^^^ Arguments `arg1:, arg2:, user:, cards:` should be listed in the resolve signature.
+          ^^^^^^^^^^^^^^^^ Arguments `arg1:, arg2:, user:, cards:, article:, notes:` should be listed in the resolve signature.
         end
       RUBY
 
@@ -138,8 +142,10 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
           argument :arg2, String, required: true
           argument :user_id, String, loads: Types::UserType
           argument :card_ids, String, loads: Types::CardType
+          argument :post_id, String, loads: Types::PostType, as: :article
+          argument :comment_ids, String, loads: Types::CommentType, as: :notes
 
-          def resolve(arg1:, arg2:, user:, cards:); end
+          def resolve(arg1:, arg2:, user:, cards:, article:, notes:); end
         end
       RUBY
     end

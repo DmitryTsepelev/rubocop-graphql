@@ -23,6 +23,10 @@ module RuboCop
           (pair (sym :loads) ...)
         PATTERN
 
+        def_node_matcher :as_kwarg?, <<~PATTERN
+          (pair (sym :as) ...)
+        PATTERN
+
         def initialize(argument_node)
           @nodes = argument_kwargs(argument_node) || []
         end
@@ -33,6 +37,10 @@ module RuboCop
 
         def loads
           @nodes.find { |kwarg| loads_kwarg?(kwarg) }
+        end
+
+        def as
+          @nodes.find { |kwarg| as_kwarg?(kwarg) }
         end
       end
     end
