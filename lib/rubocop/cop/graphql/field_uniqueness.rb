@@ -38,7 +38,7 @@ module RuboCop
           field_names_by_class = Hash.new { |h, k| h[k] = Set.new }
 
           field_declarations(node).each do |current|
-            current_class = current_class_name(current)
+            current_class = current_class_full_name(current)
             field_names = field_names_by_class[current_class]
             current_field_name = field_name(current)
 

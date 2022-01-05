@@ -92,6 +92,26 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness do
     end
   end
 
+  context "when same arguments defined in classes with the same name but different namespaces" do
+    it "does not register an offence" do
+      expect_no_offenses(<<~RUBY)
+        class RootMutationClassTest
+          class UnitTest
+            class Input < TestType
+              argument :test_argument, String, required: false
+            end
+          end
+
+          class IntegrationTest
+            class Input < TestType
+              argument :test_argument, String, required: false
+            end
+          end
+        end
+      RUBY
+    end
+  end
+
   context "when duplicated field names belong to different nested classes" do
     it "does not register an offense" do
       expect_no_offenses(<<~RUBY)

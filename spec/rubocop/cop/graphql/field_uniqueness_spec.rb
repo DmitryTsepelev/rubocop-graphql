@@ -81,6 +81,26 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldUniqueness do
     end
   end
 
+  context "when same fields defined in classes with the same name but in different namespaces" do
+    it "does not register an offence" do
+      expect_no_offenses(<<~RUBY)
+        class RootMutationClassTest
+          class UnitTest
+            class MyType < TestType
+              field :name, String, null: true
+            end
+          end
+
+          class IntegrationTest
+            class MyType < TestType
+              field :name, String, null: true
+            end
+          end
+        end
+      RUBY
+    end
+  end
+
   context "when fields are duplicated in both root and nested classes" do
     it "registers an offense" do
       expect_offense(<<~RUBY)

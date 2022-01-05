@@ -38,7 +38,7 @@ module RuboCop
           argument_declarations(node).each do |current|
             current_field_name = field_name(current)
             current_argument_name = argument_name(current)
-            class_name = current_class_name(current)
+            class_name = current_class_full_name(current)
 
             argument_names = if current_field_name
                                argument_names_by_field_by_class[class_name][current_field_name]
