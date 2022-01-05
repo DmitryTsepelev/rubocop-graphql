@@ -10,16 +10,19 @@ module RuboCop
       #
       #   class SomeResolver < Resolvers::Base
       #     argument :arg1, String, required: true
-      #     argument :arg2, String, required: true
+      #     argument :user_id, String, required: true, loads: Types::UserType
+      #     argument :post_id, String, loads: Types::PostType, as: :article
+      #     argument :comment_ids, String, loads: Types::CommentType
       #
-      #     def resolve(arg1:, arg2:); end
+      #     def resolve(arg1:, user:, article:, comments:); end
       #   end
       #
       #   # good
       #
       #   class SomeResolver < Resolvers::Base
       #     argument :arg1, String, required: true
-      #     argument :arg2, String, required: true
+      #     argument :user_id, String, required: true, loads: Types::UserType
+      #     argument :comment_ids, String, loads: Types::CommentType
       #
       #     def resolve(arg1:, **rest); end
       #   end
@@ -91,7 +94,7 @@ module RuboCop
             node.node_parts[0]
           end.to_set
           declared_args = declared_arg_nodes.map { |node| RuboCop::GraphQL::Argument.new(node) }
-          declared_args.map(&:name).uniq.reject do |declared_arg_name|
+          declared_args.map(&method(:arg_name)).uniq.reject do |declared_arg_name|
             resolve_method_kwargs_names.include?(declared_arg_name)
           end
         end
@@ -120,6 +123,27 @@ module RuboCop
 
         def arg_end(node)
           node.loc.expression.end
+        end
+
+        def inferred_arg_name(name_as_string)
+          case name_as_string
+          when /_id$/
+            name_as_string.sub(/_id$/, "").to_sym
+          when /_ids$/
+            name_as_string.sub(/_ids$/, "")
+                          .sub(/([^s])$/, "\\1s")
+                          .to_sym
+          else
+            name
+          end
+        end
+
+        def arg_name(declared_arg)
+          if declared_arg.kwargs.loads.nil?
+            declared_arg.name
+          else
+            declared_arg.as || inferred_arg_name(declared_arg.name.to_s)
+          end
         end
 
         def_node_search :argument_declarations, <<~PATTERN
