@@ -13,6 +13,10 @@ module RuboCop
         (send nil? :argument (:sym $_) ...)
       PATTERN
 
+      def_node_matcher :argument_as, <<~PATTERN
+        (pair (sym :as) (sym $_))
+      PATTERN
+
       attr_reader :node
 
       def initialize(node)
@@ -21,6 +25,10 @@ module RuboCop
 
       def name
         @name ||= argument_name(@node)
+      end
+
+      def as
+        @as ||= argument_as(kwargs.as)
       end
 
       def description
