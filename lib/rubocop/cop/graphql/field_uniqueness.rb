@@ -27,6 +27,8 @@ module RuboCop
       #   end
       #
       class FieldUniqueness < Base
+        include RuboCop::GraphQL::NodeUniqueness
+
         MSG = "Field names should only be defined once per type. "\
               "Field `%<current>s` is duplicated."
 
@@ -51,10 +53,6 @@ module RuboCop
 
         private
 
-        def nested_class?(node)
-          node.each_ancestor(:class).any?
-        end
-
         def register_offense(current)
           message = format(
             self.class::MSG,
@@ -66,10 +64,6 @@ module RuboCop
 
         def field_name(node)
           node.first_argument.value.to_s
-        end
-
-        def current_class_name(node)
-          node.each_ancestor(:class).first.defined_module_name
         end
 
         def_node_search :field_declarations, <<~PATTERN

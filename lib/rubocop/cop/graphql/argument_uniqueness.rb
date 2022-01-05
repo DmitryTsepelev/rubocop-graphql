@@ -20,6 +20,8 @@ module RuboCop
       #   end
       #
       class ArgumentUniqueness < Base
+        include RuboCop::GraphQL::NodeUniqueness
+
         MSG = "Argument names should only be defined once per block. "\
               "Argument `%<current>s` is duplicated%<field_name>s."
 
@@ -54,14 +56,6 @@ module RuboCop
         end
 
         private
-
-        def current_class_name(node)
-          node.each_ancestor(:class).first.defined_module_name
-        end
-
-        def nested_class?(node)
-          node.each_ancestor(:class).any?
-        end
 
         def register_offense(current)
           current_field_name = field_name(current)
