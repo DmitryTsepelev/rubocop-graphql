@@ -87,13 +87,15 @@ module RuboCop
         end
 
         def find_unresolved_args(method_node, declared_arg_nodes)
-          resolve_method_kwargs = method_node.arguments.select(&:kwarg_type?).map do |node|
+          resolve_method_kwargs = method_node.arguments.select do |arg|
+            arg.kwarg_type? || arg.kwoptarg_type?
+          end
+          resolve_method_kwargs_names = resolve_method_kwargs.map do |node|
             node.node_parts[0]
           end.to_set
           declared_args = declared_arg_nodes.map { |node| RuboCop::GraphQL::Argument.new(node) }
-          declared_arg_names = declared_args.map(&method(:arg_name)).uniq
-          declared_arg_names.reject do |declared_arg|
-            resolve_method_kwargs.include?(declared_arg)
+          declared_args.map(&method(:arg_name)).uniq.reject do |declared_arg_name|
+            resolve_method_kwargs_names.include?(declared_arg_name)
           end
         end
 

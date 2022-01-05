@@ -10,9 +10,9 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
       expect_no_offenses(<<~RUBY)
         class SomeResolver < Resolvers::Base
           argument :arg1, String, required: true
-          argument :arg2, String, required: true
+          argument :arg2, String, required: false
 
-          def resolve(arg1:, arg2:); end
+          def resolve(arg1:, arg2: "hey"); end
         end
       RUBY
     end
