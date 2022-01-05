@@ -2,6 +2,11 @@
 
 ## master
 
+## 0.12.1 (2022-01-05 🎄)
+
+- [PR#66](https://github.com/DmitryTsepelev/rubocop-graphql/pull/66) `UnusedArgument` Consider optional kwarg argument as declared [@nvasilevski][])
+- [PR#65](https://github.com/DmitryTsepelev/rubocop-graphql/pull/65) Fix GraphQL/UnusedArgument cop to respect loads and as keyword ([@aishek][])
+
 ## 0.12.0 (2021-12-30 🎄)
 
 - [PR#61](https://github.com/DmitryTsepelev/rubocop-graphql/pull/61) Implement UnusedArgument cop ([@aishek][])
