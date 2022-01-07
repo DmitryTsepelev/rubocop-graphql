@@ -2,9 +2,15 @@
 
 ## master
 
+## 0.12.2 (2022-01-07)
+
+- [PR#69](https://github.com/DmitryTsepelev/rubocop-graphql/pull/69) Scope definitions per full namespace ([@nvasilevski][])
+- [PR#68](https://github.com/DmitryTsepelev/rubocop-graphql/pull/68) Extract argument/field uniqueness common methods ([@nvasilevski][])
+- [PR#67](https://github.com/DmitryTsepelev/rubocop-graphql/pull/67) Respect :as keyword even without :loads  ([@nvasilevski][])
+
 ## 0.12.1 (2022-01-05 🎄)
 
-- [PR#66](https://github.com/DmitryTsepelev/rubocop-graphql/pull/66) `UnusedArgument` Consider optional kwarg argument as declared [@nvasilevski][])
+- [PR#66](https://github.com/DmitryTsepelev/rubocop-graphql/pull/66) `UnusedArgument` Consider optional kwarg argument as declared ([@nvasilevski][])
 - [PR#65](https://github.com/DmitryTsepelev/rubocop-graphql/pull/65) Fix GraphQL/UnusedArgument cop to respect loads and as keyword ([@aishek][])
 
 ## 0.12.0 (2021-12-30 🎄)
