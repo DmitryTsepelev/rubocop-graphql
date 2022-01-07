@@ -9,10 +9,15 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)
         class SomeResolver < Resolvers::Base
+          class Input < GraphQL::Schema::InputObject
+            argument :arg4, String, required: true
+          end
+
           argument :arg1, String, required: true
           argument :arg2, String, required: false
+          argunent :arg3, Input, required: true
 
-          def resolve(arg1:, arg2: "hey"); end
+          def resolve(arg1:, arg2: "hey", arg3:); end
         end
       RUBY
     end
