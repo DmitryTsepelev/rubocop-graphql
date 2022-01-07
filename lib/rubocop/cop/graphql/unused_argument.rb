@@ -139,11 +139,10 @@ module RuboCop
         end
 
         def arg_name(declared_arg)
-          if declared_arg.kwargs.loads.nil?
-            declared_arg.name
-          else
-            declared_arg.as || inferred_arg_name(declared_arg.name.to_s)
-          end
+          return declared_arg.as if declared_arg.kwargs.as
+          return inferred_arg_name(declared_arg.name.to_s) if declared_arg.kwargs.loads
+
+          declared_arg.name
         end
 
         def_node_search :argument_declarations, <<~PATTERN
