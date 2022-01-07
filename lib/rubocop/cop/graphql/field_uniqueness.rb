@@ -33,7 +33,7 @@ module RuboCop
               "Field `%<current>s` is duplicated."
 
         def on_class(node)
-          return if nested_class?(node)
+          return if ::RuboCop::GraphQL::Class.new(node).nested?
 
           field_names_by_class = Hash.new { |h, k| h[k] = Set.new }
 

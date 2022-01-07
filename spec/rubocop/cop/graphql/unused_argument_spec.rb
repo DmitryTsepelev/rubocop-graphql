@@ -39,8 +39,9 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
           argument :comment_ids, String, loads: Types::CommentType
           argument :user_id, String, loads: Types::UserType, as: :owner
           argument :notes_ids, String, loads: Types::NoteType, as: :remarks
+          argument :data, String, required: false, as: :metadata
 
-          def resolve(post:, comments:, owner:, remarks:); end
+          def resolve(post:, comments:, owner:, remarks:, metadata:); end
         end
       RUBY
     end

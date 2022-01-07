@@ -26,7 +26,7 @@ module RuboCop
               "Argument `%<current>s` is duplicated%<field_name>s."
 
         def on_class(node)
-          return if nested_class?(node)
+          return if ::RuboCop::GraphQL::Class.new(node).nested?
 
           # { "MyClassName" => { "test_field" => <Set: {"field_arg_name"}> } }
           argument_names_by_field_by_class = Hash.new do |h, k|
