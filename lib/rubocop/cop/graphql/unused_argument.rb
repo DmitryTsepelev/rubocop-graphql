@@ -72,7 +72,7 @@ module RuboCop
                       arg.arg_type? || arg.kwrestarg_type?
                     end
 
-          declared_arg_nodes = argument_declarations(node)
+          declared_arg_nodes = find_declared_arg_nodes(node)
           return unless declared_arg_nodes.any?
 
           unresolved_args = find_unresolved_args(resolve_method_node, declared_arg_nodes)
@@ -80,6 +80,13 @@ module RuboCop
         end
 
         private
+
+        def find_declared_arg_nodes(node)
+          argument_declarations(node).select do |arg_declaration|
+            # argument is declared on the same class that is being analyzed
+            arg_declaration.each_ancestor(:class).first == node
+          end
+        end
 
         def find_resolve_method_node(node)
           resolve_method_nodes = resolve_method_definition(node)
