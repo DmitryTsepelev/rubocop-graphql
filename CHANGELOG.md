@@ -2,6 +2,11 @@
 
 ## master
 
+## 0.12.3 (2022-01-08)
+
+- [PR#70](https://github.com/DmitryTsepelev/rubocop-graphql/pull/70) Remove unused NodeUniqueness#nested_class? method ([@nvasilevski][])
+- [PR#71](https://github.com/DmitryTsepelev/rubocop-graphql/pull/71) `UnusedArgument`: Ignore arguments defined in a nested class ([@nvasilevski][])
+
 ## 0.12.2 (2022-01-07)
 
 - [PR#69](https://github.com/DmitryTsepelev/rubocop-graphql/pull/69) Scope definitions per full namespace ([@nvasilevski][])
