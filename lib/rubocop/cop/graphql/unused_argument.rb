@@ -90,7 +90,10 @@ module RuboCop
 
         def find_resolve_method_node(node)
           resolve_method_nodes = resolve_method_definition(node)
-          resolve_method_nodes.to_a.last if resolve_method_nodes.any?
+          resolve_method_nodes.find do |resolve_node|
+            # reject resolve methods from other classes
+            resolve_node.each_ancestor(:class).first == node
+          end
         end
 
         def find_unresolved_args(method_node, declared_arg_nodes)
