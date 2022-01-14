@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#72](https://github.com/DmitryTsepelev/rubocop-graphql/pull/72) `UnusedArgument` Do not look for resolve method in nested classes ([@nvasilevski][])
+
 ## 0.12.3 (2022-01-08)
 
 - [PR#70](https://github.com/DmitryTsepelev/rubocop-graphql/pull/70) Remove unused NodeUniqueness#nested_class? method ([@nvasilevski][])
