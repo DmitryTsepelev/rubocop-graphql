@@ -156,4 +156,21 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
       RUBY
     end
   end
+
+  context "when resolve method belongs to a different class" do
+    it "does not register an offence" do
+      expect_no_offenses(<<~RUBY)
+        class MyMutation < GraphApi::Mutation
+          class MyHelper
+            def resolve
+            end
+          end
+
+          argument :arg1, String, required: true
+
+          self.resolve = -> {}
+        end
+      RUBY
+    end
+  end
 end
