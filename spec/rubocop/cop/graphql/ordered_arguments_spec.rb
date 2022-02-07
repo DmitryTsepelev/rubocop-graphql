@@ -160,4 +160,31 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedArguments do
       RUBY
     end
   end
+
+  context "when multiple unordered argument declarations contain blocks" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        class UpdateProfile < BaseMutation
+          argument :uuid, ID, required: true do
+            description 'oranges'
+          end
+          argument :email, String, required: false do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `email` should appear before `uuid`.
+            description 'the user email'
+          end
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class UpdateProfile < BaseMutation
+          argument :email, String, required: false do
+            description 'the user email'
+          end
+          argument :uuid, ID, required: true do
+            description 'oranges'
+          end
+        end
+      RUBY
+    end
+  end
 end
