@@ -166,10 +166,10 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedArguments do
       expect_offense(<<~RUBY)
         class UpdateProfile < BaseMutation
           argument :uuid, ID, required: true do
-            description 'oranges'
+            description 'the profile UUID'
           end
           argument :email, String, required: false do
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `email` should appear before `uuid`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `email` should appear before `uuid`.
             description 'the user email'
           end
         end
@@ -181,7 +181,7 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedArguments do
             description 'the user email'
           end
           argument :uuid, ID, required: true do
-            description 'oranges'
+            description 'the profile UUID'
           end
         end
       RUBY

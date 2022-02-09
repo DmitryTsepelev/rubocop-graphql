@@ -97,7 +97,7 @@ module RuboCop
         end
 
         def argument_name(node)
-          argument = node.block_type? ? node.children.first.first_argument : node.first_argument.value.to_s
+          argument = node.block_type? ? node.children.first.first_argument : node.first_argument
 
           argument.value.to_s
         end
