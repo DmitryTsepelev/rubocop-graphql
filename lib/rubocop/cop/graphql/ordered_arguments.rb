@@ -57,22 +57,15 @@ module RuboCop
               "Field `%<current>s` should appear before `%<previous>s`."
 
         def on_class(node)
-          argument_declarations = []
-
           declarations_with_blocks = argument_declarations_with_blocks(node)
           declarations_without_blocks = argument_declarations_without_blocks(node)
 
-          declarations_without_blocks.each do |node|
+          argument_declarations = declarations_without_blocks.map do |node|
             arg_name = argument_name(node)
             same_arg_with_block_declaration = declarations_with_blocks.find { |dec| argument_name(dec) == arg_name }
 
-            if same_arg_with_block_declaration
-              argument_declarations << same_arg_with_block_declaration
-            else
-              argument_declarations << node
-            end
+            same_arg_with_block_declaration || node
           end
-
 
           argument_declarations.each_cons(2) do |previous, current|
             next unless consecutive_lines(previous, current)
