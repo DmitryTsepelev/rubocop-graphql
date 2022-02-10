@@ -62,7 +62,9 @@ module RuboCop
 
           argument_declarations = declarations_without_blocks.map do |node|
             arg_name = argument_name(node)
-            same_arg_with_block_declaration = declarations_with_blocks.find { |dec| argument_name(dec) == arg_name }
+            same_arg_with_block_declaration = declarations_with_blocks.find do |dec|
+              argument_name(dec) == arg_name
+            end
 
             same_arg_with_block_declaration || node
           end
