@@ -57,7 +57,19 @@ module RuboCop
               "Field `%<current>s` should appear before `%<previous>s`."
 
         def on_class(node)
-          argument_declarations(node).each_cons(2) do |previous, current|
+          declarations_with_blocks = argument_declarations_with_blocks(node)
+          declarations_without_blocks = argument_declarations_without_blocks(node)
+
+          argument_declarations = declarations_without_blocks.map do |node|
+            arg_name = argument_name(node)
+            same_arg_with_block_declaration = declarations_with_blocks.find do |dec|
+              argument_name(dec) == arg_name
+            end
+
+            same_arg_with_block_declaration || node
+          end
+
+          argument_declarations.each_cons(2) do |previous, current|
             next unless consecutive_lines(previous, current)
             next if argument_name(current) >= argument_name(previous)
 
@@ -80,15 +92,25 @@ module RuboCop
         end
 
         def argument_name(node)
-          node.first_argument.value.to_s
+          argument = node.block_type? ? node.children.first.first_argument : node.first_argument
+
+          argument.value.to_s
         end
 
         def consecutive_lines(previous, current)
           previous.source_range.last_line == current.source_range.first_line - 1
         end
 
-        def_node_search :argument_declarations, <<~PATTERN
+        def_node_search :argument_declarations_without_blocks, <<~PATTERN
           (send nil? :argument (:sym _) ...)
+        PATTERN
+
+        def_node_search :argument_declarations_with_blocks, <<~PATTERN
+          (block
+            (send nil? :argument
+              (:sym _)
+              ...)
+            ...)
         PATTERN
       end
     end
