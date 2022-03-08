@@ -46,10 +46,13 @@ module RuboCop
           field = RuboCop::GraphQL::Field.new(node)
           method_definition = suggest_method_name_for(field)
 
-          if (suggested_method_name = method_to_use(method_definition))
-            add_offense(node, message: message(suggested_method_name)) do |corrector|
-              autocorrect(corrector, node)
-            end
+          suggested_method_name = method_to_use(method_definition)
+
+          return if suggested_method_name.nil?
+          return if RuboCop::GraphQL::Field::CONFLICT_FIELD_NAMES.include?(suggested_method_name)
+
+          add_offense(node, message: message(suggested_method_name)) do |corrector|
+            autocorrect(corrector, node)
           end
         end
 
