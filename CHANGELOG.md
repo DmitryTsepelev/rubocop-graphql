@@ -2,9 +2,11 @@
 
 ## master
 
+- [PR#76](https://github.com/DmitryTsepelev/rubocop-graphql/pull/76) [FieldMethod, FieldHashKey] Don't raise offense when method/hash key name conflicts with keyword ([@roger-kang-mo][])
+- 
 ## 0.13.0 (2022-02-11)
 
-- [PR#75](https://github.com/DmitryTsepelev/rubocop-graphql/pull/75) Update Ordered Arguments Auto Correction to Respect Blocks  ([@roger-kang-mo][])
+- [PR#75](https://github.com/DmitryTsepelev/rubocop-graphql/pull/75) Update Ordered Arguments Auto Correction to Respect Blocks ([@roger-kang-mo][])
 - [PR#72](https://github.com/DmitryTsepelev/rubocop-graphql/pull/72) `UnusedArgument` Do not look for resolve method in nested classes ([@nvasilevski][])
 
 ## 0.12.3 (2022-01-08)
@@ -156,3 +158,4 @@
 [@nvasilevski]: https://github.com/nvasilevski
 [@aishek]: https://github.com/aishek
 [@roger-kang-mo]: https://github.com/roger-kang-mo
+[@alex4787]: https://github.com/alex4787
