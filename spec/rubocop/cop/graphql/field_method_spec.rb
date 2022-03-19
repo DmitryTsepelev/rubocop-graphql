@@ -68,6 +68,20 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldMethod do
         RUBY
       end
     end
+
+    context "when suggested method name would conflict with Ruby or GraphQL-Ruby keywords" do
+      it "does not register an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :context, String, null: true, resolver_method: :user_context
+
+            def user_context
+              object.context
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   context "when resolver method is more complex" do

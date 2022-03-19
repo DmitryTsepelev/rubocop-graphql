@@ -6,6 +6,18 @@ module RuboCop
       extend Forwardable
       extend RuboCop::NodePattern::Macros
 
+      # These constants were extracted from graphql-ruby in lib/graphql/schema/member/has_fields.rb
+      RUBY_KEYWORDS = %i[class module def undef begin rescue ensure end if unless then elsif else
+                         case when while until for break next redo retry in do return yield super
+                         self nil true false and or not alias defined? BEGIN END __LINE__
+                         __FILE__].freeze
+
+      GRAPHQL_RUBY_KEYWORDS = %i[context object raw_value].freeze
+
+      CONFLICT_FIELD_NAMES = Set.new(
+        GRAPHQL_RUBY_KEYWORDS + RUBY_KEYWORDS + Object.instance_methods
+      )
+
       def_delegators :@node, :sibling_index, :parent
 
       def_node_matcher :field_name, <<~PATTERN
