@@ -323,6 +323,30 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
       end
     end
 
+    context "when field has a heredoc description" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true, description: <<~DESC
+              First Name.
+            DESC
+
+            def first_name
+              object.contact_data.first_name
+            end
+
+            field :last_name, String, null: true, description: <<~DESC
+              Last Name.
+            DESC
+
+            def last_name
+              object.contact_data.last_name
+            end
+          end
+        RUBY
+      end
+    end
+
     context "when class has single field" do
       it "not registers an offense" do
         expect_no_offenses(<<~RUBY)
@@ -450,6 +474,44 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
               object.contact_data.last_name
             end
 
+          end
+        RUBY
+      end
+
+      it "registers offenses when field has a heredoc description" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true, description: <<~DESC
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+              First name.
+            DESC
+            field :last_name, String, null: true
+
+            def last_name
+              object.contact_data.last_name
+            end
+
+            def first_name
+              object.contact_data.first_name
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true, description: <<~DESC
+              First name.
+            DESC
+
+            def first_name
+              object.contact_data.first_name
+            end
+
+            field :last_name, String, null: true
+
+            def last_name
+              object.contact_data.last_name
+            end
           end
         RUBY
       end

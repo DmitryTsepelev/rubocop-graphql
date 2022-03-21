@@ -50,6 +50,7 @@ module RuboCop
         include RuboCop::GraphQL::NodePattern
         include RuboCop::Cop::RangeHelp
         include RuboCop::GraphQL::Sorbet
+        include RuboCop::GraphQL::Heredoc
 
         def_node_matcher :field_kwargs, <<~PATTERN
           (send nil? :field
@@ -188,7 +189,7 @@ module RuboCop
             "\n#{signature_to_insert(resolver_definition)}\n" \
               "#{indent(resolver_definition)}#{resolver_definition.source}\n"
 
-          field_definition_range = range_by_whole_lines(field_definition.loc.expression)
+          field_definition_range = range_including_heredoc(field_definition)
           corrector.insert_after(field_definition_range, source_to_insert)
         end
 
