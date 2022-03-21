@@ -669,6 +669,66 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
           RUBY
         end
       end
+
+      context "when multiple fields share a resolver method" do
+        context "when one field has the resolver method's name" do
+          it "registers offense to and moves resolver after the field with the resolver's name" do
+            expect_offense(<<~RUBY)
+              class UserType < BaseType
+                field :first_name, String, null: true
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+                field :last_name, String, null: true, resolver_method: :first_name
+
+                def first_name
+                  object.contact_data.first_name
+                end
+              end
+            RUBY
+
+            expect_correction(<<~RUBY)
+              class UserType < BaseType
+                field :first_name, String, null: true
+
+                def first_name
+                  object.contact_data.first_name
+                end
+
+                field :last_name, String, null: true, resolver_method: :first_name
+              end
+            RUBY
+          end
+        end
+
+        context "when no fields have the resolver method's name" do
+          it "registers offense to and moves resolver after the last field sharing the resolver" do
+            expect_offense(<<~RUBY)
+              class UserType < BaseType
+                field :first_name, String, null: true, resolver_method: :name
+
+                def name
+                  object.contact_data.name
+                end
+
+                field :last_name, String, null: true, resolver_method: :name
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after last field definition sharing resolver method.
+              end
+            RUBY
+
+            expect_correction(<<~RUBY)
+              class UserType < BaseType
+                field :first_name, String, null: true, resolver_method: :name
+
+                field :last_name, String, null: true, resolver_method: :name
+
+                def name
+                  object.contact_data.name
+                end
+
+              end
+            RUBY
+          end
+        end
+      end
     end
   end
 end

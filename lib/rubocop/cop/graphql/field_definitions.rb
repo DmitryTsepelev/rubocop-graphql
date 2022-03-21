@@ -108,6 +108,8 @@ module RuboCop
         end
 
         RESOLVER_AFTER_FIELD_MSG = "Define resolver method after field definition."
+        RESOLVER_AFTER_LAST_FIELD_MSG = "Define resolver method after last field definition " \
+          "sharing resolver method."
 
         def check_resolver_is_defined_after_definition(field)
           return if field.kwargs.resolver || field.kwargs.method || field.kwargs.hash_key
@@ -115,6 +117,22 @@ module RuboCop
           method_definition = field.schema_member.find_method_definition(field.resolver_method_name)
           return unless method_definition
 
+          fields_with_same_resolver = fields_with_same_resolver(field, method_definition)
+          return unless field.name == fields_with_same_resolver.last.name
+
+          return if resolver_defined_after_definition?(field, method_definition)
+
+          add_offense(field.node,
+                      message: offense_message(fields_with_same_resolver.one?)) do |corrector|
+            place_resolver_after_field_definition(corrector, field.node)
+          end
+        end
+
+        def offense_message(single_field_using_resolver)
+          single_field_using_resolver ? RESOLVER_AFTER_FIELD_MSG : RESOLVER_AFTER_LAST_FIELD_MSG
+        end
+
+        def resolver_defined_after_definition?(field, method_definition)
           field_sibling_index =
             if field_definition_with_body?(field.parent)
               field.parent.sibling_index
@@ -126,13 +144,29 @@ module RuboCop
 
           case field_to_resolver_offset
           when 1 # resolver is immediately after field definition
-            return
+            return true
           when 2 # there is a node between the field definition and its resolver
-            return if has_sorbet_signature?(method_definition)
+            return true if has_sorbet_signature?(method_definition)
           end
 
-          add_offense(field.node, message: RESOLVER_AFTER_FIELD_MSG) do |corrector|
-            place_resolver_after_field_definition(corrector, field.node)
+          false
+        end
+
+        def fields_with_same_resolver(field, resolver)
+          fields = field.schema_member.body
+                        .select { |node| field?(node) }
+                        .map do |node|
+                          field = field_definition_with_body?(node) ? node.children.first : node
+                          RuboCop::GraphQL::Field.new(field)
+                        end
+
+          [].tap do |fields_with_same_resolver|
+            fields.each do |field|
+              return [field] if field.name == resolver.method_name
+              next if field.kwargs.resolver_method_name != resolver.method_name
+
+              fields_with_same_resolver << field
+            end
           end
         end
 
