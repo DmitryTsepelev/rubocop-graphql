@@ -50,6 +50,52 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
           end
         RUBY
       end
+
+      context "when resolver methods have Sorbet signatures" do
+        it "not registers an offense" do
+          expect_no_offenses(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+              field :last_name, String, null: true
+
+              sig { returns(String) }
+              def first_name
+                object.contact_data.first_name
+              end
+
+              sig { returns(String) }
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+        end
+      end
+
+      context "when resolver methods have multiline Sorbet signatures" do
+        it "not registers an offense" do
+          expect_no_offenses(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+              field :last_name, String, null: true
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def first_name
+                object.contact_data.first_name
+              end
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+        end
+      end
     end
 
     context "when field has no kwargs" do
@@ -99,7 +145,9 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
         expect_correction(<<~RUBY)
           class UserType < BaseType
             field :first_name, String, null: true
+
             field :last_name, String, null: true
+
 
             def first_name
               object.contact_data.first_name
@@ -110,6 +158,98 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
             end
           end
         RUBY
+      end
+
+      context "when resolver methods have Sorbet signatures" do
+        it "registers an offense" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              sig { returns(String) }
+              def first_name
+                object.contact_data.first_name
+              end
+
+              field :last_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+
+              sig { returns(String) }
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              field :last_name, String, null: true
+
+
+              sig { returns(String) }
+              def first_name
+                object.contact_data.first_name
+              end
+
+              sig { returns(String) }
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+        end
+      end
+
+      context "when resolver methods have multiline Sorbet signatures" do
+        it "registers an offense" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def first_name
+                object.contact_data.first_name
+              end
+
+              field :last_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              field :last_name, String, null: true
+
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def first_name
+                object.contact_data.first_name
+              end
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+        end
       end
     end
   end
@@ -133,6 +273,54 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
           end
         end
       RUBY
+    end
+
+    context "when resolver methods have Sorbet signatures" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
+
+            sig { returns(String) }
+            def first_name
+              object.contact_data.first_name
+            end
+
+            field :last_name, String, null: true
+
+            sig { returns(String) }
+            def last_name
+              object.contact_data.last_name
+            end
+          end
+        RUBY
+      end
+    end
+
+    context "when resolver methods have multiline Sorbet signatures" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
+
+            sig do
+              T.nilable(returns(String))
+            end
+            def first_name
+              object.contact_data.first_name
+            end
+
+            field :last_name, String, null: true
+
+            sig do
+              T.nilable(returns(String))
+            end
+            def last_name
+              object.contact_data.last_name
+            end
+          end
+        RUBY
+      end
     end
 
     context "when class has single field" do
@@ -250,7 +438,6 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
 
         expect_correction(<<~RUBY)
           class UserType < BaseType
-
             field :first_name, String, null: true
 
             def first_name
@@ -262,6 +449,7 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
             def last_name
               object.contact_data.last_name
             end
+
           end
         RUBY
       end
@@ -289,7 +477,6 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
         expect_correction(<<~RUBY)
           module Types
             class UserType < BaseType
-
               field :first_name, String, null: true
 
               def first_name
@@ -301,6 +488,7 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
               def last_name
                 object.contact_data.last_name
               end
+
             end
           end
         RUBY
@@ -327,7 +515,6 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
 
           expect_correction(<<~RUBY)
             class UserType < BaseType
-
               field :first_name, String, null: true, resolver_method: :custom_first_name
 
               def custom_first_name
@@ -339,6 +526,7 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
               def last_name
                 object.contact_data.last_name
               end
+
             end
           RUBY
         end
@@ -369,12 +557,12 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
 
           expect_correction(<<~RUBY)
             class UserType < BaseType
-
               field :first_name, ID, null: false
 
               def first_name
                 object.name
               end
+
 
               field :image_url, String, null: false do
                 argument :width, Integer, required: false
@@ -384,6 +572,99 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions do
               def image_url
                 object.url
               end
+
+            end
+          RUBY
+        end
+      end
+
+      context "when resolver methods have Sorbet signatures" do
+        it "registers offenses" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+              field :last_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+
+              sig { returns(String) }
+              def first_name
+                object.contact_data.first_name
+              end
+
+              sig { returns(String) }
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              sig { returns(String) }
+              def first_name
+                object.contact_data.first_name
+              end
+
+              field :last_name, String, null: true
+
+              sig { returns(String) }
+              def last_name
+                object.contact_data.last_name
+              end
+
+            end
+          RUBY
+        end
+      end
+
+      context "when resolver methods have multiline Sorbet signatures" do
+        it "registers offenses" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+              field :last_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def first_name
+                object.contact_data.first_name
+              end
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def first_name
+                object.contact_data.first_name
+              end
+
+              field :last_name, String, null: true
+
+              sig do
+                T.nilable(returns(String))
+              end
+              def last_name
+                object.contact_data.last_name
+              end
+
             end
           RUBY
         end

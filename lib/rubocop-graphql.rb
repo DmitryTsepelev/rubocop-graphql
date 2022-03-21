@@ -10,6 +10,7 @@ require_relative "rubocop/graphql/inject"
 require_relative "rubocop/graphql/description_method"
 require_relative "rubocop/graphql/node_pattern"
 require_relative "rubocop/graphql/node_uniqueness"
+require_relative "rubocop/graphql/sorbet"
 require_relative "rubocop/graphql/swap_range"
 
 require_relative "rubocop/graphql/argument"

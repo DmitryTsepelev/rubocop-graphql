@@ -44,11 +44,12 @@ module RuboCop
       #       object.contact_data.last_name
       #     end
       #   end
-      class FieldDefinitions < Base
+      class FieldDefinitions < Base # rubocop:disable Metrics/ClassLength
         extend AutoCorrector
         include ConfigurableEnforcedStyle
         include RuboCop::GraphQL::NodePattern
         include RuboCop::Cop::RangeHelp
+        include RuboCop::GraphQL::Sorbet
 
         def_node_matcher :field_kwargs, <<~PATTERN
           (send nil? :field
@@ -101,11 +102,9 @@ module RuboCop
             field_definition?(node) || field_definition_with_body?(node)
           end
 
-          source_to_insert = "\n#{indent(node)}#{node.source}"
-          corrector.insert_after(first_field.loc.expression, source_to_insert)
+          insert_new_resolver(corrector, first_field, node)
 
-          range = range_with_surrounding_space(range: node.loc.expression, side: :left)
-          corrector.remove(range)
+          remove_old_resolver(corrector, node)
         end
 
         RESOLVER_AFTER_FIELD_MSG = "Define resolver method after field definition."
@@ -123,28 +122,64 @@ module RuboCop
               field.sibling_index
             end
 
-          return if method_definition.sibling_index - field_sibling_index == 1
+          field_to_resolver_offset = method_definition.sibling_index - field_sibling_index
+
+          case field_to_resolver_offset
+          when 1 # resolver is immediately after field definition
+            return
+          when 2 # there is a node between the field definition and its resolver
+            return if has_sorbet_signature?(method_definition)
+          end
 
           add_offense(field.node, message: RESOLVER_AFTER_FIELD_MSG) do |corrector|
-            place_resolver_after_definitions(corrector, field.node)
+            place_resolver_after_field_definition(corrector, field.node)
           end
         end
 
-        def place_resolver_after_definitions(corrector, node)
+        def place_resolver_after_field_definition(corrector, node)
           field = RuboCop::GraphQL::Field.new(node)
 
-          method_definition = field.schema_member.find_method_definition(field.resolver_method_name)
+          resolver_method_name = field.resolver_method_name
+          resolver_definition = field.schema_member.find_method_definition(resolver_method_name)
 
           field_definition = field_definition_with_body?(node.parent) ? node.parent : node
 
-          source_to_insert = "#{indent(method_definition)}#{field_definition.source}\n\n"
-          method_range = range_by_whole_lines(method_definition.loc.expression)
-          corrector.insert_before(method_range, source_to_insert)
+          insert_new_resolver(corrector, field_definition, resolver_definition)
 
+          remove_old_resolver(corrector, resolver_definition)
+        end
+
+        def insert_new_resolver(corrector, field_definition, resolver_definition)
+          source_to_insert =
+            "\n#{signature_to_insert(resolver_definition)}\n" \
+              "#{indent(resolver_definition)}#{resolver_definition.source}\n"
+
+          field_definition_range = range_by_whole_lines(field_definition.loc.expression)
+          corrector.insert_after(field_definition_range, source_to_insert)
+        end
+
+        def remove_old_resolver(corrector, resolver_definition)
           range_to_remove = range_with_surrounding_space(
-            range: field_definition.loc.expression, side: :left
+            range: resolver_definition.loc.expression, side: :left
           )
           corrector.remove(range_to_remove)
+
+          resolver_signature = sorbet_signature_for(resolver_definition)
+
+          return unless resolver_signature
+
+          range_to_remove = range_with_surrounding_space(
+            range: resolver_signature.loc.expression, side: :left
+          )
+          corrector.remove(range_to_remove)
+        end
+
+        def signature_to_insert(node)
+          signature = sorbet_signature_for(node)
+
+          return unless signature
+
+          "\n#{indent(signature)}#{signature.source}"
         end
 
         def indent(node)
