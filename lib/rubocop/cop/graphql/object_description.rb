@@ -52,7 +52,7 @@ module RuboCop
 
         def has_description?(node)
           has_i18n_description?(node) ||
-            description_kwarg?(node)
+            description_method_call?(node)
         end
 
         def child_nodes(node)
