@@ -2,7 +2,12 @@
 
 ## master
 
-- [PR#76](https://github.com/DmitryTsepelev/rubocop-graphql/pull/76) [FieldMethod, FieldHashKey] Don't raise offense when method/hash key name conflicts with keyword ([@roger-kang-mo][])
+## 0.14.0 (2022-03-23)
+
+- [PR#77](https://github.com/DmitryTsepelev/rubocop-graphql/pull/77) [FieldDefinitions] [FieldDefinitions] Support heredoc descriptionss ([@alex4787][])
+- [PR#77](https://github.com/DmitryTsepelev/rubocop-graphql/pull/77) [FieldDefinitions] Add support for fields sharing resolvers ([@alex4787][])
+- [PR#77](https://github.com/DmitryTsepelev/rubocop-graphql/pull/77) [FieldDefinitions] Add Sorbet support ([@alex4787][])
+- [PR#76](https://github.com/DmitryTsepelev/rubocop-graphql/pull/76) [FieldMethod, FieldHashKey] Don't raise offense when method/hash key name conflicts with keyword ([@alex4787][])
 
 ## 0.13.0 (2022-02-11)
 
