@@ -67,10 +67,7 @@ module RuboCop
 
         def on_class(node)
           resolve_method_node = find_resolve_method_node(node)
-          return if resolve_method_node.nil? ||
-                    resolve_method_node.arguments.any? do |arg|
-                      arg.arg_type? || arg.kwrestarg_type?
-                    end
+          return if resolve_method_node.nil? || ignore_arguments_type?(resolve_method_node)
 
           declared_arg_nodes = find_declared_arg_nodes(node)
           return unless declared_arg_nodes.any?
@@ -106,6 +103,12 @@ module RuboCop
           declared_args = declared_arg_nodes.map { |node| RuboCop::GraphQL::Argument.new(node) }
           declared_args.map(&method(:arg_name)).uniq.reject do |declared_arg_name|
             resolve_method_kwargs_names.include?(declared_arg_name)
+          end
+        end
+
+        def ignore_arguments_type?(resolve_method_node)
+          resolve_method_node.arguments.any? do |arg|
+            arg.arg_type? || arg.kwrestarg_type? || arg.forward_arg_type?
           end
         end
 
