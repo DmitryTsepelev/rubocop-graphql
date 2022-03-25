@@ -51,6 +51,58 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDescription do
     end
   end
 
+  context "when description is set inside block with argument" do
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :first_name, String, null: true do |field|
+            field.description = "First name"
+          end
+        end
+      RUBY
+    end
+
+    context "when block also contains something else" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true do |field|
+              field.description = "First name"
+
+              field.argument :capitalized, String, required: false
+            end
+          end
+        RUBY
+      end
+    end
+  end
+
+  context "when description is passed inside block with argument" do
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :first_name, String, null: true do |field|
+            field.description "First name"
+          end
+        end
+      RUBY
+    end
+
+    context "when block also contains something else" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true do |field|
+              field.description "First name"
+
+              field.argument :capitalized, String, required: false
+            end
+          end
+        RUBY
+      end
+    end
+  end
+
   it "registers an offense" do
     expect_offense(<<~RUBY)
       class UserType < BaseType

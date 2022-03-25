@@ -20,13 +20,18 @@ module RuboCop
     module DescriptionMethod
       extend RuboCop::NodePattern::Macros
 
-      def_node_matcher :description_kwarg?, <<~PATTERN
-        (send nil? :description
-          {({str|dstr|const} ...)|(send const ...)|(send ({str|dstr} ...) _)})
+      DESCRIPTION_STRING = "{({str|dstr|const} ...)|(send const ...)|(send ({str|dstr} ...) _)}"
+
+      def_node_matcher :description_method_call?, <<~PATTERN
+        (send nil? :description #{DESCRIPTION_STRING})
+      PATTERN
+
+      def_node_matcher :description_with_block_arg?, <<~PATTERN
+        (send (lvar _) {:description= :description} #{DESCRIPTION_STRING})
       PATTERN
 
       def find_description_method(nodes)
-        nodes.find { |kwarg| description_kwarg?(kwarg) }
+        nodes.find { |kwarg| description_method_call?(kwarg) || description_with_block_arg?(kwarg) }
       end
     end
   end

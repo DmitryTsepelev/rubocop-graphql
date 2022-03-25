@@ -10,7 +10,7 @@ module RuboCop
         def_node_matcher :argument_block, <<~PATTERN
           (block
             (send nil? :argument ...)
-            (args)
+            (args ...)
             $...
           )
         PATTERN
