@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.14.1 (2022-03-25)
+
+- [PR#78](https://github.com/DmitryTsepelev/rubocop-graphql/pull/78) [FieldDescription, ArgumentDescription] Support descriptions in blocks with an argument  ([@alex4787][])
+
 ## 0.14.0 (2022-03-23)
 
 - [PR#77](https://github.com/DmitryTsepelev/rubocop-graphql/pull/77) [FieldDefinitions] [FieldDefinitions] Support heredoc descriptionss ([@alex4787][])
