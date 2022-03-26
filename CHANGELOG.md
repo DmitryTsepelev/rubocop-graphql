@@ -2,9 +2,13 @@
 
 ## master
 
+## 0.14.2 (2022-03-27)
+
+- [PR#79](https://github.com/DmitryTsepelev/rubocop-graphql/pull/79) [UnusedArgument] Ignore forward arguments ([@nipe0324][])
+
 ## 0.14.1 (2022-03-25)
 
-- [PR#78](https://github.com/DmitryTsepelev/rubocop-graphql/pull/78) [FieldDescription, ArgumentDescription] Support descriptions in blocks with an argument  ([@alex4787][])
+- [PR#78](https://github.com/DmitryTsepelev/rubocop-graphql/pull/78) [FieldDescription, ArgumentDescription] Support descriptions in blocks with an argument ([@alex4787][])
 
 ## 0.14.0 (2022-03-23)
 
@@ -168,3 +172,4 @@
 [@aishek]: https://github.com/aishek
 [@roger-kang-mo]: https://github.com/roger-kang-mo
 [@alex4787]: https://github.com/alex4787
+[@nipe0324]: https://github.com/nipe0324
