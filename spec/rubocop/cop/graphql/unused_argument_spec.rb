@@ -157,6 +157,21 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
     end
   end
 
+  context "when args is forwarding arguments" do
+    let(:ruby_version) { 2.7 } # forward arguments was introduced in Ruby 2.7
+
+    it "does not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class SomeResolver < Resolvers::Base
+          argument :arg1, String, required: true
+          argument :arg2, String, required: true
+
+          def resolve(...); end
+        end
+      RUBY
+    end
+  end
+
   context "when resolve method belongs to a different class" do
     it "does not register an offence" do
       expect_no_offenses(<<~RUBY)
