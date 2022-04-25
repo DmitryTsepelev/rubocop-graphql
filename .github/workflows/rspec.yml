@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [2.5, 2.6, 2.7]
+        ruby: [2.6, 2.7, 3.0, 3.1]
         gemfile: [
           "gemfiles/rubocop_0.87.0.gemfile",
           "gemfiles/rubocop_0.89.0.gemfile",
