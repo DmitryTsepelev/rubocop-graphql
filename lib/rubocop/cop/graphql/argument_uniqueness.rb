@@ -59,7 +59,7 @@ module RuboCop
 
         def register_offense(current)
           current_field_name = field_name(current)
-          field_name_message = " in field `#{current_field_name}`" if current_field_name
+          field_name_message = " in field #{current_field_name}" if current_field_name
 
           message = format(
             self.class::MSG,
@@ -81,9 +81,16 @@ module RuboCop
           is_field_block = node.block_type? &&
                            node.respond_to?(:method_name) &&
                            node.method_name == :field
-          return node.send_node.first_argument.value.to_s if is_field_block
 
-          field_name(node.parent)
+          return field_name(node.parent) unless is_field_block
+
+          first_argument = node.send_node.first_argument
+          if first_argument.lvar_type?
+            variable_name = first_argument.children.first
+            return "with name from `#{variable_name}` variable"
+          end
+
+          "`#{first_argument.value}`"
         end
 
         def_node_search :argument_declarations, <<~PATTERN

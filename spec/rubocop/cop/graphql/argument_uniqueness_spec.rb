@@ -75,6 +75,23 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness do
         end
       RUBY
     end
+
+    context "when field name is a variable" do
+      it "registers an offense" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field_name = "field_name"
+
+            field field_name, PostType do
+              argument :created_after, ISO8601DateTime, required: false
+              argument :created_after, ISO8601DateTime, required: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Argument names should only be defined once per block. Argument `created_after` is duplicated in field with name from `field_name` variable.
+              argument :created_before, ISO8601DateTime, required: false
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   context "when a multi-line argument is duplicated" do
@@ -156,4 +173,30 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness do
       end
     end
   end
+
+  # context "wer" do
+  #   it "qweqwe" do
+  #     expect_no_offenses(<<~RUBY)
+  #       class Types::BaseObject < GraphQL::Schema::Object
+  #         include Graphql::Authenticatable
+
+  #         field_class Types::BaseField
+
+  #         connection_type_class Types::BaseConnection
+
+  #         def self.connection_field(name, type, **kwargs)
+  #           # field(name, type, **kwargs) do
+  #           field test_field, TestType do
+  #             argument :filters, [String], required: false
+  #             argument :name, String, required: false
+  #             argument :order, [String], required: false
+  #             argument :scopes, [String], required: false
+
+  #             yield self if block_given?
+  #           end
+  #         end
+  #       end
+  #     RUBY
+  #   end
+  # end
 end
