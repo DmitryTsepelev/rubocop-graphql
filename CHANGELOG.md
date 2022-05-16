@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.14.3 (2022-05-16)
+
+- [PR#82](https://github.com/DmitryTsepelev/rubocop-graphql/pull/82) [ArgumentUniqueness]: properly handle ivars in the field name ([@DmitryTsepelev][])
+
 ## 0.14.2 (2022-03-27)
 
 - [PR#79](https://github.com/DmitryTsepelev/rubocop-graphql/pull/79) [UnusedArgument] Ignore forward arguments ([@nipe0324][])
