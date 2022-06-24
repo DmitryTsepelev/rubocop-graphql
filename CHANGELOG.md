@@ -4,7 +4,7 @@
 
 ## 0.14.4 (2022-06-24)
 
-- [PR#86](https://github.com/DmitryTsepelev/rubocop-graphql/pull/86) [OrderedFields] [OrderedArguments]: Fix false positive when fields use arguments ([@Darhazer][])
+- [PR#86](https://github.com/DmitryTsepelev/rubocop-graphql/pull/86) [OrderedFields] [OrderedArguments]: Improve auto-correction with multiple offenses ([@Darhazer][])
 - [PR#85](https://github.com/DmitryTsepelev/rubocop-graphql/pull/85) [UnusedArgument]: Fix false positive when fields use arguments ([@Darhazer][])
 
 ## 0.14.3 (2022-05-16)
