@@ -15,7 +15,7 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
 
           argument :arg1, String, required: true
           argument :arg2, String, required: false
-          argunent :arg3, Input, required: true
+          argument :arg3, Input, required: true
 
           def resolve(arg1:, arg2: "hey", arg3:); end
         end
@@ -47,6 +47,21 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument do
           argument :data, String, required: false, as: :metadata
 
           def resolve(post:, comments:, owner:, remarks:, metadata:); end
+        end
+      RUBY
+    end
+  end
+
+  context "when field with arguments is used" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        class SomeResolver < Resolvers::Base
+          argument :foo, String
+          field :my_field, String, null: false do
+            argument :bar, String
+          end
+
+          def resolve(foo:); end
         end
       RUBY
     end
