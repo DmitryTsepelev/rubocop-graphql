@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.14.4 (2022-06-24)
+
 - [PR#86](https://github.com/DmitryTsepelev/rubocop-graphql/pull/86) [OrderedFields] [OrderedArguments]: Fix false positive when fields use arguments ([@Darhazer][])
 - [PR#85](https://github.com/DmitryTsepelev/rubocop-graphql/pull/85) [UnusedArgument]: Fix false positive when fields use arguments ([@Darhazer][])
 
