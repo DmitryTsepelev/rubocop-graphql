@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#86](https://github.com/DmitryTsepelev/rubocop-graphql/pull/86) [OrderedFields] [OrderedArguments]: Fix false positive when fields use arguments ([@Darhazer][])
+
 ## 0.14.3 (2022-05-16)
 
 - [PR#82](https://github.com/DmitryTsepelev/rubocop-graphql/pull/82) [ArgumentUniqueness]: properly handle ivars in the field name ([@DmitryTsepelev][])
@@ -177,3 +179,4 @@
 [@roger-kang-mo]: https://github.com/roger-kang-mo
 [@alex4787]: https://github.com/alex4787
 [@nipe0324]: https://github.com/nipe0324
+[@Darhazer]: https://github.com/Darhazer
