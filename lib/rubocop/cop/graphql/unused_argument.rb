@@ -79,9 +79,14 @@ module RuboCop
         private
 
         def find_declared_arg_nodes(node)
-          argument_declarations(node).select do |arg_declaration|
-            # argument is declared on the same class that is being analyzed
-            arg_declaration.each_ancestor(:class).first == node
+          node.each_child_node.flat_map do |child|
+            if scoped_node?(child)
+              []
+            elsif argument_declaration?(child)
+              [child]
+            else
+              find_declared_arg_nodes(child)
+            end
           end
         end
 
@@ -158,7 +163,19 @@ module RuboCop
           declared_arg.name
         end
 
-        def_node_search :argument_declarations, <<~PATTERN
+        def scoped_node?(node)
+          scope_changing_syntax?(node) || block_or_lambda?(node)
+        end
+
+        def scope_changing_syntax?(node)
+          node.def_type? || node.defs_type? || node.class_type? || node.module_type?
+        end
+
+        def block_or_lambda?(node)
+          node.block_type? || node.lambda_type?
+        end
+
+        def_node_matcher :argument_declaration?, <<~PATTERN
           (send nil? :argument (:sym _) ...)
         PATTERN
 
