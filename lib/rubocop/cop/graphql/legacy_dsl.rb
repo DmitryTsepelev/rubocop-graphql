@@ -29,7 +29,8 @@ module RuboCop
           )
         PATTERN
 
-        MSG = "Avoid using legacy based type-based definitions. Use class-based defintions instead."
+        MSG = "Avoid using legacy based type-based definitions. " \
+              "Use class-based definitions instead."
 
         def on_send(node)
           return unless node.parent.type == :block
