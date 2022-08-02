@@ -77,6 +77,7 @@ GraphQL/ExtractType:
   MaxFields: 2
   Prefixes:
     - is
+    - has
     - with
     - avg
     - min
