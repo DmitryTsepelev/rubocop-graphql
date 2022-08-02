@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.14.5 (2022-07-02)
+
+- [PR#89](https://github.com/DmitryTsepelev/rubocop-graphql/pull/89) [ExtractType]: add has prefix to default values for config ([@MH4GF][])
+
 ## 0.14.4 (2022-06-24)
 
 - [PR#86](https://github.com/DmitryTsepelev/rubocop-graphql/pull/86) [OrderedFields] [OrderedArguments]: Improve auto-correction with multiple offenses ([@Darhazer][])
@@ -183,3 +187,4 @@
 [@alex4787]: https://github.com/alex4787
 [@nipe0324]: https://github.com/nipe0324
 [@Darhazer]: https://github.com/Darhazer
+[@MH4GF]: https://github.com/MH4GF
