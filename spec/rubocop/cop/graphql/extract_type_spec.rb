@@ -7,7 +7,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractType do
     RuboCop::Config.new(
       "GraphQL/ExtractType" => {
         "MaxFields" => 2,
-        "Prefixes" => %w[is avg min max]
+        "Prefixes" => %w[is has avg min max]
       }
     )
   end
