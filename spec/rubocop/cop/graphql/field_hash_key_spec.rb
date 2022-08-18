@@ -115,6 +115,16 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldHashKey do
             end
           end
         RUBY
+
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :next, String, null: true, resolver_method: :user_next
+
+            def user_next
+              object['next']
+            end
+          end
+        RUBY
       end
     end
   end
