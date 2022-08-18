@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module GraphQL
-      # This cop detects duplicate field definitions within
+      # Detects duplicate field definitions within
       # the same type
       #
       # @example

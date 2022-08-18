@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module GraphQL
-      # This cop checks consistency of field definitions
+      # Checks consistency of field definitions
       #
       # EnforcedStyle supports two modes:
       #

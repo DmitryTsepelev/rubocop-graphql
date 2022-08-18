@@ -6,16 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 5
-# This cop supports safe autocorrection (--autocorrect).
-InternalAffairs/CopDescription:
-  Exclude:
-    - 'lib/rubocop/cop/graphql/extract_input_type.rb'
-    - 'lib/rubocop/cop/graphql/extract_type.rb'
-    - 'lib/rubocop/cop/graphql/field_definitions.rb'
-    - 'lib/rubocop/cop/graphql/field_uniqueness.rb'
-    - 'lib/rubocop/cop/graphql/resolver_method_length.rb'
-
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
 InternalAffairs/MethodNameEqual:
