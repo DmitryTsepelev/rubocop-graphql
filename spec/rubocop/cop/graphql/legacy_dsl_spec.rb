@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::GraphQL::LegacyDsl do
-  subject(:cop) { described_class.new(config) }
+RSpec.describe RuboCop::Cop::GraphQL::LegacyDsl, :config do
 
   let(:config) { RuboCop::Config.new }
 

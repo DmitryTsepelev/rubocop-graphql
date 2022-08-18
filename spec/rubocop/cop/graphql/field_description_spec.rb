@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::GraphQL::FieldDescription do
-  subject(:cop) { described_class.new(config) }
+RSpec.describe RuboCop::Cop::GraphQL::FieldDescription, :config do
 
   let(:config) { RuboCop::Config.new }
 

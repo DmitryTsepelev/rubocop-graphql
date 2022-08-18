@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::GraphQL::ExtractInputType do
-  subject(:cop) { described_class.new(config) }
+RSpec.describe RuboCop::Cop::GraphQL::ExtractInputType, :config do
 
   let(:config) do
     RuboCop::Config.new(
