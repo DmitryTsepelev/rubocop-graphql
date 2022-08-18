@@ -50,7 +50,7 @@ module RuboCop
           suggested_hash_key_name = hash_key_to_use(method_definition)
 
           return if suggested_hash_key_name.nil?
-          return if RuboCop::GraphQL::Field::CONFLICT_FIELD_NAMES.include?(suggested_hash_key_name)
+          return if conflict?(suggested_hash_key_name)
 
           add_offense(node, message: message(suggested_hash_key_name)) do |corrector|
             autocorrect(corrector, node)
@@ -58,6 +58,10 @@ module RuboCop
         end
 
         private
+
+        def conflict?(suggested_hash_key_name)
+          RuboCop::GraphQL::Field::CONFLICT_FIELD_NAMES.include?(suggested_hash_key_name.to_sym)
+        end
 
         def message(hash_key)
           format(MSG, hash_key: hash_key)
