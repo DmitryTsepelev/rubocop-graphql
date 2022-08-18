@@ -2,20 +2,20 @@ name: Rubocop
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   rubocop:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7
-    - name: Lint Ruby code with RuboCop
-      run: |
-        bundle install --gemfile gemfiles/style.gemfile --jobs 4 --retry 3
-        bundle exec --gemfile gemfiles/style.gemfile rubocop
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+      - name: Lint Ruby code with RuboCop
+        run: |
+          bundle install --gemfile gemfiles/style.gemfile --jobs 4 --retry 3
+          bundle exec --gemfile gemfiles/style.gemfile rubocop
