@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#91](https://github.com/DmitryTsepelev/rubocop-graphql/pull/91) Fix GraphQL/FieldHashKey keyword detection when string key is used ([@r7kamura][])
+
 ## 0.14.5 (2022-07-02)
 
 - [PR#89](https://github.com/DmitryTsepelev/rubocop-graphql/pull/89) [ExtractType]: add has prefix to default values for config ([@MH4GF][])
@@ -188,3 +190,4 @@
 [@nipe0324]: https://github.com/nipe0324
 [@Darhazer]: https://github.com/Darhazer
 [@MH4GF]: https://github.com/MH4GF
+[@r7kamura]: https://github.com/r7kamura
