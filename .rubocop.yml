@@ -33,8 +33,8 @@ Lint/ShadowingOuterLocalVariable:
   Enabled: false
 
 Naming/FileName:
- Exclude:
-   - lib/rubocop-graphql.rb
+  Exclude:
+    - lib/rubocop-graphql.rb
 
 Naming/PredicateName:
   Enabled: false
