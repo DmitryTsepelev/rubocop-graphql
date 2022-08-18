@@ -7,6 +7,7 @@ module RuboCop
         extend RuboCop::NodePattern::Macros
         include DescriptionMethod
 
+        # @!method argument_block(node)
         def_node_matcher :argument_block, <<~PATTERN
           (block
             (send nil? :argument ...)

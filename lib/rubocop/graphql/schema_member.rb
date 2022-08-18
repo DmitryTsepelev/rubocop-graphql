@@ -5,6 +5,7 @@ module RuboCop
     class SchemaMember
       extend RuboCop::NodePattern::Macros
 
+      # @!method class_contents(node)
       def_node_matcher :class_contents, <<~PATTERN
         (class _ _ $_)
       PATTERN

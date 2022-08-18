@@ -93,6 +93,7 @@ module RuboCop
           "`#{first_argument.value}`"
         end
 
+        # @!method argument_declarations(node)
         def_node_search :argument_declarations, <<~PATTERN
           (send nil? :argument (:sym _) ...)
         PATTERN

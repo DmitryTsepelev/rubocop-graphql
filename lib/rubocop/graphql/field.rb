@@ -20,15 +20,18 @@ module RuboCop
 
       def_delegators :@node, :sibling_index, :parent
 
+      # @!method field_name(node)
       def_node_matcher :field_name, <<~PATTERN
         (send nil? :field (:sym $_) ...)
       PATTERN
 
+      # @!method field_with_body_name(node)
       def_node_matcher :field_with_body_name, <<~PATTERN
         (block
         (send nil? :field (:sym $_) ...)...)
       PATTERN
 
+      # @!method field_description(node)
       def_node_matcher :field_description, <<~PATTERN
         (send nil? :field _ _ (:str $_) ...)
       PATTERN

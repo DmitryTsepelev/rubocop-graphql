@@ -13,6 +13,7 @@ module RuboCop
 
         MSG = "ResolverMethod has too many lines. [%<total>d/%<max>d]"
 
+        # @!method field_definition(node)
         def_node_matcher :field_definition, <<~PATTERN
           (send nil? :field (sym $...) ...)
         PATTERN

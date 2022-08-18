@@ -52,6 +52,7 @@ module RuboCop
         include RuboCop::GraphQL::Sorbet
         include RuboCop::GraphQL::Heredoc
 
+        # @!method field_kwargs(node)
         def_node_matcher :field_kwargs, <<~PATTERN
           (send nil? :field
             ...

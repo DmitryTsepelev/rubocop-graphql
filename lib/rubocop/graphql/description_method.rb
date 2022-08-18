@@ -22,10 +22,12 @@ module RuboCop
 
       DESCRIPTION_STRING = "{({str|dstr|const} ...)|(send const ...)|(send ({str|dstr} ...) _)}"
 
+      # @!method description_method_call?(node)
       def_node_matcher :description_method_call?, <<~PATTERN
         (send nil? :description #{DESCRIPTION_STRING})
       PATTERN
 
+      # @!method description_with_block_arg?(node)
       def_node_matcher :description_with_block_arg?, <<~PATTERN
         (send (lvar _) {:description= :description} #{DESCRIPTION_STRING})
       PATTERN

@@ -5,6 +5,7 @@ module RuboCop
     module Sorbet
       extend RuboCop::NodePattern::Macros
 
+      # @!method sorbet_signature(node)
       def_node_matcher(:sorbet_signature, <<~PATTERN)
         (block (send nil? :sig) (args) ...)
       PATTERN

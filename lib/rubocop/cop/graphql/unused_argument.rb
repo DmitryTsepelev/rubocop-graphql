@@ -175,10 +175,12 @@ module RuboCop
           node.block_type? || node.lambda_type?
         end
 
+        # @!method argument_declaration?(node)
         def_node_matcher :argument_declaration?, <<~PATTERN
           (send nil? :argument (:sym _) ...)
         PATTERN
 
+        # @!method resolve_method_definition(node)
         def_node_search :resolve_method_definition, <<~PATTERN
           (def :resolve
             (args ...) ...)

@@ -66,6 +66,7 @@ module RuboCop
           node.first_argument.value.to_s
         end
 
+        # @!method field_declarations(node)
         def_node_search :field_declarations, <<~PATTERN
           {
             (send nil? :field (:sym _) ...)
