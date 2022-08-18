@@ -80,7 +80,7 @@ module RuboCop
 
           is_field_block = node.block_type? &&
                            node.respond_to?(:method_name) &&
-                           node.method_name == :field
+                           node.method?(:field)
 
           return field_name(node.parent) unless is_field_block
 

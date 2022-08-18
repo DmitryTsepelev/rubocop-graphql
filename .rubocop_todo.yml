@@ -6,13 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-InternalAffairs/MethodNameEqual:
-  Exclude:
-    - 'lib/rubocop/cop/graphql/argument_uniqueness.rb'
-    - 'lib/rubocop/graphql/schema_member.rb'
-
 # Offense count: 39
 # This cop supports safe autocorrection (--autocorrect).
 InternalAffairs/NodeMatcherDirective:
