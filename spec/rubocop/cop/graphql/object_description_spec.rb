@@ -2,7 +2,6 @@
 
 RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription, :config do
 
-  let(:config) { RuboCop::Config.new }
 
   context "when object" do
     context "when description is filled" do

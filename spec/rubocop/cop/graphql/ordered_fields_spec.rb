@@ -2,7 +2,6 @@
 
 RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
 
-  let(:config) { RuboCop::Config.new }
 
   context "when fields are alphabetically sorted" do
     it "not registers an offense" do

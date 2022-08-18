@@ -2,7 +2,6 @@
 
 RSpec.describe RuboCop::Cop::GraphQL::OrderedArguments, :config do
 
-  let(:config) { RuboCop::Config.new }
 
   context "when arguments are alphabetically sorted" do
     it "not registers an offense" do

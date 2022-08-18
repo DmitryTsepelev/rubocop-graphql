@@ -2,7 +2,6 @@
 
 RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument, :config do
 
-  let(:config) { RuboCop::Config.new }
 
   context "when all args are used" do
     it "not registers an offense" do

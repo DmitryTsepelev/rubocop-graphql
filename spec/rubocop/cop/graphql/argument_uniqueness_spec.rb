@@ -2,7 +2,6 @@
 
 RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness, :config do
 
-  let(:config) { RuboCop::Config.new }
 
   context "when arguments are not duplicated" do
     it "does not register an offense" do

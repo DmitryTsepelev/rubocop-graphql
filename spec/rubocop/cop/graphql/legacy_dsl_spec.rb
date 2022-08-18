@@ -2,7 +2,6 @@
 
 RSpec.describe RuboCop::Cop::GraphQL::LegacyDsl, :config do
 
-  let(:config) { RuboCop::Config.new }
 
   context "when legacy DSL is defined" do
     it "registers an offense" do

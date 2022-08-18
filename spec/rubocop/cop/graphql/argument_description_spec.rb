@@ -2,7 +2,6 @@
 
 RSpec.describe RuboCop::Cop::GraphQL::ArgumentDescription, :config do
 
-  let(:config) { RuboCop::Config.new }
 
   context "when description is passed as argument" do
     it "not registers an offense" do

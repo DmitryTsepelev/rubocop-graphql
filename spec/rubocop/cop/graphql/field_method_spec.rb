@@ -2,7 +2,6 @@
 
 RSpec.describe RuboCop::Cop::GraphQL::FieldMethod, :config do
 
-  let(:config) { RuboCop::Config.new }
 
   it "not registers an offense" do
     expect_no_offenses(<<~RUBY)

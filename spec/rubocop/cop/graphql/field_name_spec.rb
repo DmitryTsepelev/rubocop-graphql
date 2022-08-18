@@ -2,7 +2,6 @@
 
 RSpec.describe RuboCop::Cop::GraphQL::FieldName, :config do
 
-  let(:config) { RuboCop::Config.new }
 
   context "when field name is in snake case" do
     it "not registers an offense" do
