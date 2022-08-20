@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::GraphQL::FieldUniqueness, :config do
-
-
   context "when fields are not duplicated" do
     it "does not register an offense" do
       expect_no_offenses(<<~RUBY)

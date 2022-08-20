@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription, :config do
-
-
   context "when object" do
     context "when description is filled" do
       it "does not register an offense" do

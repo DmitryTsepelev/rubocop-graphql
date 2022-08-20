@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::GraphQL::ResolverMethodLength, :config do
-
   let(:config) do
     RuboCop::Config.new(
       "GraphQL/ResolverMethodLength" => {

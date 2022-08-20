@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::GraphQL::FieldHashKey, :config do
-
-
   it "does not register an offense" do
     expect_no_offenses(<<~RUBY)
       class UserType < BaseType

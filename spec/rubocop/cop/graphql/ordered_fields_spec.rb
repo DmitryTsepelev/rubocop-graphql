@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
-
-
   context "when fields are alphabetically sorted" do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)

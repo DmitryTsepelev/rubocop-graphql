@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument, :config do
-
-
   context "when all args are used" do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)

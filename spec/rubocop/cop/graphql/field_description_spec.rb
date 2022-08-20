@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::GraphQL::FieldDescription, :config do
-
-
   context "when description is passed as argument" do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::GraphQL::ArgumentName, :config do
-
-
   context "when field name is in snake case" do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)
