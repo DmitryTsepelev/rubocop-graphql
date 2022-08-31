@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#93](https://github.com/DmitryTsepelev/rubocop-graphql/pull/93) Enable InternalAffairs cop ([@ydah][])
 - [PR#91](https://github.com/DmitryTsepelev/rubocop-graphql/pull/91) Fix GraphQL/FieldHashKey keyword detection when string key is used ([@r7kamura][])
 
 ## 0.14.5 (2022-07-02)
@@ -191,3 +192,4 @@
 [@Darhazer]: https://github.com/Darhazer
 [@MH4GF]: https://github.com/MH4GF
 [@r7kamura]: https://github.com/r7kamura
+[@ydah]: https://github.com/ydah
