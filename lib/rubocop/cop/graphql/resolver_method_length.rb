@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module GraphQL
-      # This cop checks if the length of a resolver method exceeds some maximum value.
+      # Checks if the length of a resolver method exceeds some maximum value.
       # Comment lines can optionally be ignored.
       #
       # The maximum allowed length is configurable using the Max option.
@@ -13,6 +13,7 @@ module RuboCop
 
         MSG = "ResolverMethod has too many lines. [%<total>d/%<max>d]"
 
+        # @!method field_definition(node)
         def_node_matcher :field_definition, <<~PATTERN
           (send nil? :field (sym $...) ...)
         PATTERN

@@ -1,5 +1,12 @@
+require:
+  - rubocop/cop/internal_affairs
+  - rubocop-graphql
+
 AllCops:
   TargetRubyVersion: 2.5
+
+GraphQL/ObjectDescription:
+  Enabled: false
 
 Metrics/AbcSize:
   Enabled: false

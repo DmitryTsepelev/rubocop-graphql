@@ -20,6 +20,7 @@ module RuboCop
     #
     module GraphQL
       class LegacyDsl < Base
+        # @!method legacy_dsl?(node)
         def_node_matcher :legacy_dsl?, <<~PATTERN
           (block
             (send
@@ -33,7 +34,7 @@ module RuboCop
               "Use class-based definitions instead."
 
         def on_send(node)
-          return unless node.parent.type == :block
+          return unless node.parent.block_type?
 
           add_offense(node.parent) if legacy_dsl?(node.parent)
         end

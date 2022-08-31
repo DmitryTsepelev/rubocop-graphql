@@ -101,10 +101,12 @@ module RuboCop
           previous.source_range.last_line == current.source_range.first_line - 1
         end
 
+        # @!method argument_declarations_without_blocks(node)
         def_node_search :argument_declarations_without_blocks, <<~PATTERN
           (send nil? :argument (:sym _) ...)
         PATTERN
 
+        # @!method argument_declarations_with_blocks(node)
         def_node_search :argument_declarations_with_blocks, <<~PATTERN
           (block
             (send nil? :argument

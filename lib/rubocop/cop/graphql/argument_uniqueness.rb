@@ -80,7 +80,7 @@ module RuboCop
 
           is_field_block = node.block_type? &&
                            node.respond_to?(:method_name) &&
-                           node.method_name == :field
+                           node.method?(:field)
 
           return field_name(node.parent) unless is_field_block
 
@@ -93,6 +93,7 @@ module RuboCop
           "`#{first_argument.value}`"
         end
 
+        # @!method argument_declarations(node)
         def_node_search :argument_declarations, <<~PATTERN
           (send nil? :argument (:sym _) ...)
         PATTERN

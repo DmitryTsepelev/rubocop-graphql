@@ -5,6 +5,7 @@ module RuboCop
     class SchemaMember
       extend RuboCop::NodePattern::Macros
 
+      # @!method class_contents(node)
       def_node_matcher :class_contents, <<~PATTERN
         (class _ _ $_)
       PATTERN
@@ -16,7 +17,7 @@ module RuboCop
       end
 
       def find_method_definition(method_name)
-        body.find { |node| node.def_type? && node.method_name == method_name }
+        body.find { |node| node.def_type? && node.method?(method_name) }
       end
 
       def body

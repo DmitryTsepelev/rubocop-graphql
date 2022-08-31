@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::GraphQL::LegacyDsl do
-  subject(:cop) { described_class.new(config) }
-
-  let(:config) { RuboCop::Config.new }
-
+RSpec.describe RuboCop::Cop::GraphQL::LegacyDsl, :config do
   context "when legacy DSL is defined" do
     it "registers an offense" do
       expect_offense(<<~RUBY)

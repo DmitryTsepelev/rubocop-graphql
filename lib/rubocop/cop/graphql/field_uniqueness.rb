@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module GraphQL
-      # This cop detects duplicate field definitions within
+      # Detects duplicate field definitions within
       # the same type
       #
       # @example
@@ -66,6 +66,7 @@ module RuboCop
           node.first_argument.value.to_s
         end
 
+        # @!method field_declarations(node)
         def_node_search :field_declarations, <<~PATTERN
           {
             (send nil? :field (:sym _) ...)

@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::GraphQL::FieldName do
-  subject(:cop) { described_class.new(config) }
-
-  let(:config) { RuboCop::Config.new }
-
+RSpec.describe RuboCop::Cop::GraphQL::FieldName, :config do
   context "when field name is in snake case" do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)

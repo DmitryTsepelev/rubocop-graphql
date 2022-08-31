@@ -28,6 +28,7 @@ module RuboCop
         include RuboCop::GraphQL::NodePattern
         include RuboCop::Cop::RangeHelp
 
+        # @!method hash_key_to_use(node)
         def_node_matcher :hash_key_to_use, <<~PATTERN
           (def
             _

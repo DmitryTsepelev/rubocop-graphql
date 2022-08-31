@@ -74,6 +74,7 @@ module RuboCop
           previous.source_range.last_line == current.source_range.first_line - 1
         end
 
+        # @!method field_declarations(node)
         def_node_search :field_declarations, <<~PATTERN
           {
             (send nil? :field (:sym _) ...)

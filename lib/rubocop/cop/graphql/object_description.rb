@@ -26,10 +26,12 @@ module RuboCop
 
         MSG = "Missing type description"
 
+        # @!method has_i18n_description?(node)
         def_node_matcher :has_i18n_description?, <<~PATTERN
           (send nil? :description (send (const nil? :I18n) :t ...))
         PATTERN
 
+        # @!method interface?(node)
         def_node_matcher :interface?, <<~PATTERN
           (send nil? :include (const ...))
         PATTERN

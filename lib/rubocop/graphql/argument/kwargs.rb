@@ -6,6 +6,7 @@ module RuboCop
       class Kwargs
         extend RuboCop::NodePattern::Macros
 
+        # @!method argument_kwargs(node)
         def_node_matcher :argument_kwargs, <<~PATTERN
           (send nil? :argument
             ...
@@ -15,14 +16,17 @@ module RuboCop
           )
         PATTERN
 
+        # @!method description_kwarg?(node)
         def_node_matcher :description_kwarg?, <<~PATTERN
           (pair (sym :description) ...)
         PATTERN
 
+        # @!method loads_kwarg?(node)
         def_node_matcher :loads_kwarg?, <<~PATTERN
           (pair (sym :loads) ...)
         PATTERN
 
+        # @!method as_kwarg?(node)
         def_node_matcher :as_kwarg?, <<~PATTERN
           (pair (sym :as) ...)
         PATTERN

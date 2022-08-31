@@ -5,14 +5,17 @@ module RuboCop
     class Argument
       extend RuboCop::NodePattern::Macros
 
+      # @!method argument_description(node)
       def_node_matcher :argument_description, <<~PATTERN
         (send nil? :argument _ _ (:str $_) ...)
       PATTERN
 
+      # @!method argument_name(node)
       def_node_matcher :argument_name, <<~PATTERN
         (send nil? :argument (:sym $_) ...)
       PATTERN
 
+      # @!method argument_as(node)
       def_node_matcher :argument_as, <<~PATTERN
         (pair (sym :as) (sym $_))
       PATTERN

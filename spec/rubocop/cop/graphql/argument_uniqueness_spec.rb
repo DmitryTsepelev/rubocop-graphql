@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness do
-  subject(:cop) { described_class.new(config) }
-
-  let(:config) { RuboCop::Config.new }
-
+RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness, :config do
   context "when arguments are not duplicated" do
     it "does not register an offense" do
       expect_no_offenses(<<~RUBY)

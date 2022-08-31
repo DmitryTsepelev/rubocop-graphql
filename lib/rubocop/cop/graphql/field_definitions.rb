@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module GraphQL
-      # This cop checks consistency of field definitions
+      # Checks consistency of field definitions
       #
       # EnforcedStyle supports two modes:
       #
@@ -52,6 +52,7 @@ module RuboCop
         include RuboCop::GraphQL::Sorbet
         include RuboCop::GraphQL::Heredoc
 
+        # @!method field_kwargs(node)
         def_node_matcher :field_kwargs, <<~PATTERN
           (send nil? :field
             ...
