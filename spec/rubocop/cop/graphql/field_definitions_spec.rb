@@ -600,7 +600,7 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions, :config do
               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
 
               field :image_url, String, null: false do
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
                 argument :width, Integer, required: false
                 argument :height, Integer, required: false
               end
@@ -787,6 +787,127 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions, :config do
               end
             RUBY
           end
+        end
+      end
+    end
+
+    context "when there are multiple field definitions" do
+      it "not register an offense when resolver is defined after the last field definitions" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, Name, null: true
+            field :first_name, String, null: true
+
+            def first_name
+              object.contact_data.first_name
+            end
+
+            field :last_name, String, null: true
+
+            def last_name
+              object.contact_data.last_name
+            end
+          end
+        RUBY
+      end
+
+      it "registers an offense when resolver is defined before the last field definition" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, Name, null: true
+
+            def first_name
+              object.contact_data.first_name
+            end
+
+            field :first_name, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after last field definition sharing resolver method.
+
+            field :last_name, String, null: true
+
+            def last_name
+              object.contact_data.last_name
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, Name, null: true
+
+            field :first_name, String, null: true
+
+            def first_name
+              object.contact_data.first_name
+            end
+
+
+            field :last_name, String, null: true
+
+            def last_name
+              object.contact_data.last_name
+            end
+          end
+        RUBY
+      end
+
+      context "when the field nodes are same but the field definitions are not" do
+        it "not register an offense when resolver is defined after the last field definition" do
+          expect_no_offenses(<<~RUBY)
+            class UserType < BaseType
+              field :image_url, String, null: false do
+                argument :width, Integer, required: false
+              end
+              field :image_url, String, null: false do
+                argument :width, Integer, required: false
+                argument :height, Integer, required: false
+              end
+
+              def image_url
+                object.image_url
+              end
+
+              field :first_name, String, null: false
+            end
+          RUBY
+        end
+
+        it "register an offense when when resolver method is before the last field definition" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :image_url, String, null: false do
+                argument :width, Integer, required: false
+              end
+
+              def image_url
+                object.image_url
+              end
+
+              field :image_url, String, null: false do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after last field definition sharing resolver method.
+                argument :width, Integer, required: false
+                argument :height, Integer, required: false
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+              field :image_url, String, null: false do
+                argument :width, Integer, required: false
+              end
+
+              field :image_url, String, null: false do
+                argument :width, Integer, required: false
+                argument :height, Integer, required: false
+              end
+
+              def image_url
+                object.image_url
+              end
+
+            end
+          RUBY
         end
       end
     end
