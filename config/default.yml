@@ -38,6 +38,10 @@ GraphQL/FieldDefinitions:
     - group_definitions
     - define_resolver_after_definition
 
+GraphQL/MultipleFieldDefinitions:
+  Enabled: true
+  Description: 'Ensures that fields with multiple definitions are grouped together'
+
 GraphQL/FieldDescription:
   Enabled: true
   VersionAdded: '0.80'
