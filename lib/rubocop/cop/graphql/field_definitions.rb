@@ -63,8 +63,9 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return if !field_definition?(node) || style != :define_resolver_after_definition
+          return if !field?(node) || style != :define_resolver_after_definition
 
+          node = node.parent if field_definition_with_body?(node.parent)
           field = RuboCop::GraphQL::Field.new(node)
           check_resolver_is_defined_after_definition(field)
         end
@@ -114,7 +115,10 @@ module RuboCop
           "sharing resolver method."
 
         def check_resolver_is_defined_after_definition(field)
-          return if field.kwargs.resolver || field.kwargs.method || field.kwargs.hash_key
+          multiple_definitions = multiple_definitions(field)
+          return if field.node != multiple_definitions.last
+
+          return if field_has_no_resolver_method(field)
 
           method_definition = field.schema_member.find_method_definition(field.resolver_method_name)
           return unless method_definition
@@ -125,9 +129,23 @@ module RuboCop
           return if resolver_defined_after_definition?(field, method_definition)
 
           add_offense(field.node,
-                      message: offense_message(fields_with_same_resolver.one?)) do |corrector|
+                      message: offense_message(
+                        fields_with_same_resolver.one? && multiple_definitions.size == 1
+                      )) do |corrector|
             place_resolver_after_field_definition(corrector, field.node)
           end
+        end
+
+        def field_has_no_resolver_method(field)
+          field.kwargs.resolver || field.kwargs.method || field.kwargs.hash_key
+        end
+
+        def multiple_definitions(field)
+          field.schema_member.body.select { |node| field?(node) && field_name(node) == field.name }
+        end
+
+        def field_name(node)
+          RuboCop::GraphQL::Field.new(node).name
         end
 
         def offense_message(single_field_using_resolver)
@@ -157,10 +175,7 @@ module RuboCop
         def fields_with_same_resolver(field, resolver)
           fields = field.schema_member.body
                         .select { |node| field?(node) }
-                        .map do |node|
-                          field = field_definition_with_body?(node) ? node.children.first : node
-                          RuboCop::GraphQL::Field.new(field)
-                        end
+                        .map { |node| RuboCop::GraphQL::Field.new(node) }
 
           [].tap do |fields_with_same_resolver|
             fields.each do |field|
