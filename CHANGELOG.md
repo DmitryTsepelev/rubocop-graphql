@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.15.0 (2022-09-28)
+
+- [PR#94](https://github.com/DmitryTsepelev/rubocop-graphql/pull/94) Add cop for multiple field definitions, update field definitions cop to handle multiple definitions ([@ydah][])
+
 ## 0.14.6 (2022-08-31 🍂)
 
 - [PR#93](https://github.com/DmitryTsepelev/rubocop-graphql/pull/93) Enable InternalAffairs cop ([@ydah][])
@@ -195,3 +199,4 @@
 [@MH4GF]: https://github.com/MH4GF
 [@r7kamura]: https://github.com/r7kamura
 [@ydah]: https://github.com/ydah
+[@toneymathews]: https://github.com/toneymathews
