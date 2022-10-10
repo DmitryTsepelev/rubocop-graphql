@@ -20,7 +20,7 @@ module RuboCop
     module DescriptionMethod
       extend RuboCop::NodePattern::Macros
 
-      DESCRIPTION_STRING = "{({str|dstr|const} ...)|(send const ...)|(send ({str|dstr} ...) _)}"
+      DESCRIPTION_STRING = "{str|dstr|const|send}"
 
       # @!method description_method_call?(node)
       def_node_matcher :description_method_call?, <<~PATTERN
