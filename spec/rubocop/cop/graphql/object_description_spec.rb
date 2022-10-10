@@ -57,6 +57,16 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription, :config do
         end
       end
 
+      context "when description is a method call" do
+        it "does not register an offense" do
+          expect_no_offenses(<<~RUBY)
+            class Types::UserType < Types::BaseObject
+              description t(:user_type)
+            end
+          RUBY
+        end
+      end
+
       context "when description is a constant hash" do
         it "does not register an offense" do
           expect_no_offenses(<<~RUBY)
