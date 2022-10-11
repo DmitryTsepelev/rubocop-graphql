@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.15.1 (2022-10-11)
+
+- [PR#96](https://github.com/DmitryTsepelev/rubocop-graphql/pull/96) Allow method calls without explicit receiver in object descriptions ([@imustafin][])
+
 ## 0.15.0 (2022-09-28)
 
 - [PR#94](https://github.com/DmitryTsepelev/rubocop-graphql/pull/94) Add cop for multiple field definitions, update field definitions cop to handle multiple definitions ([@ydah][])
@@ -200,3 +204,4 @@
 [@r7kamura]: https://github.com/r7kamura
 [@ydah]: https://github.com/ydah
 [@toneymathews]: https://github.com/toneymathews
+[@imustafin]: https://github.com/imustafin
