@@ -199,4 +199,43 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument, :config do
       RUBY
     end
   end
+
+  context "with #authorized? callback" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        class SomeResolver < Resolvers::Base
+          argument :arg1, String, required: true
+          argument :arg2, String, required: true
+
+          def authorized?(arg1:); end
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Argument `arg2:` should be listed in the authorized? signature.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class SomeResolver < Resolvers::Base
+          argument :arg1, String, required: true
+          argument :arg2, String, required: true
+
+          def authorized?(arg1:, arg2:); end
+        end
+      RUBY
+    end
+
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class SomeResolver < Resolvers::Base
+          class Input < GraphQL::Schema::InputObject
+            argument :arg4, String, required: true
+          end
+
+          argument :arg1, String, required: true
+          argument :arg2, String, required: false
+          argument :arg3, Input, required: true
+
+          def authorized?(arg1:, arg2: "hey", arg3:); end
+        end
+      RUBY
+    end
+  end
 end
