@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.16.0 (2022-10-24)
+
+- [PR#97](https://github.com/DmitryTsepelev/rubocop-graphql/pull/97) Check #authorized? for unused arguments ([@palkan][])
+
 ## 0.15.1 (2022-10-11)
 
 - [PR#96](https://github.com/DmitryTsepelev/rubocop-graphql/pull/96) Allow method calls without explicit receiver in object descriptions ([@imustafin][])
@@ -205,3 +209,4 @@
 [@ydah]: https://github.com/ydah
 [@toneymathews]: https://github.com/toneymathews
 [@imustafin]: https://github.com/imustafin
+[@palkan]: https://github.com/palkan
