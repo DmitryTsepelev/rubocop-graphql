@@ -114,7 +114,6 @@ GraphQL/UnusedArgument:
   Enabled: true
   Description: 'Arguments should either be listed explicitly or **rest should be in the resolve signature'
 
-
-GraphQL/UnnecessaryAlias:
+GraphQL/UnnecessaryFieldAlias:
   Enabled: true
   Description: 'Aliases should be different than their field names'

@@ -59,7 +59,7 @@ module RuboCop
         end
 
         def alias
-          @nodes.find { |kwarg| alias_kwarg?(kwarg) }
+          @nodes.find { |kwarg| alias_kwarg?(kwarg) }&.value&.value
         end
 
         def hash_key

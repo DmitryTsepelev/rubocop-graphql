@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require "pry"
+
 module RuboCop
   module Cop
     module GraphQL
@@ -24,7 +24,6 @@ module RuboCop
         MSG = "Unnecessary field alias"
 
         def on_send(node)
-          binding.p.ry
           return unless field_definition?(node)
 
           field = RuboCop::GraphQL::Field.new(node)
