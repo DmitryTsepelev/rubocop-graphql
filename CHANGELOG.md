@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#98](https://github.com/DmitryTsepelev/rubocop-graphql/pull/98) ObjectDescription: exclude QueryContext ([@DmitryTsepelev][])
+
 ## 0.16.0 (2022-10-24)
 
 - [PR#97](https://github.com/DmitryTsepelev/rubocop-graphql/pull/97) Check #authorized? for unused arguments ([@palkan][])

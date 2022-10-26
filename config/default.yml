@@ -99,6 +99,7 @@ GraphQL/ObjectDescription:
   Exclude:
     - '**/*_schema.rb'
     - '**/base_*.rb'
+    - '**/graphql/query_context.rb'
 
 GraphQL/OrderedArguments:
   Enabled: true
