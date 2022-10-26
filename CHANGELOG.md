@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#99](https://github.com/DmitryTsepelev/rubocop-graphql/pull/99) ExtractInputType: include only mutations ([@DmitryTsepelev][])
 - [PR#98](https://github.com/DmitryTsepelev/rubocop-graphql/pull/98) ObjectDescription: exclude QueryContext ([@DmitryTsepelev][])
 
 ## 0.16.0 (2022-10-24)
