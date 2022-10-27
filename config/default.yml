@@ -116,3 +116,7 @@ GraphQL/OrderedFields:
 GraphQL/UnusedArgument:
   Enabled: true
   Description: 'Arguments should either be listed explicitly or **rest should be in the resolve signature'
+
+GraphQL/UnnecessaryFieldAlias:
+  Enabled: true
+  Description: 'Field aliases should be different than their field names'
