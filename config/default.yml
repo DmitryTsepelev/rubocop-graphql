@@ -116,4 +116,4 @@ GraphQL/UnusedArgument:
 
 GraphQL/UnnecessaryFieldAlias:
   Enabled: true
-  Description: 'Aliases should be different than their field names'
+  Description: 'Field aliases should be different than their field names'
