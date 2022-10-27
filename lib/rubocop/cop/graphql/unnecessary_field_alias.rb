@@ -28,7 +28,7 @@ module RuboCop
 
           field = RuboCop::GraphQL::Field.new(node)
 
-          add_offense(node) unless field.name != field.kwargs.alias
+          add_offense(node) if field.name == field.kwargs.alias
         end
       end
     end
