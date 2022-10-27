@@ -26,9 +26,9 @@ module RuboCop
           (pair (sym :method) ...)
         PATTERN
 
-        # @!method alias_kwarg?(node)
-        def_node_matcher :alias_kwarg?, <<~PATTERN
-          (pair (sym :alias) ...)
+        # @!method alias_kwarg(node)
+        def_node_matcher :alias_kwarg, <<~PATTERN
+          (pair (sym :alias) (sym $ _))
         PATTERN
 
         # @!method hash_key_kwarg?(node)
@@ -59,7 +59,7 @@ module RuboCop
         end
 
         def alias
-          @nodes.find { |kwarg| alias_kwarg?(kwarg) }&.value&.value
+          @alias ||= @nodes.map { |kwarg| alias_kwarg(kwarg) }.compact.first
         end
 
         def hash_key

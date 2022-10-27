@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module GraphQL
-      #  This cop checks if each field has an unnecessary alias.
+      #  This cop checks if a field has an unnecessary alias.
       #
       # @example
       #   # good
