@@ -2,6 +2,9 @@
 
 ## master
 
+## 0.17.0 (2022-10-27)
+
+- [PR#100](https://github.com/DmitryTsepelev/rubocop-graphql/pull/100) Add UnnecessaryFieldAlias rule ([@danielvdao][])
 - [PR#99](https://github.com/DmitryTsepelev/rubocop-graphql/pull/99) ExtractInputType: include only mutations ([@DmitryTsepelev][])
 - [PR#98](https://github.com/DmitryTsepelev/rubocop-graphql/pull/98) ObjectDescription: exclude QueryContext ([@DmitryTsepelev][])
 
