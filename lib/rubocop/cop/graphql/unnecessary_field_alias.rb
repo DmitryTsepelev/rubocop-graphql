@@ -15,7 +15,7 @@ module RuboCop
       #   # bad
       #
       #   class UserType < BaseType
-      #     field :name, "Name of the user" String, null: true, aliias: :name
+      #     field :name, "Name of the user" String, null: true, alias: :name
       #   end
       #
       class UnnecessaryFieldAlias < Base
