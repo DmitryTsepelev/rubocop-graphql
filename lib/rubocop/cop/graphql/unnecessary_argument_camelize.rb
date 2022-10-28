@@ -40,7 +40,9 @@ module RuboCop
 
           argument = RuboCop::GraphQL::Argument.new(node)
 
-          add_offense(node) if argument.name.name.split("_").length < 2 && !argument.kwargs.camelize.nil?
+          if argument.name.to_s.split("_").length < 2 && !argument.kwargs.camelize.nil?
+            add_offense(node)
+          end
         end
       end
     end
