@@ -15,7 +15,7 @@ module RuboCop
       #   # bad
       #
       #   class UserType < BaseType
-      #     field :name, "Name of the user" String, null: true, camelize: true
+      #     field :name, "Name of the user", String, null: true, camelize: true
       #   end
       #
       class UnnecessaryFieldCamelize < Base
