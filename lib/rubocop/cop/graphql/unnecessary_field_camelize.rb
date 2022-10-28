@@ -28,7 +28,7 @@ module RuboCop
 
           field = RuboCop::GraphQL::Field.new(node)
 
-          if field.name.to_s.split("_").length < 2 && !field.kwargs.camelize.nil?
+          if field.name.name.split("_").length < 2 && !field.kwargs.camelize.nil?
             add_offense(node)
           end
         end
