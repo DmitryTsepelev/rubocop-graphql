@@ -33,7 +33,7 @@ module RuboCop
 
         # @!method camelize_kwarg?(node)
         def_node_matcher :camelize_kwarg?, <<~PATTERN
-          (pair (sym :loads) ...)
+          (pair (sym :camelize) ...)
         PATTERN
 
         def initialize(argument_node)
