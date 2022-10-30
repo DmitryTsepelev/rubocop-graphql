@@ -124,3 +124,7 @@ GraphQL/UnnecessaryFieldAlias:
 GraphQL/UnnecessaryArgumentCamelize:
   Enabled: true
   Description: "Camelize isn't necessary if the argument name doesn't contain underscores"
+
+GraphQL/UnnecessaryFieldCamelize:
+  Enabled: true
+  Description: "Camelize isn't necessary if the field name doesn't contain underscores"
