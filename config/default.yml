@@ -120,3 +120,7 @@ GraphQL/UnusedArgument:
 GraphQL/UnnecessaryFieldAlias:
   Enabled: true
   Description: 'Field aliases should be different than their field names'
+
+GraphQL/UnnecessaryFieldCamelize:
+  Enabled: true
+  Description: "Camelize isn't necessary if the field name doesn't contain underscores"

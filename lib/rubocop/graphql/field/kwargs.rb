@@ -46,6 +46,11 @@ module RuboCop
           (pair (sym :resolver_method) (sym $...))
         PATTERN
 
+        # @!method camelize_kwarg?(node)
+        def_node_matcher :camelize_kwarg?, <<~PATTERN
+          (pair (sym :camelize) ...)
+        PATTERN
+
         def initialize(field_node)
           @nodes = field_kwargs(field_node) || []
         end
@@ -60,6 +65,10 @@ module RuboCop
 
         def alias
           @alias ||= @nodes.map { |kwarg| alias_kwarg(kwarg) }.compact.first
+        end
+
+        def camelize
+          @nodes.find { |kwarg| camelize_kwarg?(kwarg) }
         end
 
         def hash_key
