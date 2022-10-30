@@ -2,6 +2,11 @@
 
 ## master
 
+## 0.18.0 (2022-10-30)
+
+- [PR#102](https://github.com/DmitryTsepelev/rubocop-graphql/pull/102) Add UnnecessaryFieldCamelize ([@danielvdao][])
+- [PR#103](https://github.com/DmitryTsepelev/rubocop-graphql/pull/103) Add UnnecessaryArgumentCamelize ([@danielvdao][])
+
 ## 0.17.0 (2022-10-27)
 
 - [PR#100](https://github.com/DmitryTsepelev/rubocop-graphql/pull/100) Add UnnecessaryFieldAlias rule ([@danielvdao][])
