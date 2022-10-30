@@ -31,12 +31,21 @@ module RuboCop
           (pair (sym :as) ...)
         PATTERN
 
+        # @!method camelize_kwarg?(node)
+        def_node_matcher :camelize_kwarg?, <<~PATTERN
+          (pair (sym :camelize) ...)
+        PATTERN
+
         def initialize(argument_node)
           @nodes = argument_kwargs(argument_node) || []
         end
 
         def description
           @nodes.find { |kwarg| description_kwarg?(kwarg) }
+        end
+
+        def camelize
+          @nodes.find { |kwarg| camelize_kwarg?(kwarg) }
         end
 
         def loads
