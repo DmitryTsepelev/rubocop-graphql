@@ -1,12 +1,6 @@
-# RuboCop::GraphQL
+# RuboCop::GraphQL ![](https://ruby-gem-downloads-badge.herokuapp.com/rubocop-graphql?type=total)
 
 [Rubocop](https://github.com/rubocop-hq/rubocop) extension for enforcing [graphql-ruby](https://github.com/rmosolgo/graphql-ruby) best practices.
-
-<p align="center">
-  <a href="https://evilmartians.com/?utm_source=graphql-rubocop">
-    <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
-  </a>
-</p>
 
 ## Installation
 
@@ -68,6 +62,10 @@ In your `.rubocop.yml`, you may treat the GraphQL cops just like any other cop. 
 GraphQL/ResolverMethodLength:
   Max: 3
 ```
+
+## Credits
+
+Initially sponsored by [Evil Martians](http://evilmartians.com).
 
 ## Contributing
 
