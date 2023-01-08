@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#107](https://github.com/DmitryTsepelev/rubocop-graphql/pull/107) Make ExtractInputType check nested folders ([@arenclissold][])
+
 ## 0.18.0 (2022-10-30)
 
 - [PR#102](https://github.com/DmitryTsepelev/rubocop-graphql/pull/102) Add UnnecessaryFieldCamelize ([@danielvdao][])
@@ -221,3 +223,4 @@
 [@toneymathews]: https://github.com/toneymathews
 [@imustafin]: https://github.com/imustafin
 [@palkan]: https://github.com/palkan
+]@arenclissold]: https://github.com/arenclissold
