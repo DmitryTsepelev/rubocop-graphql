@@ -23,14 +23,14 @@ module RuboCop
       #  # bad
       #
       #   class UserType < BaseType
-      #     argument :filter, String, required: false, camelize: false
+      #     argument :filter, String, required: false
       #   end
       #
       #  # bad
       #
       #   class UserType < BaseType
       #     field :name, String, "Name of the user", null: true do
-      #       argument :filter, String, required: false, camelize: true
+      #       argument :filter, String, required: false
       #     end
       #   end
       #
