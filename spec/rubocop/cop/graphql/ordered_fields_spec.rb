@@ -130,6 +130,29 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
     end
   end
 
+  context "when a unordered field declaration uses heredocs" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        class UserType < BaseType
+          field :phone, String, null: true
+          field :name, String, null: true, description: <<~HEREDOC
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `name` should appear before `phone`.
+            heredoc_example
+          HEREDOC
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class UserType < BaseType
+          field :name, String, null: true, description: <<~HEREDOC
+            heredoc_example
+          HEREDOC
+          field :phone, String, null: true
+        end
+      RUBY
+    end
+  end
+
   context "with multiple offenses" do
     it "orders all fields alphabetically" do
       expect_offense(<<~RUBY)
