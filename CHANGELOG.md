@@ -3,6 +3,7 @@
 ## master
 
 - [PR#107](https://github.com/DmitryTsepelev/rubocop-graphql/pull/107) Make ExtractInputType check nested folders ([@arenclissold][])
+- [PR#109](https://github.com/DmitryTsepelev/rubocop-graphql/pull/109) [OrderedFields] [OrderedArguments] Handle heredocs when auto-correcting ([@Darhazer][])
 
 ## 0.18.0 (2022-10-30)
 
