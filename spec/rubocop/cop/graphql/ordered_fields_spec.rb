@@ -30,14 +30,15 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
     end
   end
 
-  context "when each individual groups are alphabetically sorted" do
-    it "not registers an offense" do
-      expect_no_offenses(<<~RUBY)
+  context "when grouped fields are not alphabetically sorted" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
         class UserType < BaseType
           field :birthdate, Int, null: true
           field :name, Staring, null: true
 
           field :email, String, null: true
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `email` should appear before `name`.
           field :phone, String, null: true
         end
       RUBY
@@ -104,6 +105,56 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
           field :phone, String, null: true
         end
       RUBY
+    end
+  end
+
+  context "when fields are not consecutive" do
+    context "when there are blocks" do
+      it "registers an offense" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :phone, String, null: true do
+              argument :something, String, required: false
+            end
+            field :name, String, null: true do
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `name` should appear before `phone`.
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :name, String, null: true do
+            end
+            field :phone, String, null: true do
+              argument :something, String, required: false
+            end
+          end
+        RUBY
+      end
+    end
+
+    context "when there are no blocks" do
+      it "registers an offense" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :phone, String, null: true
+
+
+            field :name, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `name` should appear before `phone`.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :name, String, null: true
+            field :phone, String, null: true
+
+
+          end
+        RUBY
+      end
     end
   end
 

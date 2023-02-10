@@ -41,7 +41,6 @@ module RuboCop
 
         def on_class(node)
           field_declarations(node).each_cons(2) do |previous, current|
-            next unless consecutive_lines(previous, current)
             next if field_name(current) >= field_name(previous)
 
             register_offense(previous, current)
@@ -68,10 +67,6 @@ module RuboCop
           else
             node.first_argument.value.to_s
           end
-        end
-
-        def consecutive_lines(previous, current)
-          previous.source_range.last_line == current.source_range.first_line - 1
         end
 
         # @!method field_declarations(node)
