@@ -84,7 +84,7 @@ module RuboCop
       end
 
       def root_node?(node)
-        node.parent.nil? || node.parent.module_type? || root_with_siblings?(node.parent)
+        node.parent.nil? || node.class_type? || root_with_siblings?(node.parent)
       end
 
       def root_with_siblings?(node)

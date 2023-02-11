@@ -80,6 +80,16 @@ module RuboCop
           end
         end
 
+        def on_module(node)
+          return if style != :group_definitions
+
+          schema_member = RuboCop::GraphQL::SchemaMember.new(node)
+
+          if (body = schema_member.body)
+            check_grouped_field_declarations(body)
+          end
+        end
+
         private
 
         GROUP_DEFS_MSG = "Group all field definitions together."
@@ -100,7 +110,6 @@ module RuboCop
 
         def group_field_declarations(corrector, node)
           field = RuboCop::GraphQL::Field.new(node)
-
           first_field = field.schema_member.body.find do |node|
             field_definition?(node) || field_definition_with_body?(node)
           end
