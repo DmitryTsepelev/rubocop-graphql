@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#111](https://github.com/DmitryTsepelev/rubocop-graphql/pull/111) Make FieldDefinitions work with modules ([@DmitryTsepelev][])
+
 ## 0.19.0 (2023-01-15)
 
 - [PR#107](https://github.com/DmitryTsepelev/rubocop-graphql/pull/107) Make ExtractInputType check nested folders ([@arenclissold][])

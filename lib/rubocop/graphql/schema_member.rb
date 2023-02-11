@@ -7,7 +7,7 @@ module RuboCop
 
       # @!method class_contents(node)
       def_node_matcher :class_contents, <<~PATTERN
-        (class _ _ $_)
+        {(class _ _ $_) | (module _ $_)}
       PATTERN
 
       attr_reader :node

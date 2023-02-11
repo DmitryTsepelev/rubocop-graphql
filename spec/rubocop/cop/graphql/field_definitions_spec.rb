@@ -158,6 +158,44 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions, :config do
         RUBY
       end
 
+      context "when inside a module" do
+        it "registers an offense" do
+          expect_offense(<<~RUBY)
+            module UserType
+              field :first_name, String, null: true
+
+              def first_name
+                object.contact_data.first_name
+              end
+
+              field :last_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            module UserType
+              field :first_name, String, null: true
+
+              field :last_name, String, null: true
+
+
+              def first_name
+                object.contact_data.first_name
+              end
+
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+        end
+      end
+
       context "when resolver methods have Sorbet signatures" do
         it "registers an offense" do
           expect_offense(<<~RUBY)
