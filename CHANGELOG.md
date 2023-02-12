@@ -2,7 +2,8 @@
 
 ## master
 
-- [PR#111](https://github.com/DmitryTsepelev/rubocop-graphql/pull/111) Make FieldDefinitions work with modules ([@DmitryTsepelev][])
+- [PR#113](https://github.com/DmitryTsepelev/rubocop-graphql/pull/113) Add GraphqlName cop ([@DmitryTsepelev][])
+- [PR#112](https://github.com/DmitryTsepelev/rubocop-graphql/pull/112) Make FieldDefinitions work with modules ([@DmitryTsepelev][])
 
 ## 0.19.0 (2023-01-15)
 
