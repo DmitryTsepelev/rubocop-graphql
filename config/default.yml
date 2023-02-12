@@ -106,6 +106,20 @@ GraphQL/LegacyDsl:
   VersionAdded: '0.80'
   Description: 'Checks that types are defined with class-based API'
 
+GraphQL/MaxDepthSchema:
+  Enabled: true
+  VersionAdded: '1.0.0'
+  Description: 'Enforces max_depth configuration in schema'
+  Include:
+    - '**/graphql/**/*_schema.rb'
+
+GraphQL/MaxComplexitySchema:
+  Enabled: true
+  VersionAdded: '1.0.0'
+  Description: 'Enforces max_complexity configuration in schema'
+  Include:
+    - '**/graphql/**/*_schema.rb'
+
 GraphQL/ObjectDescription:
   Enabled: true
   VersionAdded: '0.80'

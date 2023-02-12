@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#114](https://github.com/DmitryTsepelev/rubocop-graphql/pull/114) Add MaxDepthSchema and MaxComplextySchema cops ([@DmitryTsepelev][])
 - [PR#113](https://github.com/DmitryTsepelev/rubocop-graphql/pull/113) Add GraphqlName cop ([@DmitryTsepelev][])
 - [PR#112](https://github.com/DmitryTsepelev/rubocop-graphql/pull/112) Make FieldDefinitions work with modules ([@DmitryTsepelev][])
 
