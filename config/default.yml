@@ -21,6 +21,18 @@ GraphQL/ArgumentUniqueness:
   VersionAdded: '0.80'
   Description: 'This cop enforces arguments to be defined once per block'
 
+GraphQL/GraphqlName:
+  Enabled: true
+  VersionAdded: '1.0.0'
+  Description: 'This cop check proper configuration of graphql_name'
+  Include:
+    - "**/graphql/types/**/*"
+    - "**/graphql/mutations/**/*"
+  EnforcedStyle: only_override
+  SupportedStyles:
+    - required
+    - only_override
+
 GraphQL/ResolverMethodLength:
   Enabled: true
   VersionAdded: '0.80'
