@@ -113,6 +113,13 @@ GraphQL/MultipleFieldDefinitions:
   VersionAdded: '0.15.0'
   Description: 'Ensures that fields with multiple definitions are grouped together'
 
+GraphQL/NotAuthorizedNodeType:
+  Enabled: true
+  VersionAdded: '1.0.0'
+  Description: 'Detects types that implement Node interface and not have `.authorized?` check'
+  Include:
+    - '**/graphql/types/**/*'
+
 GraphQL/ResolverMethodLength:
   Enabled: true
   VersionAdded: '0.1.0'
