@@ -39,8 +39,18 @@ module RuboCop
               "section. "\
               "Field `%<current>s` should appear before `%<previous>s`."
 
+        # @!method field_declarations(node)
+        def_node_search :field_declarations, <<~PATTERN
+          {
+            (send nil? :field (:sym _) ...)
+            (block
+              (send nil? :field (:sym _) ...) ...)
+          }
+        PATTERN
+
         def on_class(node)
           field_declarations(node).each_cons(2) do |previous, current|
+            next unless consecutive_fields(previous, current)
             next if field_name(current) >= field_name(previous)
 
             register_offense(previous, current)
@@ -48,6 +58,14 @@ module RuboCop
         end
 
         private
+
+        def consecutive_fields(previous, current)
+          return true if cop_config["Groups"] == false
+
+          (previous.source_range.last_line == current.source_range.first_line - 1) ||
+            (previous.parent.block_type? &&
+               previous.parent.last_line == current.source_range.first_line - 1)
+        end
 
         def register_offense(previous, current)
           message = format(
@@ -68,15 +86,6 @@ module RuboCop
             node.first_argument.value.to_s
           end
         end
-
-        # @!method field_declarations(node)
-        def_node_search :field_declarations, <<~PATTERN
-          {
-            (send nil? :field (:sym _) ...)
-            (block
-              (send nil? :field (:sym _) ...) ...)
-          }
-        PATTERN
       end
     end
   end
