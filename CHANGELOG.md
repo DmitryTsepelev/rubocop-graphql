@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#111](https://github.com/DmitryTsepelev/rubocop-graphql/pull/111) Fix GraphQL/OrderedFields to handle blocks properly ([@danielvdao][])
 - [PR#115](https://github.com/DmitryTsepelev/rubocop-graphql/pull/115) Add NotAuthorizedNodeType cop ([@DmitryTsepelev][])
 - [PR#114](https://github.com/DmitryTsepelev/rubocop-graphql/pull/114) Add MaxDepthSchema and MaxComplextySchema cops ([@DmitryTsepelev][])
 - [PR#113](https://github.com/DmitryTsepelev/rubocop-graphql/pull/113) Add GraphqlName cop ([@DmitryTsepelev][])
