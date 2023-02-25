@@ -112,7 +112,7 @@ GraphQL/OrderedFields:
   Enabled: true
   VersionAdded: '0.80'
   Description: 'Fields should be alphabetically sorted within groups'
-  Groups: false
+  Groups: true
 
 GraphQL/UnusedArgument:
   Enabled: true

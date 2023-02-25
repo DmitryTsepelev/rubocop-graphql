@@ -129,7 +129,7 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
     end
   end
 
-  context "when group config is disabled" do
+  context "when group config is false" do
     let(:config) do
       RuboCop::Config.new(
         "GraphQL/OrderedFields" => {
