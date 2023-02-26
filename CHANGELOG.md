@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.0.0 (2023-02-26) 🚀
+
 - [PR#111](https://github.com/DmitryTsepelev/rubocop-graphql/pull/111) Fix GraphQL/OrderedFields to handle blocks properly ([@danielvdao][])
 - [PR#115](https://github.com/DmitryTsepelev/rubocop-graphql/pull/115) Add NotAuthorizedNodeType cop ([@DmitryTsepelev][])
 - [PR#114](https://github.com/DmitryTsepelev/rubocop-graphql/pull/114) Add MaxDepthSchema and MaxComplextySchema cops ([@DmitryTsepelev][])
