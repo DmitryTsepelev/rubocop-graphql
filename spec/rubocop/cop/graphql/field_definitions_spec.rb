@@ -194,6 +194,25 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions, :config do
             end
           RUBY
         end
+
+        context "when module is inside of another module" do
+          context "when there is a method call between fields" do
+            it "not registers an offense" do
+              expect_offense(<<~RUBY)
+                module SomeModule
+                  module UserType
+                    field :first_name, String, null: true
+
+                    some_other_method_call
+
+                    field :last_name, String, null: true
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+                  end
+                end
+              RUBY
+            end
+          end
+        end
       end
 
       context "when resolver methods have Sorbet signatures" do
