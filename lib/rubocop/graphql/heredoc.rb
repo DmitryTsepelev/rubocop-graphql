@@ -13,7 +13,7 @@ module RuboCop
                          heredoc?(kwarg.value)
                        end&.value
 
-        range = node.loc.expression
+        range = node.source_range
         range = range.join(last_heredoc.loc.heredoc_end) if last_heredoc
 
         range_by_whole_lines(range)

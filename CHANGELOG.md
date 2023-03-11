@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#121](https://github.com/DmitryTsepelev/rubocop-graphql/pull/121) NotAuthorizedNodeType supports authorized? inside class block ([@DmitryTsepelev][])
+
 ## 1.0.0 (2023-02-26) 🚀
 
 - [PR#111](https://github.com/DmitryTsepelev/rubocop-graphql/pull/111) Fix GraphQL/OrderedFields to handle blocks properly ([@danielvdao][])
