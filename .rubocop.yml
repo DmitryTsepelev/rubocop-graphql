@@ -46,6 +46,16 @@ Naming/FileName:
 Naming/PredicateName:
   Enabled: false
 
+GraphQL/MaxComplexitySchema:
+  Exclude:
+    - lib/rubocop/cop/graphql/max_complexity_schema.rb
+    - lib/rubocop/cop/graphql/max_depth_schema.rb
+
+GraphQL/MaxDepthSchema:
+  Exclude:
+    - lib/rubocop/cop/graphql/max_complexity_schema.rb
+    - lib/rubocop/cop/graphql/max_depth_schema.rb
+
 # FIXME: Workaround for a false positive caused by this cop when using `bundle exec rake`.
 InternalAffairs/UndefinedConfig:
   Enabled: false

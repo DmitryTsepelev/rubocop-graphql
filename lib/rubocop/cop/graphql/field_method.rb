@@ -68,10 +68,10 @@ module RuboCop
           method_definition = suggest_method_name_for(field)
           suggested_method_name = method_to_use(method_definition)
 
-          corrector.insert_after(node.loc.expression, ", method: :#{suggested_method_name}")
+          corrector.insert_after(node.source_range, ", method: :#{suggested_method_name}")
 
           range = range_with_surrounding_space(
-            range: method_definition.loc.expression, side: :left
+            range: method_definition.source_range, side: :left
           )
           corrector.remove(range)
         end

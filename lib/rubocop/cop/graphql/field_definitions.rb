@@ -220,7 +220,7 @@ module RuboCop
 
         def remove_old_resolver(corrector, resolver_definition)
           range_to_remove = range_with_surrounding_space(
-            range: resolver_definition.loc.expression, side: :left
+            range: resolver_definition.source_range, side: :left
           )
           corrector.remove(range_to_remove)
 
@@ -229,7 +229,7 @@ module RuboCop
           return unless resolver_signature
 
           range_to_remove = range_with_surrounding_space(
-            range: resolver_signature.loc.expression, side: :left
+            range: resolver_signature.source_range, side: :left
           )
           corrector.remove(range_to_remove)
         end

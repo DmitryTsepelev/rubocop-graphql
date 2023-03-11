@@ -144,7 +144,7 @@ module RuboCop
         end
 
         def arg_end(node)
-          node.loc.expression.end
+          node.source_range.end
         end
 
         def inferred_arg_name(name_as_string)

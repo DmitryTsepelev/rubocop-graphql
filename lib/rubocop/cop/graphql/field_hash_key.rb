@@ -74,11 +74,11 @@ module RuboCop
           suggested_hash_key_name = hash_key_to_use(method_definition)
 
           corrector.insert_after(
-            node.loc.expression, ", hash_key: #{suggested_hash_key_name.inspect}"
+            node.source_range, ", hash_key: #{suggested_hash_key_name.inspect}"
           )
 
           range = range_with_surrounding_space(
-            range: method_definition.loc.expression, side: :left
+            range: method_definition.source_range, side: :left
           )
 
           corrector.remove(range)

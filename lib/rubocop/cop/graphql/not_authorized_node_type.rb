@@ -20,6 +20,20 @@ module RuboCop
       #     end
       #   end
       #
+      #   # good
+      #
+      #   class UserType < BaseType
+      #     implements GraphQL::Types::Relay::Node
+      #
+      #     field :uuid, ID, null: false
+      #
+      #     class << self
+      #       def authorized?(object, context)
+      #         super && object.owner == context[:viewer]
+      #       end
+      #     end
+      #   end
+      #
       #   # bad
       #
       #   class UserType < BaseType
@@ -42,7 +56,7 @@ module RuboCop
 
         # @!method has_authorized_method?(node)
         def_node_matcher :has_authorized_method?, <<~PATTERN
-          `(:defs (:self) :authorized? ...)
+          {`(:defs (:self) :authorized? ...) | `(:sclass (:self) `(:def :authorized? ...))}
         PATTERN
 
         def on_class(node)
