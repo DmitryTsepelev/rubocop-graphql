@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.0.1 (2023-03-13)
+
 - [PR#120](https://github.com/DmitryTsepelev/rubocop-graphql/pull/120) FieldDefinitions handles method calls between fields inside nested modules ([@DmitryTsepelev][])
 - [PR#121](https://github.com/DmitryTsepelev/rubocop-graphql/pull/121) NotAuthorizedNodeType supports authorized? inside class block ([@DmitryTsepelev][])
 
