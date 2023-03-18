@@ -3,32 +3,48 @@
 module RuboCop
   module Cop
     module GraphQL
-      #  This cop checks if a field has an unnecessary alias.
+      #  This cop prevents defining an unnecessary alias, method, or resolver_method.
       #
       # @example
       #   # good
       #
-      #   class UserType < BaseType
-      #     field :name, String, "Name of the user", null: true, alias: :real_name
-      #   end
+      #   field :name, String, "Name of the user", null: true, alias: :real_name
+      #   field :name, String, "Name of the user", null: true, method: :real_name
+      #   field :name, String, "Name of the user", null: true, resolver_method: :real_name
+      #   field :name, String, "Name of the user", null: true, hash_key: :real_name
       #
       #   # bad
       #
-      #   class UserType < BaseType
-      #     field :name, "Name of the user" String, null: true, alias: :name
-      #   end
+      #   field :name, "Name of the user" String, null: true, alias: :name
+      #   field :name, String, "Name of the user", null: true, method: :name
+      #   field :name, String, "Name of the user", null: true, resolver_method: :name
+      #   field :name, String, "Name of the user", null: true, hash_key: :name
       #
       class UnnecessaryFieldAlias < Base
         include RuboCop::GraphQL::NodePattern
 
-        MSG = "Unnecessary field alias"
+        MSG = "Unnecessary :%<kwarg>s configured"
 
         def on_send(node)
           return unless field_definition?(node)
 
           field = RuboCop::GraphQL::Field.new(node)
 
-          add_offense(node) if field.name == field.kwargs.alias
+          if (unnecessary_kwarg = validate_kwargs(field))
+            message = format(self.class::MSG, kwarg: unnecessary_kwarg)
+            add_offense(node, message: message)
+          end
+        end
+
+        private
+
+        def validate_kwargs(field) # rubocop:disable Metrics/CyclomaticComplexity
+          case field.name
+          when field.kwargs.alias then "alias"
+          when field.kwargs.method&.value&.value then "method"
+          when field.kwargs.resolver_method_name then "resolver_method"
+          when field.kwargs.hash_key&.value&.value then "hash_key"
+          end
         end
       end
     end

@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#124](https://github.com/DmitryTsepelev/rubocop-graphql/pull/124) UnnecessaryFieldAlias checks for method, hash_key and resolver_method ([@DmitryTsepelev][])
+
 ## 1.0.1 (2023-03-13)
 
 - [PR#120](https://github.com/DmitryTsepelev/rubocop-graphql/pull/120) FieldDefinitions handles method calls between fields inside nested modules ([@DmitryTsepelev][])
