@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#126](https://github.com/DmitryTsepelev/rubocop-graphql/pull/126) Ignore nested classes in MaxDepthSchema/MaxComplexitySchema ([@DmitryTsepelev][])
+
 ## 1.1.0 (2023-03-13)
 
 - [PR#124](https://github.com/DmitryTsepelev/rubocop-graphql/pull/124) UnnecessaryFieldAlias checks for method, hash_key and resolver_method ([@DmitryTsepelev][])
