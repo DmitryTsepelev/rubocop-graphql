@@ -9,6 +9,18 @@ RSpec.describe RuboCop::Cop::GraphQL::MaxDepthSchema, :config do
         end
       RUBY
     end
+
+    context "when schema has nested class" do
+      specify do
+        expect_no_offenses(<<~RUBY, "./graphql/app_schema.rb")
+          class AppSchema < BaseSchema
+            max_depth 42
+
+            class CustomException < GraphQL::ExecutionError; end
+          end
+        RUBY
+      end
+    end
   end
 
   context "when schema has no max_depth" do

@@ -21,7 +21,7 @@ module RuboCop
         MSG = "max_depth should be configured for schema."
 
         def on_class(node)
-          return if max_depth(node)
+          return if ::RuboCop::GraphQL::Class.new(node).nested? || max_depth(node)
 
           add_offense(node)
         end

@@ -21,7 +21,7 @@ module RuboCop
         MSG = "max_complexity should be configured for schema."
 
         def on_class(node)
-          return if max_complexity(node)
+          return if ::RuboCop::GraphQL::Class.new(node).nested? || max_complexity(node)
 
           add_offense(node)
         end
