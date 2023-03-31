@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.1.1 (2023-04-01)
+
 - [PR#126](https://github.com/DmitryTsepelev/rubocop-graphql/pull/126) Ignore nested classes in MaxDepthSchema/MaxComplexitySchema ([@DmitryTsepelev][])
 
 ## 1.1.0 (2023-03-13)
