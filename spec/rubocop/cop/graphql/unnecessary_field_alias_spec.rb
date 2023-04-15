@@ -20,6 +20,12 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :alias configured
           end
         RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
+          end
+        RUBY
       end
     end
   end
@@ -41,6 +47,12 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
           class UserType < BaseType
             field :first_name, String, null: true, method: :first_name
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :method configured
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
           end
         RUBY
       end
@@ -66,6 +78,12 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :resolver_method configured
           end
         RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
+          end
+        RUBY
       end
     end
   end
@@ -87,6 +105,12 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
           class UserType < BaseType
             field :first_name, String, null: true, hash_key: :first_name
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :hash_key configured
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
           end
         RUBY
       end

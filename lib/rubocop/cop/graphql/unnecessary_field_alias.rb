@@ -21,6 +21,7 @@ module RuboCop
       #   field :name, String, "Name of the user", null: true, hash_key: :name
       #
       class UnnecessaryFieldAlias < Base
+        extend AutoCorrector
         include RuboCop::GraphQL::NodePattern
 
         MSG = "Unnecessary :%<kwarg>s configured"
@@ -32,7 +33,13 @@ module RuboCop
 
           if (unnecessary_kwarg = validate_kwargs(field))
             message = format(self.class::MSG, kwarg: unnecessary_kwarg)
-            add_offense(node, message: message)
+            add_offense(node, message: message) do |corrector|
+              kwarg_node = node.arguments.last.pairs.find do |pair|
+                pair.key.value == unnecessary_kwarg.to_sym
+              end
+              corrector.remove_preceding(kwarg_node, 2)
+              corrector.remove(kwarg_node)
+            end
           end
         end
 
