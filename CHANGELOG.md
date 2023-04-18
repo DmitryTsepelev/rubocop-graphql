@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#128](https://github.com/DmitryTsepelev/rubocop-graphql/pull/128) Add autocorrect to UnnecessaryFieldAlias ([@TSMMark][])
+
 ## 1.1.1 (2023-04-01)
 
 - [PR#126](https://github.com/DmitryTsepelev/rubocop-graphql/pull/126) Ignore nested classes in MaxDepthSchema/MaxComplexitySchema ([@DmitryTsepelev][])
@@ -248,3 +250,4 @@
 [@imustafin]: https://github.com/imustafin
 [@palkan]: https://github.com/palkan
 [@arenclissold]: https://github.com/arenclissold
+[@TSMMark]: https://github.com/TSMMark
