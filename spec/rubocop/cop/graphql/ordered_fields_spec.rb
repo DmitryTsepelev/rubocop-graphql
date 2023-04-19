@@ -187,6 +187,87 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
     end
   end
 
+  context "when Order config is specified" do
+    let(:config) do
+      RuboCop::Config.new(
+        "GraphQL/OrderedFields" => {
+          "Order" => %w[id /^id_.*$/ /^.*_id$/ everything-else /^(created|updated)_at$/]
+        }
+      )
+    end
+
+    context "when there are no blocks" do
+      it "registers an offense" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :alpha, String, null: true
+            field :id, ID, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `id` should appear before `alpha`.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :id, ID, null: false
+            field :alpha, String, null: true
+          end
+        RUBY
+      end
+
+      it "registers complex offenses 1" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :id, ID, null: false
+            field :created_at, Date, null: false
+            field :zelda, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `zelda` should appear before `created_at`.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :id, ID, null: false
+            field :zelda, String, null: true
+            field :created_at, Date, null: false
+          end
+        RUBY
+      end
+
+      it "registers complex offenses 2" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :updated_at, Date, null: false
+            field :created_at, Date, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `created_at` should appear before `updated_at`.
+            field :deleted_at, Date, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `deleted_at` should appear before `created_at`.
+            field :zelda, String, null: false
+            field :link, String, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `link` should appear before `zelda`.
+            field :id_kind, String, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `id_kind` should appear before `link`.
+            field :org_id, String, null: true
+            field :id, ID, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `id` should appear before `org_id`.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :id, ID, null: false
+            field :id_kind, String, null: false
+            field :org_id, String, null: true
+            field :deleted_at, Date, null: false
+            field :link, String, null: false
+            field :zelda, String, null: false
+            field :created_at, Date, null: false
+            field :updated_at, Date, null: false
+          end
+        RUBY
+      end
+    end
+  end
+
   context "when a unordered field declaration take several lines" do
     it "registers an offense" do
       expect_offense(<<~RUBY)
