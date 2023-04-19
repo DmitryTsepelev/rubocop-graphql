@@ -208,4 +208,86 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedArguments, :config do
       RUBY
     end
   end
+
+  context "when Order config is specified" do
+    let(:config) do
+      RuboCop::Config.new(
+        "GraphQL/OrderedArguments" => {
+          "Order" => %w[id /^id_.*$/ /^.*_id$/ everything-else /^(created|updated)_at$/]
+        }
+      )
+    end
+
+    context "when there are no blocks" do
+      it "registers an offense" do
+        expect_offense(<<~RUBY)
+          class UpdateProfile < BaseMutation
+            argument :alpha, String, null: true
+            argument :id, ID, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `id` should appear before `alpha`.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UpdateProfile < BaseMutation
+            argument :id, ID, null: false
+            argument :alpha, String, null: true
+          end
+        RUBY
+      end
+
+      it "registers complex offenses 1" do
+        expect_offense(<<~RUBY)
+          class UpdateProfile < BaseMutation
+            argument :id, ID, null: false
+            argument :created_at, Date, null: false
+            argument :zelda, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `zelda` should appear before `created_at`.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UpdateProfile < BaseMutation
+            argument :id, ID, null: false
+            argument :zelda, String, null: true
+            argument :created_at, Date, null: false
+          end
+        RUBY
+      end
+
+      it "registers complex offenses 2" do
+        expect_offense(<<~RUBY)
+          class UpdateProfile < BaseMutation
+            argument :updated_at, Date, null: false
+            argument :created_at, Date, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `created_at` should appear before `updated_at`.
+            argument :deleted_at, Date, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `deleted_at` should appear before `created_at`.
+            argument :zelda, String, null: false
+            argument :link, String, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `link` should appear before `zelda`.
+            argument :id_kind, String, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `id_kind` should appear before `link`.
+            argument :org_id, String, null: true
+            argument :id, ID, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Arguments should be sorted in an alphabetical order within their section. Field `id` should appear before `org_id`.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UpdateProfile < BaseMutation
+            argument :id, ID, null: false
+            argument :id_kind, String, null: false
+            argument :org_id, String, null: true
+            argument :deleted_at, Date, null: false
+            argument :link, String, null: false
+            argument :zelda, String, null: false
+            argument :created_at, Date, null: false
+            argument :updated_at, Date, null: false
+          end
+        RUBY
+      end
+    end
+  end
+
 end

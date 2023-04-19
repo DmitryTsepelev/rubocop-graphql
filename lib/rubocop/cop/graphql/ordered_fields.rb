@@ -51,7 +51,7 @@ module RuboCop
         def on_class(node)
           field_declarations(node).each_cons(2) do |previous, current|
             next unless consecutive_fields(previous, current)
-            next if correct_field_order?(field_name(previous), field_name(current))
+            next if correct_order?(field_name(previous), field_name(current))
 
             register_offense(previous, current)
           end
@@ -59,7 +59,7 @@ module RuboCop
 
         private
 
-        def correct_field_order?(previous, current)
+        def correct_order?(previous, current)
           # If Order config is provided, we should use it to determine the order
           # Else, we should use alphabetical order
           # e.g. "Order" => [
