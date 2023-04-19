@@ -3,7 +3,6 @@
 module RuboCop
   module GraphQL
     module CompareOrder
-
       def correct_order?(previous, current)
         # If Order config is provided, we should use it to determine the order
         # Else, we should use alphabetical order
@@ -47,7 +46,6 @@ module RuboCop
 
         everything_else_index
       end
-
     end
   end
 end

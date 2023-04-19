@@ -289,5 +289,4 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedArguments, :config do
       end
     end
   end
-
 end
