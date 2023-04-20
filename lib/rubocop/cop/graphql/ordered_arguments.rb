@@ -52,6 +52,7 @@ module RuboCop
         extend AutoCorrector
 
         include RuboCop::GraphQL::SwapRange
+        include RuboCop::GraphQL::CompareOrder
 
         MSG = "Arguments should be sorted in an alphabetical order within their section. " \
               "Field `%<current>s` should appear before `%<previous>s`."
@@ -71,7 +72,7 @@ module RuboCop
 
           argument_declarations.each_cons(2) do |previous, current|
             next unless consecutive_lines(previous, current)
-            next if argument_name(current) >= argument_name(previous)
+            next if correct_order?(argument_name(previous), argument_name(current))
 
             register_offense(previous, current)
           end

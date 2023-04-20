@@ -141,12 +141,14 @@ GraphQL/OrderedArguments:
   Enabled: true
   VersionAdded: '0.7.0'
   Description: 'Arguments should be alphabetically sorted within groups'
+  Order: null
 
 GraphQL/OrderedFields:
   Enabled: true
   VersionAdded: '0.5.0'
   Description: 'Fields should be alphabetically sorted within groups'
   Groups: true
+  Order: null
 
 GraphQL/UnusedArgument:
   Enabled: true
