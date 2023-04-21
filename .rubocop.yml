@@ -3,7 +3,7 @@ require:
   - rubocop-graphql
 
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.0
 
 GraphQL/ObjectDescription:
   Enabled: false
