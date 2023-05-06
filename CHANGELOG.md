@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.2.0 (2023-05-06)
+
 - [PR#128](https://github.com/DmitryTsepelev/rubocop-graphql/pull/128) Add autocorrect to UnnecessaryFieldAlias ([@TSMMark][])
 - [PR#130](https://github.com/DmitryTsepelev/rubocop-graphql/pull/130) Feature: add "Order" config to cops: OrderedFields, OrderedArguments ([@TSMMark][])
 
