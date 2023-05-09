@@ -7,8 +7,8 @@ module RuboCop
       # Such types can be fetched by ID and therefore should have type level check to
       # avoid accidental information exposure.
       #
-      # If `.authorized?` is defined in a parent class, you can add parent to the "SafeBaseClasses" to avoid offenses
-      # in children.
+      # If `.authorized?` is defined in a parent class, you can add parent to the "SafeBaseClasses"
+      # to avoid offenses in children.
       #
       # @example
       #   # good
