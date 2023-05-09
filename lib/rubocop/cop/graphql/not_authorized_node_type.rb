@@ -7,6 +7,9 @@ module RuboCop
       # Such types can be fetched by ID and therefore should have type level check to
       # avoid accidental information exposure.
       #
+      # If `.authorized?` is defined in a parent class, you can add parent to the "SafeBaseClasses"
+      # to avoid offenses in children.
+      #
       # @example
       #   # good
       #
@@ -45,6 +48,11 @@ module RuboCop
       class NotAuthorizedNodeType < Base
         MSG = ".authorized? should be defined for types implementing Node interface."
 
+        # @!method class_name(node)
+        def_node_matcher :class_name, <<~PATTERN
+          (const nil? $_)
+        PATTERN
+
         # @!method implements_node_type?(node)
         def_node_matcher :implements_node_type?, <<~PATTERN
           `(send nil? :implements
@@ -60,7 +68,19 @@ module RuboCop
         PATTERN
 
         def on_class(node)
+          return if ignored_class?(parent_class(node))
+
           add_offense(node) if implements_node_type?(node) && !has_authorized_method?(node)
+        end
+
+        private
+
+        def parent_class(node)
+          node.child_nodes[1]
+        end
+
+        def ignored_class?(node)
+          cop_config["SafeBaseClasses"].include?(String(class_name(node)))
         end
       end
     end
