@@ -119,6 +119,7 @@ GraphQL/NotAuthorizedNodeType:
   Description: 'Detects types that implement Node interface and not have `.authorized?` check'
   Include:
     - '**/graphql/types/**/*'
+  SafeBaseClasses: []
 
 GraphQL/ResolverMethodLength:
   Enabled: true
