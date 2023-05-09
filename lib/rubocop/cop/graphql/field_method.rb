@@ -51,6 +51,7 @@ module RuboCop
 
           return if suggested_method_name.nil?
           return if RuboCop::GraphQL::Field::CONFLICT_FIELD_NAMES.include?(suggested_method_name)
+          return if method_kwarg_set?(field)
 
           add_offense(node, message: message(suggested_method_name)) do |corrector|
             autocorrect(corrector, node)
@@ -79,6 +80,10 @@ module RuboCop
         def suggest_method_name_for(field)
           method_name = field.resolver_method_name
           field.schema_member.find_method_definition(method_name)
+        end
+
+        def method_kwarg_set?(field)
+          field.kwargs.method != nil
         end
       end
     end
