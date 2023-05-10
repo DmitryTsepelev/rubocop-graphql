@@ -9,6 +9,20 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldMethod, :config do
     RUBY
   end
 
+  context "when method is set on field" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :phone, String, null: true, method: :home_phone
+
+          def phone
+            object.home_phone
+          end
+        end
+      RUBY
+    end
+  end
+
   context "when class has two fields" do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)
