@@ -3,7 +3,8 @@
 ## master
 
 - [PR#134](https://github.com/DmitryTsepelev/rubocop-graphql/pull/134) Add `SafeBaseClasses` to `NotAuthorizedNodeType` ([@RasimKhusaenov][])
-- 
+- [PR#136](https://github.com/DmitryTsepelev/rubocop-graphql/pull/136) Don't report FieldMethod errors if method kwarg is already set ([@thijsnado][])
+
 ## 1.2.0 (2023-05-06)
 
 - [PR#128](https://github.com/DmitryTsepelev/rubocop-graphql/pull/128) Add autocorrect to UnnecessaryFieldAlias ([@TSMMark][])
@@ -257,3 +258,4 @@
 [@arenclissold]: https://github.com/arenclissold
 [@TSMMark]: https://github.com/TSMMark
 [@RasimKhusaenov]: https://github.com/RasimKhusaenov
+[@thijsnado]: https://github.com/thijsnado
