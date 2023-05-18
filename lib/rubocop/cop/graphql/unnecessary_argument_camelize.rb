@@ -10,11 +10,22 @@ module RuboCop
       #
       #   class UserType < BaseType
       #     field :name, String, "Name of the user", null: true do
-      #       argument :filter, String, required: false, camelize: false
+      #       argument :filter, String, required: false
       #     end
       #   end
       #
       #   # good
+      #
+      #   class UserType < BaseType
+      #     argument :filter, String, required: false
+      #   end
+      # good
+      #
+      #   class UserType < BaseType
+      #     argument :email_filter, String, required: false, camelize: true
+      #   end
+      #
+      #  # bad
       #
       #   class UserType < BaseType
       #     argument :filter, String, required: false, camelize: false
@@ -23,14 +34,8 @@ module RuboCop
       #  # bad
       #
       #   class UserType < BaseType
-      #     argument :filter, String, required: false
-      #   end
-      #
-      #  # bad
-      #
-      #   class UserType < BaseType
       #     field :name, String, "Name of the user", null: true do
-      #       argument :filter, String, required: false
+      #       argument :filter, String, required: false, camelize: false
       #     end
       #   end
       #
