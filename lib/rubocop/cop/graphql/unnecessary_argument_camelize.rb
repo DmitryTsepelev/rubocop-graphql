@@ -19,7 +19,8 @@ module RuboCop
       #   class UserType < BaseType
       #     argument :filter, String, required: false
       #   end
-      # good
+      #
+      #   # good
       #
       #   class UserType < BaseType
       #     argument :email_filter, String, required: false, camelize: true
