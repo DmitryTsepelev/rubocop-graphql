@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.3.0 (2023-06-03)
+
 - [PR#134](https://github.com/DmitryTsepelev/rubocop-graphql/pull/134) Add `SafeBaseClasses` to `NotAuthorizedNodeType` ([@RasimKhusaenov][])
 - [PR#136](https://github.com/DmitryTsepelev/rubocop-graphql/pull/136) Don't report FieldMethod errors if method kwarg is already set ([@thijsnado][])
 
