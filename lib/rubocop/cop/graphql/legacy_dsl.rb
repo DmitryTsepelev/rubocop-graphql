@@ -32,6 +32,7 @@ module RuboCop
 
         MSG = "Avoid using legacy based type-based definitions. " \
               "Use class-based definitions instead."
+        RESTRICT_ON_SEND = %i[define].freeze
 
         def on_send(node)
           return unless node.parent.block_type?

@@ -44,6 +44,7 @@ module RuboCop
         include RuboCop::GraphQL::NodePattern
 
         MSG = "Unnecessary argument camelize"
+        RESTRICT_ON_SEND = %i[argument].freeze
 
         def on_send(node)
           return unless argument?(node)

@@ -32,6 +32,8 @@ module RuboCop
         include RuboCop::Cop::RangeHelp
         include RuboCop::GraphQL::Heredoc
 
+        RESTRICT_ON_SEND = %i[field].freeze
+
         def on_send(node)
           return unless field?(node)
 

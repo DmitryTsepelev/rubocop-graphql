@@ -29,6 +29,7 @@ module RuboCop
         using RuboCop::GraphQL::Ext::SnakeCase
 
         MSG = "Use snake_case for field names"
+        RESTRICT_ON_SEND = %i[field].freeze
 
         def on_send(node)
           return unless field_definition?(node)

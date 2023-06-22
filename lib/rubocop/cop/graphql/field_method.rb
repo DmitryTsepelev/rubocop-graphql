@@ -40,6 +40,7 @@ module RuboCop
         PATTERN
 
         MSG = "Use method: :%<method_name>s"
+        RESTRICT_ON_SEND = %i[field].freeze
 
         def on_send(node)
           return unless field_definition?(node)
