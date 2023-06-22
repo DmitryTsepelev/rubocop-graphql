@@ -52,6 +52,8 @@ module RuboCop
         include RuboCop::GraphQL::Sorbet
         include RuboCop::GraphQL::Heredoc
 
+        RESTRICT_ON_SEND = %i[field].freeze
+
         # @!method field_kwargs(node)
         def_node_matcher :field_kwargs, <<~PATTERN
           (send nil? :field
