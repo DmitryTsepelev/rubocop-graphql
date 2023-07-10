@@ -4,7 +4,7 @@ RSpec.describe RuboCop::Cop::GraphQL::NotAuthorizedNodeType, :config do
   let(:config) do
     RuboCop::Config.new(
       "GraphQL/NotAuthorizedNodeType" => {
-        "SafeBaseClasses" => ["BaseUserType"]
+        "SafeBaseClasses" => ["BaseUserType", "Types::OtherBaseUserType"]
       }
     )
   end
@@ -86,6 +86,54 @@ RSpec.describe RuboCop::Cop::GraphQL::NotAuthorizedNodeType, :config do
               implements GraphQL::Types::Relay::Node
 
               field :uuid, ID, null: false
+            end
+          RUBY
+        end
+
+        specify do
+          expect_no_offenses(<<~RUBY, "graphql/types/user_type.rb")
+            module Types
+              class UserType < BaseUserType
+                implements GraphQL::Types::Relay::Node
+
+                field :uuid, ID, null: false
+              end
+            end
+          RUBY
+        end
+
+        specify do
+          expect_no_offenses(<<~RUBY, "graphql/types/user_type.rb")
+            module Types
+              class UserType < ::BaseUserType
+                implements GraphQL::Types::Relay::Node
+
+                field :uuid, ID, null: false
+              end
+            end
+          RUBY
+        end
+
+        specify do
+          expect_no_offenses(<<~RUBY, "graphql/types/user_type.rb")
+            module Types
+              class UserType < OtherBaseUserType
+                implements GraphQL::Types::Relay::Node
+
+                field :uuid, ID, null: false
+              end
+            end
+          RUBY
+        end
+
+        specify do
+          expect_no_offenses(<<~RUBY, "graphql/types/user_type.rb")
+            module Types
+              class UserType < Types::OtherBaseUserType
+                implements GraphQL::Types::Relay::Node
+
+                field :uuid, ID, null: false
+              end
             end
           RUBY
         end
