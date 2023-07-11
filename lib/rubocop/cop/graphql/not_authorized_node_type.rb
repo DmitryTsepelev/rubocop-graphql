@@ -87,12 +87,12 @@ module RuboCop
 
         # @!method has_can_can_action?(node)
         def_node_matcher :has_can_can_action?, <<~PATTERN
-          `(send nil? :can_can_action sym_type?)
+          `(send nil? :can_can_action {nil_type? sym_type?})
         PATTERN
 
         # @!method has_pundit_role?(node)
         def_node_matcher :has_pundit_role?, <<~PATTERN
-          `(send nil? :pundit_role sym_type?)
+          `(send nil? :pundit_role {nil_type? sym_type?})
         PATTERN
 
         # @!method has_authorized_method?(node)
