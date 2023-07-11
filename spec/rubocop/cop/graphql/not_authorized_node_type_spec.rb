@@ -91,5 +91,33 @@ RSpec.describe RuboCop::Cop::GraphQL::NotAuthorizedNodeType, :config do
         end
       end
     end
+
+    context "when type has a pundit_role" do
+      specify do
+        expect_no_offenses(<<~RUBY, "graphql/types/user_type.rb")
+          class UserType
+            implements GraphQL::Types::Relay::Node
+
+            pundit_role :staff
+
+            field :uuid, ID, null: false
+          end
+        RUBY
+      end
+    end
+
+    context "when type has a can_can_action" do
+      specify do
+        expect_no_offenses(<<~RUBY, "graphql/types/user_type.rb")
+          class UserType
+            implements GraphQL::Types::Relay::Node
+
+            can_can_action :read
+
+            field :uuid, ID, null: false
+          end
+        RUBY
+      end
+    end
   end
 end
