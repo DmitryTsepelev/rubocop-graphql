@@ -22,6 +22,7 @@ module RuboCop
         include RuboCop::GraphQL::NodePattern
 
         MSG = "Missing field description"
+        RESTRICT_ON_SEND = %i[field].freeze
 
         def on_send(node)
           return unless field_definition?(node)

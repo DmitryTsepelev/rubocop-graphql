@@ -25,6 +25,7 @@ module RuboCop
         include RuboCop::GraphQL::NodePattern
 
         MSG = "Unnecessary :%<kwarg>s configured"
+        RESTRICT_ON_SEND = %i[field].freeze
 
         def on_send(node)
           return unless field_definition?(node)

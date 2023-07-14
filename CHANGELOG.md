@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#143](https://github.com/DmitryTsepelev/rubocop-graphql/pull/143) Check a variety of base classes in the NotAuthorizedNodeType check ([@patch0][])
+  
 ## 1.3.0 (2023-06-03)
 
 - [PR#134](https://github.com/DmitryTsepelev/rubocop-graphql/pull/134) Add `SafeBaseClasses` to `NotAuthorizedNodeType` ([@RasimKhusaenov][])
@@ -261,3 +263,4 @@
 [@TSMMark]: https://github.com/TSMMark
 [@RasimKhusaenov]: https://github.com/RasimKhusaenov
 [@thijsnado]: https://github.com/thijsnado
+[@patch0]: https://github.com/patch0

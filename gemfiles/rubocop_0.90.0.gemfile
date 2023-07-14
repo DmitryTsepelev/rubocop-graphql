@@ -1,5 +1,5 @@
 source "https://rubygems.org"
 
-gem "rubocop", "0.89.1"
+gem "rubocop", "0.90.0"
 
 gemspec path: "../"

@@ -22,6 +22,7 @@ module RuboCop
         include RuboCop::GraphQL::NodePattern
 
         MSG = "Missing argument description"
+        RESTRICT_ON_SEND = %i[argument].freeze
 
         def on_send(node)
           return unless argument?(node)
