@@ -48,11 +48,6 @@ module RuboCop
       class NotAuthorizedNodeType < Base
         MSG = ".authorized? should be defined for types implementing Node interface."
 
-        # @!method class_name(node)
-        def_node_matcher :class_name, <<~PATTERN
-          (const nil? $_)
-        PATTERN
-
         # @!method implements_node_type?(node)
         def_node_matcher :implements_node_type?, <<~PATTERN
           `(send nil? :implements
@@ -67,20 +62,33 @@ module RuboCop
           {`(:defs (:self) :authorized? ...) | `(:sclass (:self) `(:def :authorized? ...))}
         PATTERN
 
+        def on_module(node)
+          @parent_modules ||= []
+          @parent_modules << node.child_nodes[0].const_name
+        end
+
         def on_class(node)
-          return if ignored_class?(parent_class(node))
+          @parent_modules ||= []
+          return if possible_parent_classes(node).any? { |klass| ignored_class?(klass) }
+
+          @parent_modules << node.child_nodes[0].const_name
 
           add_offense(node) if implements_node_type?(node) && !has_authorized_method?(node)
         end
 
         private
 
-        def parent_class(node)
-          node.child_nodes[1]
+        def possible_parent_classes(node)
+          klass = node.child_nodes[1].const_name
+
+          return [klass] if node.child_nodes[1].absolute?
+
+          parent_module = "#{@parent_modules.join('::')}::"
+          [klass, parent_module + klass]
         end
 
-        def ignored_class?(node)
-          cop_config["SafeBaseClasses"].include?(String(class_name(node)))
+        def ignored_class?(klass)
+          cop_config["SafeBaseClasses"].include?(klass)
         end
       end
     end
