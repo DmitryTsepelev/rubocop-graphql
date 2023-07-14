@@ -118,6 +118,7 @@ module RuboCop
         def possible_parent_classes(node)
           klass = node.child_nodes[1].const_name
 
+          return [] if klass.nil?
           return [klass] if node.child_nodes[1].absolute?
 
           parent_module = "#{@parent_modules.join('::')}::"
