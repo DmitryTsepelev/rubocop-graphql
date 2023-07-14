@@ -106,12 +106,14 @@ module RuboCop
 
           @parent_modules << node.child_nodes[0].const_name
 
-          if implements_node_type?(node) && !has_authorized_method?(node) && !has_can_can_action?(node) && !has_pundit_role?(node)
-            add_offense(node)
-          end
+          add_offense(node) if implements_node_type?(node) && !implements_authorization?(node)
         end
 
         private
+
+        def implements_authorization?(node)
+          has_authorized_method?(node) || has_can_can_action?(node) || has_pundit_role?(node)
+        end
 
         def possible_parent_classes(node)
           klass = node.child_nodes[1].const_name
