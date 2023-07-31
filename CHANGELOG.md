@@ -2,9 +2,11 @@
 
 ## master
 
+## 1.4.0 (2023-06-31)
+
 - [PR#144](https://github.com/DmitryTsepelev/rubocop-graphql/pull/144) Allow can_can_action and pundit_role to cause NotAuthorizedNodeType to pass ([@patch0][])
 - [PR#143](https://github.com/DmitryTsepelev/rubocop-graphql/pull/143) Check a variety of base classes in the NotAuthorizedNodeType check ([@patch0][])
-  
+
 ## 1.3.0 (2023-06-03)
 
 - [PR#134](https://github.com/DmitryTsepelev/rubocop-graphql/pull/134) Add `SafeBaseClasses` to `NotAuthorizedNodeType` ([@RasimKhusaenov][])
