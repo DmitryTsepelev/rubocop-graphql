@@ -116,4 +116,27 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldUniqueness, :config do
       RUBY
     end
   end
+
+  context "when a field is defined twice with different camelize values" do
+    it "does not register an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :first_name, String
+          field :first_name, String, camelize: false
+        end
+      RUBY
+    end
+  end
+
+  context "when a field is with duplicated with camelize: true" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        class UserType < BaseType
+          field :last_name, String
+          field :last_name, String, camelize: true
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Field names should only be defined once per type. Field `last_name` is duplicated.
+        end
+      RUBY
+    end
+  end
 end

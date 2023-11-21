@@ -63,8 +63,15 @@ module RuboCop
         end
 
         def field_name(node)
-          node.first_argument.value.to_s
+          field = RuboCop::GraphQL::Field.new(node)
+
+          "#{field.name}#{':non-camelized' if false_value?(field.kwargs.camelize)}"
         end
+
+        # @!method false_value?(node)
+        def_node_matcher :false_value?, <<~PATTERN
+          (pair ... false)
+        PATTERN
 
         # @!method field_declarations(node)
         def_node_search :field_declarations, <<~PATTERN
