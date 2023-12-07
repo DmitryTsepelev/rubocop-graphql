@@ -12,7 +12,7 @@ module RuboCop
           (block
             (send nil? :argument ...)
             (args ...)
-            $...
+            {(begin $...)|$...}
           )
         PATTERN
 
