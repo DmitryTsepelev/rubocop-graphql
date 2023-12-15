@@ -35,7 +35,7 @@ module RuboCop
           if (unnecessary_kwarg = validate_kwargs(field))
             message = format(self.class::MSG, kwarg: unnecessary_kwarg)
             add_offense(node, message: message) do |corrector|
-              kwarg_node = node.arguments.last.pairs.find do |pair|
+              kwarg_node = node.last_argument.pairs.find do |pair|
                 pair.key.value == unnecessary_kwarg.to_sym
               end
               corrector.remove_preceding(kwarg_node, 2)

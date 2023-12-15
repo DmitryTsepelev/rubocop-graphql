@@ -132,7 +132,7 @@ module RuboCop
 
           add_offense(node, message: message) do |corrector|
             if node.arguments?
-              corrector.insert_after(arg_end(node.arguments.last), ", #{unresolved_args_source}")
+              corrector.insert_after(arg_end(node.last_argument), ", #{unresolved_args_source}")
             else
               corrector.insert_after(method_name(node), "(#{unresolved_args_source})")
             end
