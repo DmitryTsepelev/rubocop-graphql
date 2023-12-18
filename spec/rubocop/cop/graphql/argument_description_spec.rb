@@ -32,6 +32,19 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentDescription, :config do
       RUBY
     end
 
+    context "when block also contains something else" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class BanUser < BaseMutation
+            argument :uuid, ID, required: true do
+              description "UUID of the user to ban"
+              deprecation_reason "because"
+            end
+          end
+        RUBY
+      end
+    end
+
     context "when description is set with block argument" do
       it "not registers an offense" do
         expect_no_offenses(<<~RUBY)
