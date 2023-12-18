@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#149](https://github.com/DmitryTsepelev/rubocop-graphql/pull/149) Fix false-positives for GraphQL/ArgumentDescription when there's additional nodes in the Argument init block ([@JELaVallee][])
+
 ## 1.4.0 (2023-06-31)
 
 - [PR#144](https://github.com/DmitryTsepelev/rubocop-graphql/pull/144) Allow can_can_action and pundit_role to cause NotAuthorizedNodeType to pass ([@patch0][])
@@ -267,3 +269,4 @@
 [@RasimKhusaenov]: https://github.com/RasimKhusaenov
 [@thijsnado]: https://github.com/thijsnado
 [@patch0]: https://github.com/patch0
+[@JELaVallee]: https://github.com/JELaVallee
