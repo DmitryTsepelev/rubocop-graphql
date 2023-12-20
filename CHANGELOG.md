@@ -3,6 +3,7 @@
 ## master
 
 - [PR#149](https://github.com/DmitryTsepelev/rubocop-graphql/pull/149) Fix false-positives for GraphQL/ArgumentDescription when there's additional nodes in the Argument init block ([@JELaVallee][])
+- [PR#]() Add cop to enforce prepare: argument style as symbol or string. ([@DougEdey][])
 
 ## 1.4.0 (2023-06-31)
 
