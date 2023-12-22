@@ -273,4 +273,4 @@
 [@patch0]: https://github.com/patch0
 [@JELaVallee]: https://github.com/JELaVallee
 [@DougEdey]: https://github.com/DougEdey
-[@severin] :https://github.com/severin
+[@severin]: https://github.com/severin
