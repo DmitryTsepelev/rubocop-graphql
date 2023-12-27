@@ -134,6 +134,8 @@ GraphQL/ObjectDescription:
   VersionAdded: '0.3.0'
   Description: 'Ensures all types have a description'
   Exclude:
+    - "spec/**/*"
+    - "test/**/*"
     - '**/*_schema.rb'
     - '**/base_*.rb'
     - '**/graphql/query_context.rb'
