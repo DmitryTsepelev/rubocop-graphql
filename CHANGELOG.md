@@ -5,6 +5,7 @@
 - [PR#149](https://github.com/DmitryTsepelev/rubocop-graphql/pull/149) Fix false-positives for GraphQL/ArgumentDescription when there's additional nodes in the Argument init block ([@JELaVallee][])
 - [PR#150](https://github.com/DmitryTsepelev/rubocop-graphql/pull/150) Add cop to enforce prepare: argument style as symbol or string. ([@DougEdey][])
 - [PR#152](https://github.com/DmitryTsepelev/rubocop-graphql/pull/152) GraphQL/FieldUniqueness: Consider camelized and non-camelized versions of a field as distinct ([@severin][])
+- [PR#153](https://github.com/DmitryTsepelev/rubocop-graphql/pull/153) Add GraphQL department excludes to ObjectDescription cop  ([@chasingmaxwell][])
 
 ## 1.4.0 (2023-06-31)
 
@@ -274,3 +275,4 @@
 [@JELaVallee]: https://github.com/JELaVallee
 [@DougEdey]: https://github.com/DougEdey
 [@severin]: https://github.com/severin
+[@chasingmaxwell]: https://github.com/chasingmaxwell
