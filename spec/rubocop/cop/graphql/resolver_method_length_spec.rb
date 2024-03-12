@@ -56,6 +56,35 @@ RSpec.describe RuboCop::Cop::GraphQL::ResolverMethodLength, :config do
         RUBY
       end
     end
+
+    context "when CountAsOne is set to [:hash]" do
+      let(:config) do
+        RuboCop::Config.new(
+          "GraphQL/ResolverMethodLength" => {
+            "Max" => 2,
+            "ExcludedMethods" => [],
+            "CountAsOne" => ['hash']
+          }
+        )
+      end
+
+      it "registers no offenses" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true
+  
+            def first_name
+              line_1
+              {
+                a: 1,
+                b: 2,
+                c: 3
+              }
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   context "when method is not a GraphQL resolver method" do
