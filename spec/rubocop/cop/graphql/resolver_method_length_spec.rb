@@ -57,7 +57,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ResolverMethodLength, :config do
       end
     end
 
-    context "when CountAsOne is set to [:hash]" do
+    context "when CountAsOne is set to ['hash']" do
       let(:config) do
         RuboCop::Config.new(
           "GraphQL/ResolverMethodLength" => {
