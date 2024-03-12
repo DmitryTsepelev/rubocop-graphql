@@ -63,7 +63,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ResolverMethodLength, :config do
           "GraphQL/ResolverMethodLength" => {
             "Max" => 2,
             "ExcludedMethods" => [],
-            "CountAsOne" => ['hash']
+            "CountAsOne" => ["hash"]
           }
         )
       end
@@ -72,7 +72,7 @@ RSpec.describe RuboCop::Cop::GraphQL::ResolverMethodLength, :config do
         expect_no_offenses(<<~RUBY)
           class UserType < BaseType
             field :first_name, String, null: true
-  
+
             def first_name
               line_1
               {
