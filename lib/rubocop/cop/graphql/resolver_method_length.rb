@@ -23,9 +23,11 @@ module RuboCop
           return if excluded_methods.include?(String(node.method_name))
 
           if field_is_defined?(node)
-            length = code_length(node)
+            return if node.line_count <= max_length
 
-            return unless length > max_length
+            calculator = build_code_length_calculator(node)
+            length = calculator.calculate
+            return if length <= max_length
 
             add_offense(node, message: message(length))
           end
@@ -33,10 +35,6 @@ module RuboCop
         alias on_defs on_def
 
         private
-
-        def code_length(node)
-          node.source.lines[1..-2].count { |line| !irrelevant_line(line) }
-        end
 
         def field_is_defined?(node)
           node.parent
