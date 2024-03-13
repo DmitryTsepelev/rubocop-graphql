@@ -2,7 +2,7 @@
 
 ## master
 
-- [PR#154](https://github.com/DmitryTsepelev/rubocop-graphql/pull/154) Fuse rubocop to calculate code length for ResolverMethodLength ([@mbandrewfoster][])
+- [PR#154](https://github.com/DmitryTsepelev/rubocop-graphql/pull/154) Use rubocop to calculate code length for ResolverMethodLength ([@mbandrewfoster][])
   
 ## 1.5.0 (2024-01-06 🎄)
 
