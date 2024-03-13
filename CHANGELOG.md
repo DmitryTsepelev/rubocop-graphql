@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#154](https://github.com/DmitryTsepelev/rubocop-graphql/pull/154) Fuse rubocop to calculate code length for ResolverMethodLength ([@mbandrewfoster][])
+  
 ## 1.5.0 (2024-01-06 🎄)
 
 - [PR#149](https://github.com/DmitryTsepelev/rubocop-graphql/pull/149) Fix false-positives for GraphQL/ArgumentDescription when there's additional nodes in the Argument init block ([@JELaVallee][])
@@ -278,3 +280,4 @@
 [@DougEdey]: https://github.com/DougEdey
 [@severin]: https://github.com/severin
 [@chasingmaxwell]: https://github.com/chasingmaxwell
+[@mbandrewfoster]: https://github.com/mbandrewfoster
