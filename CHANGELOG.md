@@ -2,8 +2,9 @@
 
 ## master
 
+- [PR#156](https://github.com/DmitryTsepelev/rubocop-graphql/pull/156) Properly handle heredocs in FieldDescription ([@DmitryTsepelev][])
 - [PR#154](https://github.com/DmitryTsepelev/rubocop-graphql/pull/154) Use rubocop to calculate code length for ResolverMethodLength ([@mbandrewfoster][])
-  
+
 ## 1.5.0 (2024-01-06 🎄)
 
 - [PR#149](https://github.com/DmitryTsepelev/rubocop-graphql/pull/149) Fix false-positives for GraphQL/ArgumentDescription when there's additional nodes in the Argument init block ([@JELaVallee][])

@@ -9,6 +9,22 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDescription, :config do
         end
       RUBY
     end
+
+    context "when passed as heredoc" do
+      it "not registers an offense" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :foo_bar,
+              [String],
+              <<~TXT,
+                description text
+                more text
+              TXT
+              null: false
+          end
+        RUBY
+      end
+    end
   end
 
   context "when description is passed as kwarg" do
@@ -16,6 +32,20 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDescription, :config do
       expect_no_offenses(<<~RUBY)
         class UserType < BaseType
           field :first_name, String, description: "First name", null: true
+        end
+      RUBY
+    end
+
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :foo_bar,
+            [String],
+            description: <<~TXT,
+              description text
+              more text
+            TXT
+            null: false
         end
       RUBY
     end

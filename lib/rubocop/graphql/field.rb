@@ -33,7 +33,7 @@ module RuboCop
 
       # @!method field_description(node)
       def_node_matcher :field_description, <<~PATTERN
-        (send nil? :field _ _ (:str $_) ...)
+        (send nil? :field _ _ {(:str $_)|(:dstr $...)} ...)
       PATTERN
 
       attr_reader :node
