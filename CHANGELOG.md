@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.5.1 (2024-03-31)
+
 - [PR#156](https://github.com/DmitryTsepelev/rubocop-graphql/pull/156) Properly handle heredocs in FieldDescription ([@DmitryTsepelev][])
 - [PR#154](https://github.com/DmitryTsepelev/rubocop-graphql/pull/154) Use rubocop to calculate code length for ResolverMethodLength ([@mbandrewfoster][])
 
