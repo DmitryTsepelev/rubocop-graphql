@@ -15,16 +15,8 @@ module RuboCop
       end
 
       def sorbet_signature_for(node)
-        node.parent.each_descendant.find do |sibling|
-          siblings_in_sequence?(sibling, node) &&
-            sorbet_signature(sibling)
-        end
-      end
-
-      private
-
-      def siblings_in_sequence?(first_node, second_node)
-        first_node.sibling_index - second_node.sibling_index == - 1
+        sibling = node.left_sibling
+        sibling if sibling && sorbet_signature(sibling)
       end
     end
   end

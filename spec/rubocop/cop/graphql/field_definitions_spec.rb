@@ -971,7 +971,7 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions, :config do
           RUBY
         end
 
-        it "register an offense when when resolver method is before the last field definition" do
+        it "registers an offense when when resolver method is before the last field definition" do
           expect_offense(<<~RUBY)
             class UserType < BaseType
               field :image_url, String, null: false do

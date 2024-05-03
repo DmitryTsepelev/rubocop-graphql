@@ -14,7 +14,7 @@ RSpec.describe RuboCop::Cop::GraphQL::MultipleFieldDefinitions, :config do
         RUBY
       end
 
-      it "register an offense when ungrouped" do
+      it "registers an offense when ungrouped" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
             field :image_url, String, null: true
@@ -54,7 +54,7 @@ RSpec.describe RuboCop::Cop::GraphQL::MultipleFieldDefinitions, :config do
         RUBY
       end
 
-      it "register an offense when ungrouped" do
+      it "registers an offense when ungrouped" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
             field :image_url, String, null: false do
