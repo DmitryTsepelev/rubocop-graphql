@@ -58,16 +58,14 @@ module RuboCop
               "Field `%<current>s` should appear before `%<previous>s`."
 
         def on_class(node)
-          declarations_with_blocks = argument_declarations_with_blocks(node)
-          declarations_without_blocks = argument_declarations_without_blocks(node)
-
-          argument_declarations = declarations_without_blocks.map do |node|
-            arg_name = argument_name(node)
-            same_arg_with_block_declaration = declarations_with_blocks.find do |dec|
-              argument_name(dec) == arg_name
+          # Do a single pass over descendants to get argument declarations
+          # with and without a block.
+          argument_declarations = argument_declaration(node).map do |declaration|
+            if argument_declaration_with_block?(declaration)
+              declaration.parent
+            else
+              declaration
             end
-
-            same_arg_with_block_declaration || node
           end
 
           argument_declarations.each_cons(2) do |previous, current|
@@ -79,6 +77,10 @@ module RuboCop
         end
 
         private
+
+        def argument_declaration_with_block?(node)
+          node.parent&.block_type? && node.parent.send_node == node
+        end
 
         def register_offense(previous, current)
           message = format(
@@ -102,18 +104,9 @@ module RuboCop
           previous.source_range.last_line == current.source_range.first_line - 1
         end
 
-        # @!method argument_declarations_without_blocks(node)
-        def_node_search :argument_declarations_without_blocks, <<~PATTERN
+        # @!method argument_declaration(node)
+        def_node_search :argument_declaration, <<~PATTERN
           (send nil? :argument (:sym _) ...)
-        PATTERN
-
-        # @!method argument_declarations_with_blocks(node)
-        def_node_search :argument_declarations_with_blocks, <<~PATTERN
-          (block
-            (send nil? :argument
-              (:sym _)
-              ...)
-            ...)
         PATTERN
       end
     end
