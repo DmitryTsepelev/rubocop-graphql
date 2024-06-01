@@ -2,8 +2,10 @@
 
 ## master
 
+## 1.5.2 (2024-06-01)
+
 - [PR#157](https://github.com/DmitryTsepelev/rubocop-graphql/pull/157) Optimize OrderedArguments and FieldDefinitions cops ([@fatkodima][])
-  
+
 ## 1.5.1 (2024-03-31)
 
 - [PR#156](https://github.com/DmitryTsepelev/rubocop-graphql/pull/156) Properly handle heredocs in FieldDescription ([@DmitryTsepelev][])
