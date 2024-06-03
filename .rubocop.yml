@@ -4,6 +4,7 @@ require:
 
 AllCops:
   TargetRubyVersion: 3.0
+  SuggestExtensions: false
 
 GraphQL/ObjectDescription:
   Enabled: false
