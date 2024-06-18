@@ -8,15 +8,22 @@ module RuboCop
       end
 
       def range_including_heredoc(node)
-        field = RuboCop::GraphQL::Field.new(node)
-        last_heredoc = field.kwargs.instance_variable_get(:@nodes).reverse.find do |kwarg|
-                         heredoc?(kwarg.value)
-                       end&.value
+        last_heredoc = find_last_heredoc(node)
 
         range = node.source_range
         range = range.join(last_heredoc.loc.heredoc_end) if last_heredoc
 
         range_by_whole_lines(range)
+      end
+
+      private
+
+      def find_last_heredoc(node)
+        # Do a cheap check first.
+        return nil unless node.source.include?("<<")
+
+        heredocs = node.descendants.select { |descendant| heredoc?(descendant) }
+        heredocs.max_by { |heredoc| heredoc.loc.heredoc_end }
       end
     end
   end

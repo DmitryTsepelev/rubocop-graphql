@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#164](https://github.com/DmitryTsepelev/rubocop-graphql/pull/164) Fix FieldDefinitions autocorrection for fields with squished heredocs ([@fatkodima][])
+
 ## 1.5.2 (2024-06-01)
 
 - [PR#157](https://github.com/DmitryTsepelev/rubocop-graphql/pull/157) Optimize OrderedArguments and FieldDefinitions cops ([@fatkodima][])
