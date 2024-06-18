@@ -968,6 +968,52 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions, :config do
           end
         end
       end
+
+      context "when resolver methods have comments" do
+        it "registers offenses" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+              field :last_name, String, null: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Define resolver method after field definition.
+
+              # Comment.
+              sig { returns(String) }
+              def first_name
+                object.contact_data.first_name
+              end
+
+              # Multiline
+              # comment.
+              def last_name
+                object.contact_data.last_name
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              # Comment.
+              sig { returns(String) }
+              def first_name
+                object.contact_data.first_name
+              end
+
+              field :last_name, String, null: true
+
+              # Multiline
+              # comment.
+              def last_name
+                object.contact_data.last_name
+              end
+
+            end
+          RUBY
+        end
+      end
     end
 
     context "when there are multiple field definitions" do
