@@ -47,6 +47,7 @@ module RuboCop
       class FieldDefinitions < Base # rubocop:disable Metrics/ClassLength
         extend AutoCorrector
         include ConfigurableEnforcedStyle
+        include CommentsHelp
         include RuboCop::GraphQL::NodePattern
         include RuboCop::Cop::RangeHelp
         include RuboCop::GraphQL::Sorbet
@@ -212,17 +213,19 @@ module RuboCop
         end
 
         def insert_new_resolver(corrector, field_definition, resolver_definition)
+          resolver_definition_range = source_range_with_comment(resolver_definition)
           source_to_insert =
             "\n#{signature_to_insert(resolver_definition)}\n" \
-              "#{indent(resolver_definition)}#{resolver_definition.source}\n"
+              "#{indent(resolver_definition)}#{resolver_definition_range.source.strip}\n"
 
           field_definition_range = range_including_heredoc(field_definition)
           corrector.insert_after(field_definition_range, source_to_insert)
         end
 
         def remove_old_resolver(corrector, resolver_definition)
+          resolver_definition_range = source_range_with_comment(resolver_definition)
           range_to_remove = range_with_surrounding_space(
-            range: resolver_definition.source_range, side: :left
+            range: resolver_definition_range, side: :left
           )
           corrector.remove(range_to_remove)
 
@@ -230,8 +233,9 @@ module RuboCop
 
           return unless resolver_signature
 
+          resolver_signature_range = source_range_with_comment(resolver_signature)
           range_to_remove = range_with_surrounding_space(
-            range: resolver_signature.source_range, side: :left
+            range: resolver_signature_range, side: :left
           )
           corrector.remove(range_to_remove)
         end
@@ -241,7 +245,8 @@ module RuboCop
 
           return unless signature
 
-          "\n#{indent(signature)}#{signature.source}"
+          range = source_range_with_comment(signature)
+          "\n#{indent(signature)}#{range.source.strip}"
         end
 
         def indent(node)
