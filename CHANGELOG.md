@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.5.3 (2024-07-05)
+
 - [PR#163](https://github.com/DmitryTsepelev/rubocop-graphql/pull/163) Fix FieldDefinitions to preserve comments when autocorrecting ([@fatkodima][])
 - [PR#165](https://github.com/DmitryTsepelev/rubocop-graphql/pull/165) Drop support for rubocop < 1.50 ([@fatkodima][])
 - [PR#164](https://github.com/DmitryTsepelev/rubocop-graphql/pull/164) Fix FieldDefinitions autocorrection for fields with squished heredocs ([@fatkodima][])
