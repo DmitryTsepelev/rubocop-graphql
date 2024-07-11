@@ -8,7 +8,6 @@ module RuboCop
       #
       # The maximum allowed length is configurable using the Max option.
       class ResolverMethodLength < Base
-        include RuboCop::Cop::ConfigurableMax
         include RuboCop::Cop::CodeLength
 
         MSG = "ResolverMethod has too many lines. [%<total>d/%<max>d]"
