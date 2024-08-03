@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.5.4 (2024-08-03)
+
 - [PR#168](https://github.com/DmitryTsepelev/rubocop-graphql/pull/168) UnusedArgument respects autoload fields ([@DmitryTsepelev][])
 
 ## 1.5.3 (2024-07-05)
