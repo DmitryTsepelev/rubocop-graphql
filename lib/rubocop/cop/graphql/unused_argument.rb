@@ -156,7 +156,7 @@ module RuboCop
                           .sub(/([^s])$/, "\\1s")
                           .to_sym
           else
-            name
+            name_as_string.to_sym
           end
         end
 
@@ -186,8 +186,7 @@ module RuboCop
 
         # @!method resolve_method_definition(node)
         def_node_search :resolve_method_definition, <<~PATTERN
-          (def {:resolve | :authorized?}
-            (args ...) ...)
+          (def {:resolve | :authorized?} (args ...) ...)
         PATTERN
       end
     end

@@ -46,6 +46,20 @@ RSpec.describe RuboCop::Cop::GraphQL::UnusedArgument, :config do
         end
       RUBY
     end
+
+    it "when ID is used in resolve" do
+      expect_no_offenses(<<~RUBY)
+        class SomeResolver < Resolvers::Base
+          argument :id, ID, required: true, loads: Types::Foo
+
+          def load_id(id)
+            Foo.find_by!(uuid: id)
+          end
+
+          def resolve(id:) end
+        end
+      RUBY
+    end
   end
 
   context "when field with arguments is used" do

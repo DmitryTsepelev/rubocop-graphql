@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#168](https://github.com/DmitryTsepelev/rubocop-graphql/pull/168) UnusedArgument respects autoload fields ([@DmitryTsepelev][])
+
 ## 1.5.3 (2024-07-05)
 
 - [PR#163](https://github.com/DmitryTsepelev/rubocop-graphql/pull/163) Fix FieldDefinitions to preserve comments when autocorrecting ([@fatkodima][])
