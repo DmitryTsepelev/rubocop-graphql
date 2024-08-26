@@ -2,6 +2,8 @@
 
 [Rubocop](https://github.com/rubocop-hq/rubocop) extension for enforcing [graphql-ruby](https://github.com/rmosolgo/graphql-ruby) best practices.
 
+You can support my open–source work [here](https://boosty.to/dmitry_tsepelev).
+
 ## Installation
 
 Install the gem:
