@@ -4,7 +4,7 @@ module RuboCop
   module GraphQL
     module Heredoc
       def heredoc?(node)
-        (node.str_type? || node.dstr_type?) && node.heredoc?
+        node.type?(:str, :dstr) && node.heredoc?
       end
 
       def range_including_heredoc(node)
