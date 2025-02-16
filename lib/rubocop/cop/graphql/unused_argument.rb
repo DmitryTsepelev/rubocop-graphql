@@ -103,7 +103,7 @@ module RuboCop
 
         def find_unresolved_args(method_node, declared_arg_nodes)
           resolve_method_kwargs = method_node.arguments.select do |arg|
-            arg.kwarg_type? || arg.kwoptarg_type?
+            arg.type?(:kwarg, :kwoptarg)
           end
           resolve_method_kwargs_names = resolve_method_kwargs.map do |node|
             node.node_parts[0]
@@ -116,7 +116,7 @@ module RuboCop
 
         def ignore_arguments_type?(resolve_method_node)
           resolve_method_node.arguments.any? do |arg|
-            arg.arg_type? || arg.kwrestarg_type? || arg.forward_arg_type?
+            arg.type?(:arg, :kwrestarg, :forward_arg)
           end
         end
 
@@ -172,11 +172,11 @@ module RuboCop
         end
 
         def scope_changing_syntax?(node)
-          node.def_type? || node.defs_type? || node.class_type? || node.module_type?
+          node.type?(:def, :defs, :class, :module)
         end
 
         def block_or_lambda?(node)
-          node.block_type? || node.lambda_type?
+          node.type?(:block, :lambda)
         end
 
         # @!method argument_declaration?(node)

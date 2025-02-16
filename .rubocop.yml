@@ -57,6 +57,9 @@ GraphQL/MaxDepthSchema:
     - lib/rubocop/cop/graphql/max_complexity_schema.rb
     - lib/rubocop/cop/graphql/max_depth_schema.rb
 
+InternalAffairs/OnSendWithoutOnCSend:
+  Enabled: false
+
 # FIXME: Workaround for a false positive caused by this cop when using `bundle exec rake`.
 InternalAffairs/UndefinedConfig:
   Enabled: false
