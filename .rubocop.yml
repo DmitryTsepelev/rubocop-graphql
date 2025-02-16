@@ -1,5 +1,5 @@
-require:
-  - rubocop/cop/internal_affairs
+plugins:
+  - rubocop-internal_affairs
   - rubocop-graphql
 
 AllCops:

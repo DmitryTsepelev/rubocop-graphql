@@ -27,30 +27,33 @@ You need to tell RuboCop to load the GraphQL extension. There are three ways to 
 Put this into your `.rubocop.yml`.
 
 ```yaml
-require: rubocop-graphql
+plugins: rubocop-graphql
 ```
 
 Alternatively, use the following array notation when specifying multiple extensions.
 
 ```yaml
-require:
+plugins:
   - rubocop-other-extension
   - rubocop-graphql
 ```
 
 Now you can run `rubocop` and it will automatically load the RuboCop GraphQL cops together with the standard cops.
 
+> [!NOTE]
+> The plugin system is supported in RuboCop 1.72+. In earlier versions, use `require` instead of `plugins`.
+
 ### Command line
 
 ```sh
-rubocop --require rubocop-graphql
+rubocop --plugins rubocop-graphql
 ```
 
 ### Rake task
 
 ```ruby
 RuboCop::RakeTask.new do |task|
-  task.requires << 'rubocop-graphql'
+  task.plugins << 'rubocop-graphql'
 end
 ```
 

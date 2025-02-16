@@ -16,6 +16,7 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/master/CHANGELOG.md"
+  spec.metadata["default_lint_roller_plugin"] = "RuboCop::GraphQL::Plugin"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -28,5 +29,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.9"
 
-  spec.add_runtime_dependency "rubocop", ">= 1.50", "< 2"
+  spec.add_runtime_dependency "lint_roller", "~> 1.1"
+  spec.add_runtime_dependency "rubocop", ">= 1.72.1", "< 2"
 end

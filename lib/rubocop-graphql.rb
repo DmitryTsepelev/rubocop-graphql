@@ -6,7 +6,7 @@ require_relative "rubocop/graphql/ext/snake_case"
 
 require_relative "rubocop/graphql"
 require_relative "rubocop/graphql/version"
-require_relative "rubocop/graphql/inject"
+require_relative "rubocop/graphql/plugin"
 require_relative "rubocop/graphql/compare_order"
 require_relative "rubocop/graphql/description_method"
 require_relative "rubocop/graphql/heredoc"
@@ -23,7 +23,5 @@ require_relative "rubocop/graphql/field"
 require_relative "rubocop/graphql/field/block"
 require_relative "rubocop/graphql/field/kwargs"
 require_relative "rubocop/graphql/schema_member"
-
-RuboCop::GraphQL::Inject.defaults!
 
 require_relative "rubocop/cop/graphql_cops"
