@@ -2,6 +2,10 @@
 
 ## master
 
+## 1.5.5 (2025-03-18)
+
+- [PR#175](https://github.com/DmitryTsepelev/rubocop-graphql/pull/175) Fix GraphQL/OrderedFields usage in interfaces ([@alecslupu][])
+
 ## 1.5.4 (2024-08-03)
 
 - [PR#168](https://github.com/DmitryTsepelev/rubocop-graphql/pull/168) UnusedArgument respects autoload fields ([@DmitryTsepelev][])
@@ -299,3 +303,4 @@
 [@chasingmaxwell]: https://github.com/chasingmaxwell
 [@mbandrewfoster]: https://github.com/mbandrewfoster
 [@fatkodima]: https://github.com/fatkodima
+[@alecslupu]: https://github.com/alecslupu
