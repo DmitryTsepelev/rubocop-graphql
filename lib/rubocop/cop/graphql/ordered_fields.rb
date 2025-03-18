@@ -58,6 +58,8 @@ module RuboCop
           end
         end
 
+        alias on_module on_class
+
         private
 
         def consecutive_fields(previous, current)
