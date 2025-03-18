@@ -58,6 +58,15 @@ module RuboCop
           end
         end
 
+        def on_module(node)
+          field_declarations(node).each_cons(2) do |previous, current|
+            next unless consecutive_fields(previous, current)
+            next if correct_order?(field_name(previous), field_name(current))
+
+            register_offense(previous, current)
+          end
+        end
+
         private
 
         def consecutive_fields(previous, current)
