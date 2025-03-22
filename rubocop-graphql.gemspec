@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Dmitry Tsepelev"]
   spec.email = ["dmitry.a.tsepelev@gmail.com"]
 
-  spec.summary = "Automatic performance checking tool for Ruby code."
+  spec.summary = ""A collection of RuboCop cops to improve GraphQL-related code"."
   spec.description = "A collection of RuboCop cops to improve GraphQL-related code"
   spec.homepage = "https://github.com/DmitryTsepelev/rubocop-graphql"
   spec.license = "MIT"
