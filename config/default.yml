@@ -41,6 +41,8 @@ GraphQL/ExtractType:
     - avg
     - min
     - max
+  Exclude:
+    - '**/graphql/mutations/**/*.rb'
 
 GraphQL/FieldDefinitions:
   Enabled: true
