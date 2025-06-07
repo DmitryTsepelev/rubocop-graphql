@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.5.6 (2025-06-07)
+
 - [PR#177](https://github.com/DmitryTsepelev/rubocop-graphql/pull/177) Do not use ExtractType in mutations ([@DmitryTsepelev][])
 
 ## 1.5.5 (2025-03-18)
