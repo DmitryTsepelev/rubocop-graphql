@@ -59,4 +59,61 @@ RSpec.describe RuboCop::Cop::GraphQL::ExtractInputType, :config do
       RUBY
     end
   end
+
+  context "when argument uses InputType" do
+    it "does not count InputType arguments toward the max" do
+      expect_no_offenses(<<~RUBY)
+        class UpdateUser < BaseMutation
+          argument :uuid, ID, required: true
+          argument :email, String, required: true
+          argument :user_attributes, UserAttributesInputType, required: true
+        end
+      RUBY
+    end
+
+    it "does not count Input arguments toward the max" do
+      expect_no_offenses(<<~RUBY)
+        class UpdateUser < BaseMutation
+          argument :uuid, ID, required: true
+          argument :email, String, required: true
+          argument :user_attributes, UserAttributesInput, required: true
+        end
+      RUBY
+    end
+
+    it "does not count namespaced InputType arguments toward the max" do
+      expect_no_offenses(<<~RUBY)
+        class UpdateUser < BaseMutation
+          argument :uuid, ID, required: true
+          argument :email, String, required: true
+          argument :cancellation_options, Types::ContractCancellationOptionsInput, required: true
+        end
+      RUBY
+    end
+
+    it "does not count InputType arguments when type is on different line" do
+      expect_no_offenses(<<~RUBY)
+        class UpdateUser < BaseMutation
+          argument :uuid, ID, required: true
+          argument :email, String, required: true
+          argument :cancellation_options,
+                   Types::ContractCancellationOptionsInput,
+                   required: false,
+                   description: "Options for canceling the contract being replaced."
+        end
+      RUBY
+    end
+
+    it "still registers offense when non-InputType arguments exceed max" do
+      expect_offense(<<~RUBY)
+        class UpdateUser < BaseMutation
+          argument :uuid, ID, required: true
+          argument :first_name, String, required: true
+          argument :last_name, String, required: true
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Consider moving arguments to a new input type
+          argument :user_attributes, UserAttributesInputType, required: true
+        end
+      RUBY
+    end
+  end
 end

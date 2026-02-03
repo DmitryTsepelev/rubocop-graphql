@@ -2,6 +2,8 @@
 
 ## master
 
+- ExtractInputType: do not count arguments that already use InputType
+
 ## 1.5.6 (2025-06-07)
 
 - [PR#177](https://github.com/DmitryTsepelev/rubocop-graphql/pull/177) Do not use ExtractType in mutations ([@DmitryTsepelev][])
