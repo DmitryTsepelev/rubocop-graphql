@@ -172,7 +172,7 @@ module RuboCop
         end
 
         def scope_changing_syntax?(node)
-          node.type?(:def, :defs, :class, :module)
+          node.type?(:any_def, :class, :module)
         end
 
         def block_or_lambda?(node)
