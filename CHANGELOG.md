@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `GraphQL/ContextWriteInType` cop to detect writes to `context` in GraphQL types (disabled by default)
+
 ## 1.5.6 (2025-06-07)
 
 - [PR#177](https://github.com/DmitryTsepelev/rubocop-graphql/pull/177) Do not use ExtractType in mutations ([@DmitryTsepelev][])

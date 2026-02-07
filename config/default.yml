@@ -21,6 +21,13 @@ GraphQL/ArgumentUniqueness:
   VersionAdded: '0.11.0'
   Description: 'This cop enforces arguments to be defined once per block'
 
+GraphQL/ContextWriteInType:
+  Enabled: false
+  VersionAdded: '<<next>>'
+  Description: 'Detects writes to context in GraphQL types, which mutates shared state'
+  Include:
+    - '**/graphql/types/**/*'
+
 GraphQL/ExtractInputType:
   Enabled: true
   VersionAdded: '0.2.0'
