@@ -41,7 +41,8 @@ module RuboCop
       #   end
       #
       class ContextWriteInType < Base
-        MSG = "Avoid writing to `context` in GraphQL types. Mutating shared state can lead to unexpected behavior."
+        MSG = "Avoid writing to `context` in GraphQL types. Mutating shared state can lead " \
+              "to unexpected behavior."
 
         RESTRICT_ON_SEND = %i[[]= merge! store].freeze
 
