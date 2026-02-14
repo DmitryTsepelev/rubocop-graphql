@@ -23,7 +23,7 @@ GraphQL/ArgumentUniqueness:
 
 GraphQL/ContextWriteInType:
   Enabled: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '1.6.0'
   Description: 'Detects writes to context in GraphQL types, which mutates shared state'
   Include:
     - '**/graphql/types/**/*'

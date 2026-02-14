@@ -2,7 +2,9 @@
 
 ## master
 
-- Add `GraphQL/ContextWriteInType` cop to detect writes to `context` in GraphQL types (disabled by default)
+## 1.6.0 (2026-02-13)
+
+- [PR#183](https://github.com/DmitryTsepelev/rubocop-graphql/pull/183) Add `GraphQL/ContextWriteInType` cop to detect writes to `context` in GraphQL types ([@smathieu][])
 
 ## 1.5.6 (2025-06-07)
 
@@ -310,3 +312,4 @@
 [@mbandrewfoster]: https://github.com/mbandrewfoster
 [@fatkodima]: https://github.com/fatkodima
 [@alecslupu]: https://github.com/alecslupu
+[@smathieu]: https://github.com/smathieu
