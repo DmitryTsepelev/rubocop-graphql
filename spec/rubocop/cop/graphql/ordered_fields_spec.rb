@@ -454,7 +454,7 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
       RUBY
     end
 
-    it "still registers an offense for out-of-order top-level fields alongside a with_options block" do
+    it "still registers an offense for out-of-order top-level fields alongside with_options" do
       expect_offense(<<~RUBY)
         class UserType < BaseType
           field :z_field, String, null: true

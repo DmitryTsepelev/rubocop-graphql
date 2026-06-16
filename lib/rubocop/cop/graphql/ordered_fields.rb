@@ -72,7 +72,7 @@ module RuboCop
           field_node.each_ancestor(:block).none? do |block_ancestor|
             next false if block_ancestor.each_ancestor(:class, :module).first != class_node
 
-            block_ancestor.send_node.method_name != :field
+            !block_ancestor.method?(:field)
           end
         end
 
