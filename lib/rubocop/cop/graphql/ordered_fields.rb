@@ -50,7 +50,7 @@ module RuboCop
         PATTERN
 
         def on_class(node)
-          field_declarations(node).each_cons(2) do |previous, current|
+          direct_field_declarations(node).each_cons(2) do |previous, current|
             next unless consecutive_fields(previous, current)
             next if correct_order?(field_name(previous), field_name(current))
 
@@ -61,6 +61,14 @@ module RuboCop
         alias on_module on_class
 
         private
+
+        def direct_field_declarations(node)
+          field_declarations(node).select { |field| direct_child_field?(field, node) }
+        end
+
+        def direct_child_field?(field_node, class_node)
+          field_node.each_ancestor(:class, :module).first == class_node
+        end
 
         def consecutive_fields(previous, current)
           return true if cop_config["Groups"] == false

@@ -360,4 +360,73 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
       RUBY
     end
   end
+
+  context "when sibling classes are defined in the same module" do
+    it "does not register an offense for fields that are out of order across class boundaries" do
+      expect_no_offenses(<<~RUBY)
+        module Types
+          class AType < BaseType
+            field :z_field, String, null: true
+          end
+
+          class BType < BaseType
+            field :a_field, String, null: true
+          end
+        end
+      RUBY
+    end
+
+    it "still registers an offense for out-of-order fields within a single class" do
+      expect_offense(<<~RUBY)
+        module Types
+          class AType < BaseType
+            field :z_field, String, null: true
+            field :a_field, String, null: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `a_field` should appear before `z_field`.
+          end
+
+          class BType < BaseType
+            field :b_field, String, null: true
+          end
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        module Types
+          class AType < BaseType
+            field :a_field, String, null: true
+            field :z_field, String, null: true
+          end
+
+          class BType < BaseType
+            field :b_field, String, null: true
+          end
+        end
+      RUBY
+    end
+
+    context "with Groups: false" do
+      let(:config) do
+        RuboCop::Config.new(
+          "GraphQL/OrderedFields" => {
+            "Groups" => false
+          }
+        )
+      end
+
+      it "does not register an offense for fields that are out of order across class boundaries" do
+        expect_no_offenses(<<~RUBY)
+          module Types
+            class AType < BaseType
+              field :z_field, String, null: true
+            end
+
+            class BType < BaseType
+              field :a_field, String, null: true
+            end
+          end
+        RUBY
+      end
+    end
+  end
 end
