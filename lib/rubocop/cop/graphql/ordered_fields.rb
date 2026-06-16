@@ -67,7 +67,13 @@ module RuboCop
         end
 
         def direct_child_field?(field_node, class_node)
-          field_node.each_ancestor(:class, :module).first == class_node
+          return false unless field_node.each_ancestor(:class, :module).first == class_node
+
+          field_node.each_ancestor(:block).none? do |block_ancestor|
+            next false if block_ancestor.each_ancestor(:class, :module).first != class_node
+
+            block_ancestor.send_node.method_name != :field
+          end
         end
 
         def consecutive_fields(previous, current)

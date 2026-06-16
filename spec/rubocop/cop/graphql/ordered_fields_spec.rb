@@ -429,4 +429,70 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
       end
     end
   end
+
+  context "when fields are inside a with_options block" do
+    it "does not register an offense comparing a with_options field against a top-level field" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :z_field, String, null: true
+
+          with_options(access_scope: "internal") do
+            field :a_field, String, null: true
+          end
+        end
+      RUBY
+    end
+
+    it "does not register an offense for fields inside a with_options block regardless of order" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          with_options(access_scope: "internal") do
+            field :z_field, String, null: true
+            field :a_field, String, null: true
+          end
+        end
+      RUBY
+    end
+
+    it "still registers an offense for out-of-order top-level fields alongside a with_options block" do
+      expect_offense(<<~RUBY)
+        class UserType < BaseType
+          field :z_field, String, null: true
+          field :a_field, String, null: true
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `a_field` should appear before `z_field`.
+
+          with_options(access_scope: "internal") do
+            field :b_field, String, null: true
+          end
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class UserType < BaseType
+          field :a_field, String, null: true
+          field :z_field, String, null: true
+
+          with_options(access_scope: "internal") do
+            field :b_field, String, null: true
+          end
+        end
+      RUBY
+    end
+
+    context "when the type is a module (interface)" do
+      it "does not register an offense comparing a with_options field against a top-level field" do
+        expect_no_offenses(<<~RUBY)
+          module UserInterface
+            include GraphQL::Schema::Interface
+
+            field :z_field, String, null: true
+
+            with_options(access_scope: "internal") do
+              field :a_field, String, null: true
+            end
+          end
+        RUBY
+      end
+    end
+  end
 end
