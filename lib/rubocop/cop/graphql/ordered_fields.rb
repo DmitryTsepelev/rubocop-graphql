@@ -50,17 +50,32 @@ module RuboCop
         PATTERN
 
         def on_class(node)
-          direct_field_declarations(node).each_cons(2) do |previous, current|
+          check_field_ordering(direct_field_declarations(node))
+        end
+
+        alias on_module on_class
+
+        def on_block(node)
+          return if node.method?(:field)
+          return unless node.each_ancestor(:class, :module).any?
+
+          fields = field_declarations(node).select { |f| f.each_ancestor(:block).first == node }
+          check_field_ordering(fields)
+        end
+
+        alias on_itblock on_block
+        alias on_numblock on_block
+
+        private
+
+        def check_field_ordering(fields)
+          fields.each_cons(2) do |previous, current|
             next unless consecutive_fields(previous, current)
             next if correct_order?(field_name(previous), field_name(current))
 
             register_offense(previous, current)
           end
         end
-
-        alias on_module on_class
-
-        private
 
         def direct_field_declarations(node)
           field_declarations(node).select { |field| direct_child_field?(field, node) }
