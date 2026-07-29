@@ -117,6 +117,11 @@ GraphQL/MaxDepthSchema:
   Include:
     - '**/graphql/**/*_schema.rb'
 
+GraphQL/MethodShadowedByResolverMethod:
+  Enabled: true
+  VersionAdded: '<<next>>'
+  Description: 'Checks for method definitions shadowed by the field''s effective resolver_method'
+
 GraphQL/MultipleFieldDefinitions:
   Enabled: true
   VersionAdded: '0.15.0'
@@ -182,3 +187,8 @@ GraphQL/UnnecessaryFieldCamelize:
   Enabled: true
   VersionAdded: '0.18.0'
   Description: "Camelize isn't necessary if the field name doesn't contain underscores"
+
+GraphQL/UselessMethodOption:
+  Enabled: true
+  VersionAdded: '<<next>>'
+  Description: 'Checks for resolver_method:/method: made ineffective by resolver:, or method: shadowed by a same-named def'
