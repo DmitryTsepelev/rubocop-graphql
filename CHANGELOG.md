@@ -2,11 +2,13 @@
 
 ## master
 
+## 1.7.0 (2026-08-02)
+
 - [PR#185](https://github.com/DmitryTsepelev/rubocop-graphql/pull/185) Add `GraphQL/MethodShadowedByResolverMethod` cop: flags a `def` as dead code when `resolver:` and/or `resolver_method:` make the field call a different method instead ([@salzig][])
 - [PR#185](https://github.com/DmitryTsepelev/rubocop-graphql/pull/185) Add `GraphQL/UselessMethodOption` cop: flags a `resolver_method:`/`method:` option itself as dead code — ignored because `resolver:` is set, or (`method:` only) outranked by a same-named `def` ([@salzig][])
 - [PR#184](https://github.com/DmitryTsepelev/rubocop-graphql/pull/184) ordered_fields scope field checks to direct class/module owner
  ([@amckinnie][])
-  
+
 ## 1.6.0 (2026-02-13)
 
 - [PR#183](https://github.com/DmitryTsepelev/rubocop-graphql/pull/183) Add `GraphQL/ContextWriteInType` cop to detect writes to `context` in GraphQL types ([@smathieu][])
