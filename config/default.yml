@@ -33,6 +33,14 @@ GraphQL/DefaultForOptionalArgument:
   VersionAdded: '<<next>>'
   Description: 'Optional arguments should have a default value in the resolver signature'
 
+GraphQL/DisallowedTypes:
+  Enabled: true
+  VersionAdded: '<<next>>'
+  Description: 'Flags field and argument types the project has decided not to expose'
+  # Type name => the message explaining what to use instead. Nothing is disallowed
+  # until this is configured, so the cop is inert out of the box.
+  Types: {}
+
 GraphQL/ExtractInputType:
   Enabled: true
   VersionAdded: '0.2.0'
