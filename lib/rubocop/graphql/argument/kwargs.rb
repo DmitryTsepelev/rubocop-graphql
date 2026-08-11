@@ -36,6 +36,16 @@ module RuboCop
           (pair (sym :camelize) ...)
         PATTERN
 
+        # @!method required_kwarg?(node)
+        def_node_matcher :required_kwarg?, <<~PATTERN
+          (pair (sym :required) ...)
+        PATTERN
+
+        # @!method default_value_kwarg?(node)
+        def_node_matcher :default_value_kwarg?, <<~PATTERN
+          (pair (sym :default_value) ...)
+        PATTERN
+
         def initialize(argument_node)
           @nodes = argument_kwargs(argument_node) || []
         end
@@ -54,6 +64,14 @@ module RuboCop
 
         def as
           @nodes.find { |kwarg| as_kwarg?(kwarg) }
+        end
+
+        def required
+          @nodes.find { |kwarg| required_kwarg?(kwarg) }
+        end
+
+        def default_value
+          @nodes.find { |kwarg| default_value_kwarg?(kwarg) }
         end
       end
     end
