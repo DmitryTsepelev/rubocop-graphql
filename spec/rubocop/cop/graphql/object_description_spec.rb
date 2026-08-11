@@ -608,4 +608,276 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription, :config do
       end
     end
   end
+
+  context "when the class is not a GraphQL type" do
+    it "does not register an offense for an error class" do
+      expect_no_offenses(<<~RUBY)
+        class TrackingInfoNotAvailable < StandardError; end
+      RUBY
+    end
+
+    it "does not register an offense for an error class nested in a mutation" do
+      expect_no_offenses(<<~RUBY)
+        class Mutations::ApplyPromotion < GraphQL::Schema::Resolver
+          description "Applies a promotion"
+
+          class OrderNotFound < Errors::PreconditionFailed; end
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a query analyzer" do
+      expect_no_offenses(<<~RUBY)
+        class QueryDepthAnalyzer < GraphQL::Analysis::AST::Analyzer
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a schema validator" do
+      expect_no_offenses(<<~RUBY)
+        class PositiveNumberValidator < GraphQL::Schema::Validator
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a Rails generator" do
+      expect_no_offenses(<<~RUBY)
+        class MutationGenerator < Rails::Generators::NamedBase
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a batch loader" do
+      expect_no_offenses(<<~RUBY)
+        class UserLoader < GraphQL::Batch::Loader
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a custom connection" do
+      expect_no_offenses(<<~RUBY)
+        class UsersConnection < GraphQL::Pagination::Connection
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a Sorbet struct" do
+      expect_no_offenses(<<~RUBY)
+        class BackingObject < T::Struct
+          const :id, String
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a Sorbet enum" do
+      expect_no_offenses(<<~RUBY)
+        class IneligibleReason < T::Enum
+          enums do
+            Unknown = new("UNKNOWN")
+          end
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a class with no superclass" do
+      expect_no_offenses(<<~RUBY)
+        class UserPresenter
+          def call; end
+        end
+      RUBY
+    end
+
+    it "does not register an offense when the superclass is not a plain constant" do
+      expect_no_offenses(<<~RUBY)
+        class Point < Struct.new(:x, :y)
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a class inheriting a non-GraphQL `Interface` base" do
+      expect_no_offenses(<<~RUBY)
+        class BillsPaginatedQuery < Pagination::PaginatedApi::Interface
+        end
+      RUBY
+    end
+  end
+
+  context "when the type is an abstract base" do
+    it "does not register an offense for a base object" do
+      expect_no_offenses(<<~RUBY)
+        class BaseObject < GraphQL::Schema::Object
+          field :page_info, PageInfo, null: false
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a base named exactly Base" do
+      expect_no_offenses(<<~RUBY)
+        class Base < GraphQL::Schema::Object
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a base carrying a domain prefix" do
+      expect_no_offenses(<<~RUBY)
+        class BaseTimeOffMutation < Types::Base::Mutation
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a base interface module" do
+      expect_no_offenses(<<~RUBY)
+        module BaseInterface
+          include GraphQL::Schema::Interface
+        end
+      RUBY
+    end
+
+    it "registers an offense for a type whose name merely starts with the letters of Base" do
+      expect_offense(<<~RUBY)
+        class Basename < Types::Base::Object
+              ^^^^^^^^ Missing type description
+        end
+      RUBY
+    end
+  end
+
+  context "when the type is a root operation type" do
+    it "does not register an offense for Query" do
+      expect_no_offenses(<<~RUBY)
+        class Query < Types::BaseObject
+          field :users, [Types::UserType], null: false
+        end
+      RUBY
+    end
+
+    it "does not register an offense for Mutation" do
+      expect_no_offenses(<<~RUBY)
+        class Mutation < Types::BaseObject
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a root type renamed via graphql_name" do
+      expect_no_offenses(<<~RUBY)
+        class EmptyQuery < Types::BaseObject
+          graphql_name "Query"
+        end
+      RUBY
+    end
+
+    context "when IgnoreRootTypes is false" do
+      let(:cop_config) { { "IgnoreRootTypes" => false } }
+
+      it "registers an offense for Query" do
+        expect_offense(<<~RUBY)
+          class Query < Types::BaseObject
+                ^^^^^ Missing type description
+          end
+        RUBY
+      end
+
+      it "registers an offense for a root type renamed via graphql_name" do
+        expect_offense(<<~RUBY)
+          class EmptyQuery < Types::BaseObject
+                ^^^^^^^^^^ Missing type description
+            graphql_name "Query"
+          end
+        RUBY
+      end
+    end
+  end
+
+  context "when AdditionalTypeBases is configured" do
+    let(:cop_config) { { "AdditionalTypeBases" => %w[ApplicationType Describable] } }
+
+    it "registers an offense for a class inheriting a configured base" do
+      expect_offense(<<~RUBY)
+        class Types::UserType < ApplicationType
+              ^^^^^^^^^^^^^^^ Missing type description
+        end
+      RUBY
+    end
+
+    it "does not register an offense when that class has a description" do
+      expect_no_offenses(<<~RUBY)
+        class Types::UserType < ApplicationType
+          description "Represents application user"
+        end
+      RUBY
+    end
+
+    it "registers an offense for a module including a configured base" do
+      expect_offense(<<~RUBY)
+        module Types::Node
+               ^^^^^^^^^^^ Missing type description
+          include Describable
+        end
+      RUBY
+    end
+
+    it "still ignores unrelated bases" do
+      expect_no_offenses(<<~RUBY)
+        class UserPresenter < ApplicationPresenter
+        end
+      RUBY
+    end
+  end
+
+  context "when the module is not an interface" do
+    it "does not register an offense for a plain module" do
+      expect_no_offenses(<<~RUBY)
+        module Helpers
+          def self.call; end
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a module including a concern" do
+      expect_no_offenses(<<~RUBY)
+        module Helpers
+          include ActiveSupport::Concern
+        end
+      RUBY
+    end
+
+    it "does not register an offense for a module whose include has no argument" do
+      expect_no_offenses(<<~RUBY)
+        module Helpers
+          include
+        end
+      RUBY
+    end
+  end
+
+  context "when the interface module has other statements" do
+    it "registers an offense when a plain concern is included alongside the interface" do
+      expect_offense(<<~RUBY)
+        module Types::NodeInterface
+               ^^^^^^^^^^^^^^^^^^^^ Missing type description
+          include Helpers
+          include Types::BaseInterface
+        end
+      RUBY
+    end
+
+    it "does not register an offense when the description precedes the include" do
+      expect_no_offenses(<<~RUBY)
+        module Types::NodeInterface
+          description "An object with an ID"
+          include Types::BaseInterface
+        end
+      RUBY
+    end
+
+    it "registers an offense when `description` is called on an explicit receiver" do
+      expect_offense(<<~RUBY)
+        module Types::NodeInterface
+               ^^^^^^^^^^^^^^^^^^^^ Missing type description
+          include Types::BaseInterface
+          config.description "not the type description"
+        end
+      RUBY
+    end
+  end
 end

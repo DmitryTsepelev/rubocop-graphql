@@ -148,6 +148,13 @@ GraphQL/ObjectDescription:
   Enabled: true
   VersionAdded: '0.3.0'
   Description: 'Ensures all types have a description'
+  # Skip the root operation types (Query, Mutation, Subscription), which are
+  # usually left undescribed. Set to false to require a description on them too.
+  IgnoreRootTypes: true
+  # Superclass (or included module) names to treat as GraphQL bases, on top of the
+  # conventional ones. Use when your base types are named unconventionally, e.g.
+  # `class Types::UserType < ApplicationType`.
+  AdditionalTypeBases: []
   Exclude:
     - "spec/**/*"
     - "test/**/*"
