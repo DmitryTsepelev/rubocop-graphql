@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#189](https://github.com/DmitryTsepelev/rubocop-graphql/pull/189) Add `GraphQL/NullabilityMismatch` cop: a `null: false` field whose Sorbet resolver signature returns a nilable type raises an invalid null error at runtime ([@corsonknowles][])
 - [PR#187](https://github.com/DmitryTsepelev/rubocop-graphql/pull/187) `GraphQL/ObjectDescription` only flags classes and modules that are actually GraphQL types, instead of every class and every module with an `include` ([@corsonknowles][])
 
 ## 1.7.0 (2026-08-02)
