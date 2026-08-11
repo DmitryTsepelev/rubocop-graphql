@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#187](https://github.com/DmitryTsepelev/rubocop-graphql/pull/187) `GraphQL/ObjectDescription` only flags classes and modules that are actually GraphQL types, instead of every class and every module with an `include` ([@corsonknowles][])
+
 ## 1.7.0 (2026-08-02)
 
 - [PR#185](https://github.com/DmitryTsepelev/rubocop-graphql/pull/185) Add `GraphQL/MethodShadowedByResolverMethod` cop: flags a `def` as dead code when `resolver:` and/or `resolver_method:` make the field call a different method instead ([@salzig][])
@@ -323,3 +325,4 @@
 [@amckinnie]: https://github.com/amckinnie
 [@salzig]: https://github.com/salzig
 
+[@corsonknowles]: https://github.com/corsonknowles
