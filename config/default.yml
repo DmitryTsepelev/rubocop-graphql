@@ -140,6 +140,11 @@ GraphQL/NotAuthorizedNodeType:
     - '**/graphql/types/**/*'
   SafeBaseClasses: []
 
+GraphQL/NullabilityMismatch:
+  Enabled: true
+  VersionAdded: '<<next>>'
+  Description: 'Detects a non-null field whose Sorbet resolver signature returns a nilable type'
+
 GraphQL/ResolverMethodLength:
   Enabled: true
   VersionAdded: '0.1.0'
