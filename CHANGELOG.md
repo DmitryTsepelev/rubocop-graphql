@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#188](https://github.com/DmitryTsepelev/rubocop-graphql/pull/188) Add `GraphQL/DefaultForOptionalArgument` cop: an optional argument with no default value in the resolver signature raises `ArgumentError` when the client omits it ([@corsonknowles][])
 - [PR#187](https://github.com/DmitryTsepelev/rubocop-graphql/pull/187) `GraphQL/ObjectDescription` only flags classes and modules that are actually GraphQL types, instead of every class and every module with an `include` ([@corsonknowles][])
 
 ## 1.7.0 (2026-08-02)
