@@ -28,6 +28,11 @@ GraphQL/ContextWriteInType:
   Include:
     - '**/graphql/types/**/*'
 
+GraphQL/DefaultForOptionalArgument:
+  Enabled: true
+  VersionAdded: '<<next>>'
+  Description: 'Optional arguments should have a default value in the resolver signature'
+
 GraphQL/ExtractInputType:
   Enabled: true
   VersionAdded: '0.2.0'

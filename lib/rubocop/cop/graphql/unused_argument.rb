@@ -109,7 +109,7 @@ module RuboCop
             node.node_parts[0]
           end.to_set
           declared_args = declared_arg_nodes.map { |node| RuboCop::GraphQL::Argument.new(node) }
-          declared_args.map(&method(:arg_name)).uniq.reject do |declared_arg_name|
+          declared_args.map(&:keyword).uniq.reject do |declared_arg_name|
             resolve_method_kwargs_names.include?(declared_arg_name)
           end
         end
@@ -145,26 +145,6 @@ module RuboCop
 
         def arg_end(node)
           node.source_range.end
-        end
-
-        def inferred_arg_name(name_as_string)
-          case name_as_string
-          when /_id$/
-            name_as_string.sub(/_id$/, "").to_sym
-          when /_ids$/
-            name_as_string.sub(/_ids$/, "")
-                          .sub(/([^s])$/, "\\1s")
-                          .to_sym
-          else
-            name_as_string.to_sym
-          end
-        end
-
-        def arg_name(declared_arg)
-          return declared_arg.as if declared_arg.kwargs.as
-          return inferred_arg_name(declared_arg.name.to_s) if declared_arg.kwargs.loads
-
-          declared_arg.name
         end
 
         def scoped_node?(node)
