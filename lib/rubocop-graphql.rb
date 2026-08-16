@@ -24,4 +24,4 @@ require_relative "rubocop/graphql/field/block"
 require_relative "rubocop/graphql/field/kwargs"
 require_relative "rubocop/graphql/schema_member"
 
-require_relative "rubocop/cop/graphql_cops"
+require_relative "rubocop/cop/graphql"

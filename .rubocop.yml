@@ -21,6 +21,8 @@ Metrics/MethodLength:
 
 Layout/LineLength:
   Max: 100
+  AllowedPatterns:
+    - '^\s*register_cop :' # Cop registrations in the department module
 
 Style/Documentation:
   Enabled: false
