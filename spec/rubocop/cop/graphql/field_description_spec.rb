@@ -129,6 +129,46 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDescription, :config do
     end
   end
 
+  context "when field is built from a resolver class" do
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :posts, resolver: PostsResolver
+        end
+      RUBY
+    end
+
+    it "not registers an offense when the field also has a block" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseType
+          field :posts, resolver: PostsResolver do
+            argument :short, Boolean, required: false
+          end
+        end
+      RUBY
+    end
+  end
+
+  context "when field is built from a mutation class" do
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class MutationType < BaseType
+          field :create_post, mutation: Mutations::CreatePost
+        end
+      RUBY
+    end
+  end
+
+  context "when field is built from a subscription class" do
+    it "not registers an offense" do
+      expect_no_offenses(<<~RUBY)
+        class SubscriptionType < BaseType
+          field :post_added, subscription: Subscriptions::PostAdded
+        end
+      RUBY
+    end
+  end
+
   it "registers an offense" do
     expect_offense(<<~RUBY)
       class UserType < BaseType
