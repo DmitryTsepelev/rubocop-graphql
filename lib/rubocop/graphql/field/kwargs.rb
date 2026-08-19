@@ -21,6 +21,16 @@ module RuboCop
           (pair (sym :resolver) ...)
         PATTERN
 
+        # @!method mutation_kwarg?(node)
+        def_node_matcher :mutation_kwarg?, <<~PATTERN
+          (pair (sym :mutation) ...)
+        PATTERN
+
+        # @!method subscription_kwarg?(node)
+        def_node_matcher :subscription_kwarg?, <<~PATTERN
+          (pair (sym :subscription) ...)
+        PATTERN
+
         # @!method method_kwarg?(node)
         def_node_matcher :method_kwarg?, <<~PATTERN
           (pair (sym :method) ...)
@@ -57,6 +67,20 @@ module RuboCop
 
         def resolver
           @nodes.find { |kwarg| resolver_kwarg?(kwarg) }
+        end
+
+        def mutation
+          @nodes.find { |kwarg| mutation_kwarg?(kwarg) }
+        end
+
+        def subscription
+          @nodes.find { |kwarg| subscription_kwarg?(kwarg) }
+        end
+
+        # graphql-ruby builds the field's resolver class out of any one of these
+        # options, and the field then inherits configuration from that class.
+        def resolver_class
+          resolver || mutation || subscription
         end
 
         def method

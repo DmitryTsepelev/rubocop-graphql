@@ -18,6 +18,16 @@ module RuboCop
       #     field :name, String, null: true
       #   end
       #
+      # Fields built from a resolver, mutation or subscription class are not
+      # flagged: graphql-ruby takes their description from that class.
+      #
+      # @example
+      #   # good
+      #
+      #   class UserType < BaseType
+      #     field :posts, resolver: PostsResolver
+      #   end
+      #
       class FieldDescription < Base
         include RuboCop::GraphQL::NodePattern
 
@@ -28,6 +38,7 @@ module RuboCop
           return unless field_definition?(node)
 
           field = RuboCop::GraphQL::Field.new(node)
+          return if field.kwargs.resolver_class
 
           add_offense(node) unless field.description
         end
