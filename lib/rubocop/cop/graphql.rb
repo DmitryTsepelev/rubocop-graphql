@@ -12,6 +12,7 @@ module RuboCop
       register_cop :ArgumentUniqueness, "#{__dir__}/graphql/argument_uniqueness"
       register_cop :ContextWriteInType, "#{__dir__}/graphql/context_write_in_type"
       register_cop :DefaultForOptionalArgument, "#{__dir__}/graphql/default_for_optional_argument"
+      register_cop :DisallowedTypes, "#{__dir__}/graphql/disallowed_types"
       register_cop :ExtractInputType, "#{__dir__}/graphql/extract_input_type"
       register_cop :ExtractType, "#{__dir__}/graphql/extract_type"
       register_cop :FieldDefinitions, "#{__dir__}/graphql/field_definitions"
