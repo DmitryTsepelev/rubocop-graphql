@@ -2,6 +2,8 @@
 
 ## master
 
+## 1.8.0 (2026-08-20)
+
 - [PR#191](https://github.com/DmitryTsepelev/rubocop-graphql/pull/191) `GraphQL/FieldDescription` no longer flags fields built from a resolver, mutation or subscription class, which inherit that class's description ([@corsonknowles][])
 - [PR#190](https://github.com/DmitryTsepelev/rubocop-graphql/pull/190) Add `GraphQL/DisallowedTypes` cop: flags field and argument types the project has configured as disallowed, with a message explaining what to use instead ([@corsonknowles][])
 - [PR#189](https://github.com/DmitryTsepelev/rubocop-graphql/pull/189) Add `GraphQL/NullabilityMismatch` cop: a `null: false` field whose Sorbet resolver signature returns a nilable type raises an invalid null error at runtime ([@corsonknowles][])
