@@ -824,6 +824,73 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription, :config do
     end
   end
 
+  context "when AdditionalTypeBaseSuffixes is not configured" do
+    it "does not register an offense for a plain Ruby base ending in Object" do
+      expect_no_offenses(<<~RUBY)
+        class Money < ValueObject
+        end
+      RUBY
+    end
+  end
+
+  context "when AdditionalTypeBaseSuffixes is configured" do
+    let(:cop_config) { { "AdditionalTypeBaseSuffixes" => %w[Object] } }
+
+    it "registers an offense for a class inheriting a base with that suffix" do
+      expect_offense(<<~RUBY)
+        class Types::UserType < PermissionedObject
+              ^^^^^^^^^^^^^^^ Missing type description
+        end
+      RUBY
+    end
+
+    it "registers an offense for a namespaced base with that suffix" do
+      expect_offense(<<~RUBY)
+        class Savings < Base::BankingBridge::AuthorizedObject
+              ^^^^^^^ Missing type description
+        end
+      RUBY
+    end
+
+    it "does not register an offense when that class has a description" do
+      expect_no_offenses(<<~RUBY)
+        class Types::UserType < PermissionedObject
+          description "Represents application user"
+        end
+      RUBY
+    end
+
+    it "registers an offense for a module including a base with that suffix" do
+      expect_offense(<<~RUBY)
+        module Types::Node
+               ^^^^^^^^^^^ Missing type description
+          include SharedObject
+        end
+      RUBY
+    end
+
+    it "still ignores bases without that suffix" do
+      expect_no_offenses(<<~RUBY)
+        class UserPresenter < ApplicationPresenter
+        end
+      RUBY
+    end
+
+    it "still ignores an abstract base carrying that suffix" do
+      expect_no_offenses(<<~RUBY)
+        class BasePermissionedObject < GraphQL::Schema::Object
+        end
+      RUBY
+    end
+
+    it "still ignores a Sorbet base whose name ends in that suffix" do
+      expect_no_offenses(<<~RUBY)
+        class Money < T::ValueObject
+        end
+      RUBY
+    end
+  end
+
   context "when the module is not an interface" do
     it "does not register an offense for a plain module" do
       expect_no_offenses(<<~RUBY)

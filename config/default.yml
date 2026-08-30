@@ -173,6 +173,10 @@ GraphQL/ObjectDescription:
   # conventional ones. Use when your base types are named unconventionally, e.g.
   # `class Types::UserType < ApplicationType`.
   AdditionalTypeBases: []
+  # Suffixes to treat as GraphQL bases, on top of Mutation, Subscription and
+  # Resolver. Use when your base types share a suffix that is ambiguous by default,
+  # e.g. `Object` for `class Types::UserType < PermissionedObject`.
+  AdditionalTypeBaseSuffixes: []
   Exclude:
     - "spec/**/*"
     - "test/**/*"

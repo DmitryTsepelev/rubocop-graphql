@@ -2,6 +2,8 @@
 
 ## master
 
+- [PR#192](https://github.com/DmitryTsepelev/rubocop-graphql/pull/192) `GraphQL/ObjectDescription` accepts an `AdditionalTypeBaseSuffixes` option, for projects whose GraphQL base classes share a suffix that is ambiguous by default such as `Object` ([@corsonknowles][])
+
 ## 1.8.0 (2026-08-20)
 
 - [PR#191](https://github.com/DmitryTsepelev/rubocop-graphql/pull/191) `GraphQL/FieldDescription` no longer flags fields built from a resolver, mutation or subscription class, which inherit that class's description ([@corsonknowles][])

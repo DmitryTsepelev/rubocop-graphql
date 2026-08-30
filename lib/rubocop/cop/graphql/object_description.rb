@@ -58,6 +58,20 @@ module RuboCop
       #   class Types::UserType < ApplicationType
       #   end
       #
+      # @example AdditionalTypeBaseSuffixes: [] (default)
+      #   # good - only `Object` exactly, or with a `Base` prefix, is a recognized
+      #   # object base, so a plain Ruby `ValueObject` is not mistaken for one
+      #
+      #   class Money < ValueObject
+      #   end
+      #
+      # @example AdditionalTypeBaseSuffixes: ['Object']
+      #   # bad - every base whose name ends in `Object` is now treated as a GraphQL
+      #   # base, which suits an app whose bases carry a domain prefix
+      #
+      #   class Types::UserType < PermissionedObject
+      #   end
+      #
       class ObjectDescription < Base
         include RuboCop::GraphQL::DescriptionMethod
 
@@ -66,13 +80,15 @@ module RuboCop
         # Base class names that mark a GraphQL type when they match exactly, or with
         # a `Base` prefix (`GraphQL::Schema::Object`, `Types::BaseObject`).
         # Ambiguous words are deliberately not matched as suffixes, so a plain Ruby
-        # `ValueObject` base is not mistaken for a GraphQL one. `Interface` is absent
-        # on purpose: graphql-ruby interfaces are modules, so a *class* inheriting an
-        # `*::Interface` constant is always some other abstract base.
+        # `ValueObject` base is not mistaken for a GraphQL one; an app whose own bases
+        # do carry such a suffix opts in via `AdditionalTypeBaseSuffixes`. `Interface`
+        # is absent on purpose: graphql-ruby interfaces are modules, so a *class*
+        # inheriting an `*::Interface` constant is always some other abstract base.
         EXACT_BASES = %w[Object InputObject Union Enum Scalar].freeze
 
         # These read unambiguously as GraphQL even inside a longer name, so they are
         # matched as suffixes (`RelayClassicMutation`, `Base::PermissionedMutation`).
+        # `AdditionalTypeBaseSuffixes` extends this list per app.
         SUFFIX_BASES = %w[Mutation Subscription Resolver].freeze
 
         # A base named exactly `Base` (`Resolvers::Base`) is only a GraphQL base when
@@ -137,7 +153,7 @@ module RuboCop
           name = const_node.short_name.to_s
           return true if additional_type_bases.include?(name)
           return graphql_namespace?(const_node) if name == "Base"
-          return true if SUFFIX_BASES.any? { |suffix| name.end_with?(suffix) }
+          return true if name.end_with?(*SUFFIX_BASES, *additional_type_base_suffixes)
 
           EXACT_BASES.include?(name.delete_prefix("Base"))
         end
@@ -176,7 +192,9 @@ module RuboCop
           return false unless arg&.const_type?
 
           name = arg.short_name.to_s
-          name.end_with?("Interface") || additional_type_bases.include?(name)
+          return true if additional_type_bases.include?(name)
+
+          name.end_with?("Interface", *additional_type_base_suffixes)
         end
 
         # Single pass over the class body: a `description` satisfies the cop, and a
@@ -211,6 +229,10 @@ module RuboCop
 
         def additional_type_bases
           @additional_type_bases ||= Array(cop_config["AdditionalTypeBases"])
+        end
+
+        def additional_type_base_suffixes
+          @additional_type_base_suffixes ||= Array(cop_config["AdditionalTypeBaseSuffixes"])
         end
       end
     end
