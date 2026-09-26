@@ -40,8 +40,8 @@ module RuboCop
               "section. "\
               "Field `%<current>s` should appear before `%<previous>s`."
 
-        # @!method field_declarations(node)
-        def_node_search :field_declarations, <<~PATTERN
+        # @!method field_nodes(node)
+        def_node_search :field_nodes, <<~PATTERN
           {
             (send nil? :field (:sym _) ...)
             (block
@@ -75,6 +75,14 @@ module RuboCop
 
             register_offense(previous, current)
           end
+        end
+
+        def field_declarations(node)
+          field_nodes(node).reject { |field| block_field_send?(field) }
+        end
+
+        def block_field_send?(node)
+          node.parent&.block_type? && node.parent.send_node == node
         end
 
         def direct_field_declarations(node)

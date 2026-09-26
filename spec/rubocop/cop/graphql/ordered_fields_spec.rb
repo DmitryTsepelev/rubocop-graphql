@@ -23,6 +23,30 @@ RSpec.describe RuboCop::Cop::GraphQL::OrderedFields, :config do
     end
   end
 
+  context "when a block field sits between two unordered fields" do
+    it "registers offenses and corrects" do
+      expect_offense(<<~RUBY)
+        class A
+          field :c
+          field :b do
+          ^^^^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `b` should appear before `c`.
+          end
+          field :a
+          ^^^^^^^^ Fields should be sorted in an alphabetical order within their section. Field `a` should appear before `b`.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class A
+          field :a
+          field :b do
+          end
+          field :c
+        end
+      RUBY
+    end
+  end
+
   context "when fields are alphabetically sorted" do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)
