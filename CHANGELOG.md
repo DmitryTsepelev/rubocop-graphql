@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#200](https://github.com/DmitryTsepelev/rubocop-graphql/pull/200) `GraphQL/FieldDefinitions` still reports, but no longer autocorrects, a field that references a class, module or constant defined between it and the first field, since hoisting it would raise `NameError` on load ([@a-lavis][])
 - [PR#199](https://github.com/DmitryTsepelev/rubocop-graphql/pull/199) `GraphQL/FieldDefinitions` autocorrect (`group_definitions`) moves a field's heredoc body and terminator along with the field, instead of leaving them behind and producing invalid code ([@a-lavis][])
 - [PR#197](https://github.com/DmitryTsepelev/rubocop-graphql/pull/197) `GraphQL/ArgumentDescription` accepts a positional description built from adjacent or interpolated string literals, as `GraphQL/FieldDescription` already did ([@a-lavis][])
 - [PR#196](https://github.com/DmitryTsepelev/rubocop-graphql/pull/196) `GraphQL/ObjectDescription` no longer crashes with `NoMethodError` on a class whose superclass has a leading `::`, such as `class QueryType < ::QueryType` ([@a-lavis][])
