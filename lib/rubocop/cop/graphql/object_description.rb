@@ -144,9 +144,14 @@ module RuboCop
         def graphql_type_class?(node)
           superclass = node.parent_class
           return false if superclass.nil? || !superclass.const_type?
-          return false if superclass.namespace&.short_name == SORBET_NAMESPACE
+          return false if sorbet_namespace?(superclass.namespace)
 
           graphql_base?(superclass)
+        end
+
+        # `namespace` is a `cbase` node (not a `const`) for a top-level `::Foo`.
+        def sorbet_namespace?(namespace)
+          namespace&.const_type? && namespace.short_name == SORBET_NAMESPACE
         end
 
         def graphql_base?(const_node)
