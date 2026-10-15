@@ -7,7 +7,7 @@ module RuboCop
 
       # @!method argument_description(node)
       def_node_matcher :argument_description, <<~PATTERN
-        (send nil? :argument _ _ (:str $_) ...)
+        (send nil? :argument _ _ {(:str $_)|(:dstr $...)} ...)
       PATTERN
 
       # @!method argument_name(node)
