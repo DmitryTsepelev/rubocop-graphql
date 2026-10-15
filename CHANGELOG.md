@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#196](https://github.com/DmitryTsepelev/rubocop-graphql/pull/196) `GraphQL/ObjectDescription` no longer crashes with `NoMethodError` on a class whose superclass has a leading `::`, such as `class QueryType < ::QueryType` ([@a-lavis][])
 - [PR#194](https://github.com/DmitryTsepelev/rubocop-graphql/pull/194) `GraphQL/OrderedFields` no longer raises `Parser::ClobberingError` when a field declared with a block sits between two fields that are out of order ([@viralpraxis][])
 - [PR#192](https://github.com/DmitryTsepelev/rubocop-graphql/pull/192) `GraphQL/ObjectDescription` accepts an `AdditionalTypeBaseSuffixes` option, for projects whose GraphQL base classes share a suffix that is ambiguous by default such as `Object` ([@corsonknowles][])
 
@@ -337,3 +338,4 @@
 [@corsonknowles]: https://github.com/corsonknowles
 [@bquorning]: https://github.com/bquorning
 [@viralpraxis]: https://github.com/viralpraxis
+[@a-lavis]: https://github.com/a-lavis
