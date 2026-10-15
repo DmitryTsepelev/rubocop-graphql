@@ -106,8 +106,29 @@ module RuboCop
             next if node.sibling_index == first_field.sibling_index + idx
 
             add_offense(node, message: GROUP_DEFS_MSG) do |corrector|
+              next if references_constant_defined_in_between?(body, first_field, node)
+
               group_field_declarations(corrector, node)
             end
+          end
+        end
+
+        # Hoisting a field above a class, module or constant it references would raise
+        # `NameError` when the class body loads, so such a field is reported but left in place.
+        def references_constant_defined_in_between?(body, first_field, node)
+          crossed = body.select do |sibling|
+            sibling.sibling_index.between?(first_field.sibling_index + 1, node.sibling_index - 1)
+          end
+          defined = crossed.filter_map { |sibling| defined_constant_name(sibling) }
+          return false if defined.empty?
+
+          node.each_node(:const).any? { |const| defined.include?(const.short_name) }
+        end
+
+        def defined_constant_name(node)
+          case node.type
+          when :class, :module then node.identifier.short_name
+          when :casgn then node.children[1]
           end
         end
 
