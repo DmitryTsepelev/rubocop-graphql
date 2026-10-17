@@ -306,6 +306,94 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions, :config do
           RUBY
         end
       end
+
+      context "when the field to move has a heredoc description" do
+        it "moves the heredoc body and terminator together with the field" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              def first_name
+                object.contact_data.first_name
+              end
+
+              field :body, String, null: false, description: <<~DOCS
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+                Multi-line
+                description.
+              DOCS
+
+              def body
+                object.body
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              field :body, String, null: false, description: <<~DOCS
+                Multi-line
+                description.
+              DOCS
+
+
+              def first_name
+                object.contact_data.first_name
+              end
+
+              def body
+                object.body
+              end
+            end
+          RUBY
+        end
+
+        it "moves every heredoc when the field has several" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              def first_name
+                object.contact_data.first_name
+              end
+
+              field :body, String, null: false, description: <<~DOCS, deprecation_reason: <<~REASON
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+                Multi-line description.
+              DOCS
+                Use something else.
+              REASON
+
+              def body
+                object.body
+              end
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+              field :first_name, String, null: true
+
+              field :body, String, null: false, description: <<~DOCS, deprecation_reason: <<~REASON
+                Multi-line description.
+              DOCS
+                Use something else.
+              REASON
+
+
+              def first_name
+                object.contact_data.first_name
+              end
+
+              def body
+                object.body
+              end
+            end
+          RUBY
+        end
+      end
     end
   end
 

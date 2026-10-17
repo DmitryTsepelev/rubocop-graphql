@@ -213,7 +213,7 @@ module RuboCop
         end
 
         def insert_new_resolver(corrector, field_definition, resolver_definition)
-          resolver_definition_range = source_range_with_comment(resolver_definition)
+          resolver_definition_range = source_range_with_comment_and_heredoc(resolver_definition)
           source_to_insert =
             "\n#{signature_to_insert(resolver_definition)}\n" \
               "#{indent(resolver_definition)}#{resolver_definition_range.source.strip}\n"
@@ -223,7 +223,7 @@ module RuboCop
         end
 
         def remove_old_resolver(corrector, resolver_definition)
-          resolver_definition_range = source_range_with_comment(resolver_definition)
+          resolver_definition_range = source_range_with_comment_and_heredoc(resolver_definition)
           range_to_remove = range_with_surrounding_space(
             range: resolver_definition_range, side: :left
           )
@@ -238,6 +238,15 @@ module RuboCop
             range: resolver_signature_range, side: :left
           )
           corrector.remove(range_to_remove)
+        end
+
+        # A node's own range stops at the opening `<<~TAG` of a heredoc, so a field with a
+        # heredoc argument must be widened to take the heredoc body and terminator along.
+        def source_range_with_comment_and_heredoc(node)
+          range = source_range_with_comment(node)
+          heredoc_end_pos = range_including_heredoc(node).end_pos
+
+          heredoc_end_pos > range.end_pos ? range.with(end_pos: heredoc_end_pos) : range
         end
 
         def signature_to_insert(node)
