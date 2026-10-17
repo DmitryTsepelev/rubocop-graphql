@@ -11,6 +11,36 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentDescription, :config do
     end
   end
 
+  context "when description is passed as argument and built from several string literals" do
+    it "not registers an offense for adjacent literals" do
+      expect_no_offenses(<<~RUBY)
+        class BanUser < BaseMutation
+          argument :uuid, ID, "UUID of " \
+                              "the user to ban", required: true
+        end
+      RUBY
+    end
+
+    it "not registers an offense for an interpolated string" do
+      expect_no_offenses(<<~RUBY)
+        class BanUser < BaseMutation
+          argument :uuid, ID, "UUID of the \#{role} to ban", required: true
+        end
+      RUBY
+    end
+
+    it "not registers an offense inside a field block" do
+      expect_no_offenses(<<~RUBY)
+        class UserType < BaseObject
+          field :things, String, null: true, description: "Things." do
+            argument :thing_id, ID, "The id of " \
+                                    "the thing.", required: false
+          end
+        end
+      RUBY
+    end
+  end
+
   context "when description is passed as kwarg" do
     it "not registers an offense" do
       expect_no_offenses(<<~RUBY)

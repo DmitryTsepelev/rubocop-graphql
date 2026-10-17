@@ -87,6 +87,39 @@ RSpec.describe RuboCop::Cop::GraphQL::ObjectDescription, :config do
         RUBY
       end
     end
+
+    context "when the superclass is a top-level constant (`::Foo`)" do
+      it "registers an offense when the description is missing" do
+        expect_offense(<<~RUBY)
+          module Admin
+            class UserType < ::Types::BaseObject
+                  ^^^^^^^^ Missing type description
+            end
+
+            class QueryType < ::BaseObject
+                  ^^^^^^^^^ Missing type description
+            end
+          end
+        RUBY
+      end
+
+      it "does not register an offense when the description is present" do
+        expect_no_offenses(<<~RUBY)
+          module Admin
+            class QueryType < ::BaseObject
+              description "An admin query"
+            end
+          end
+        RUBY
+      end
+
+      it "does not treat a top-level `::T::Struct` as a GraphQL type" do
+        expect_no_offenses(<<~RUBY)
+          class Point < ::T::Struct
+          end
+        RUBY
+      end
+    end
   end
 
   context "when mutation" do
