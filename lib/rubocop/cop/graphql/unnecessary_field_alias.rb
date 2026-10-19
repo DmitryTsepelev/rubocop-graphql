@@ -46,18 +46,12 @@ module RuboCop
 
         private
 
-        # The pair together with exactly one adjoining separator, wherever it sits: a
-        # leading `, ` plus any line break, or (for the first pair) the `, ` after it.
         def range_to_remove(pair)
-          index = pair.sibling_index
-          siblings = pair.parent.children
-
-          if index.positive?
-            range_between(siblings[index - 1].source_range.end_pos, pair.source_range.end_pos)
-          elsif siblings.size > 1
-            range_between(pair.source_range.begin_pos, siblings[1].source_range.begin_pos)
+          if (next_pair = pair.right_sibling)
+            range_between(pair.source_range.begin_pos, next_pair.source_range.begin_pos)
           else
-            range_between(pair.parent.left_sibling.source_range.end_pos, pair.source_range.end_pos)
+            previous = pair.left_sibling || pair.parent.left_sibling
+            range_between(previous.source_range.end_pos, pair.source_range.end_pos)
           end
         end
 

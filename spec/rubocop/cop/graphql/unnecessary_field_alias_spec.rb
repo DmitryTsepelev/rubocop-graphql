@@ -81,6 +81,48 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
         RUBY
       end
 
+      it "keeps a comment on the previous line when it is in the middle" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  null: false, # keep me
+                  method: :question,
+                  description: "The question."
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+                  String,
+                  null: false, # keep me
+                  description: "The question."
+          end
+        RUBY
+      end
+
+      it "removes the whole line when it is the first keyword" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  method: :question,
+                  null: false
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+                  String,
+                  null: false
+          end
+        RUBY
+      end
+
       it "removes the whole line when it is last" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
@@ -124,22 +166,6 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
           class UserType < BaseType
             field :question, String, method: :question, null: false
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :method configured
-          end
-        RUBY
-
-        expect_correction(<<~RUBY)
-          class UserType < BaseType
-            field :question, String, null: false
-          end
-        RUBY
-      end
-
-      it "removes the first keyword when the next keyword is on the following line" do
-        expect_offense(<<~RUBY)
-          class UserType < BaseType
-            field :question, String, method: :question,
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :method configured
-                                     null: false
           end
         RUBY
 
