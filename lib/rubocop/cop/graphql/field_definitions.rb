@@ -113,14 +113,9 @@ module RuboCop
           end
         end
 
-        # Hoisting a field above a class, module or constant it references would raise
-        # `NameError` when the class body loads, so such a field is reported but left in place.
         def references_constant_defined_in_between?(body, first_field, node)
-          crossed = body.select do |sibling|
-            sibling.sibling_index.between?(first_field.sibling_index + 1, node.sibling_index - 1)
-          end
+          crossed = body[(first_field.sibling_index + 1)...node.sibling_index]
           defined = crossed.filter_map { |sibling| defined_constant_name(sibling) }
-          return false if defined.empty?
 
           node.each_node(:const).any? { |const| defined.include?(const.short_name) }
         end
@@ -128,7 +123,7 @@ module RuboCop
         def defined_constant_name(node)
           case node.type
           when :class, :module then node.identifier.short_name
-          when :casgn then node.children[1]
+          when :casgn then node.name
           end
         end
 
