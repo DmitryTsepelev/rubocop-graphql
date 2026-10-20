@@ -22,6 +22,7 @@ module RuboCop
       #
       class UnnecessaryFieldAlias < Base
         extend AutoCorrector
+        include RangeHelp
         include RuboCop::GraphQL::NodePattern
 
         MSG = "Unnecessary :%<kwarg>s configured"
@@ -38,13 +39,21 @@ module RuboCop
               kwarg_node = node.last_argument.pairs.find do |pair|
                 pair.key.value == unnecessary_kwarg.to_sym
               end
-              corrector.remove_preceding(kwarg_node, 2)
-              corrector.remove(kwarg_node)
+              corrector.remove(range_to_remove(kwarg_node))
             end
           end
         end
 
         private
+
+        def range_to_remove(pair)
+          if (next_pair = pair.right_sibling)
+            range_between(pair.source_range.begin_pos, next_pair.source_range.begin_pos)
+          else
+            previous = pair.left_sibling || pair.parent.left_sibling
+            range_between(previous.source_range.end_pos, pair.source_range.end_pos)
+          end
+        end
 
         def validate_kwargs(field) # rubocop:disable Metrics/CyclomaticComplexity
           case field.name
