@@ -57,6 +57,125 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
         RUBY
       end
     end
+
+    context "when the unnecessary method is laid out over several lines" do
+      it "removes the whole line when it is in the middle" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  null: false,
+                  method: :question,
+                  description: "The question."
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+                  String,
+                  null: false,
+                  description: "The question."
+          end
+        RUBY
+      end
+
+      it "keeps a comment on the previous line when it is in the middle" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  null: false, # keep me
+                  method: :question,
+                  description: "The question."
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+                  String,
+                  null: false, # keep me
+                  description: "The question."
+          end
+        RUBY
+      end
+
+      it "removes the whole line when it is the first keyword" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  method: :question,
+                  null: false
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+                  String,
+                  null: false
+          end
+        RUBY
+      end
+
+      it "removes the whole line when it is last" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  null: false,
+                  method: :question
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+                  String,
+                  null: false
+          end
+        RUBY
+      end
+
+      it "removes the whole line when it is the only keyword" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  method: :question
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+                  String
+          end
+        RUBY
+      end
+
+      it "removes the first keyword together with the separator after it" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :question, String, method: :question, null: false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :method configured
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :question, String, null: false
+          end
+        RUBY
+      end
+    end
   end
 
   describe ":resolver_method" do
