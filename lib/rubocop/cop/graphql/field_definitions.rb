@@ -106,8 +106,24 @@ module RuboCop
             next if node.sibling_index == first_field.sibling_index + idx
 
             add_offense(node, message: GROUP_DEFS_MSG) do |corrector|
+              next if references_constant_defined_in_between?(body, first_field, node)
+
               group_field_declarations(corrector, node)
             end
+          end
+        end
+
+        def references_constant_defined_in_between?(body, first_field, node)
+          crossed = body[(first_field.sibling_index + 1)...node.sibling_index]
+          defined = crossed.filter_map { |sibling| defined_constant_name(sibling) }
+
+          node.each_node(:const).any? { |const| defined.include?(const.short_name) }
+        end
+
+        def defined_constant_name(node)
+          case node.type
+          when :class, :module then node.identifier.short_name
+          when :casgn then node.name
           end
         end
 

@@ -394,6 +394,110 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldDefinitions, :config do
           RUBY
         end
       end
+
+      context "when the field references a constant defined between it and the first field" do
+        it "reports the offense but does not move the field above its class" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :name, String, null: false
+
+              def name
+                "x"
+              end
+
+              class ItemsConnection < BaseConnection
+              end
+
+              field :items, ItemsConnection, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+
+              def items
+                object.items
+              end
+            end
+          RUBY
+
+          expect_no_corrections
+        end
+
+        it "does not move a field that references a nested module" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :name, String, null: false
+
+              module Kinds
+                ADMIN = "admin"
+              end
+
+              field :kind, String, null: false, default_value: Kinds::ADMIN
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+            end
+          RUBY
+
+          expect_no_corrections
+        end
+
+        it "does not move a field that references a constant assigned in between" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :name, String, null: false
+
+              Status = Class.new(BaseEnum)
+
+              field :status, Status, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+            end
+          RUBY
+
+          expect_no_corrections
+        end
+
+        it "does not move a field with a block that references such a constant" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :name, String, null: false
+
+              class ItemsConnection < BaseConnection
+              end
+
+              field :items, ItemsConnection, null: false do
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+                argument :first, Integer, required: false
+              end
+            end
+          RUBY
+
+          expect_no_corrections
+        end
+      end
+
+      context "when the code between the fields defines constants the field does not reference" do
+        it "still moves the field" do
+          expect_offense(<<~RUBY)
+            class UserType < BaseType
+              field :name, String, null: false
+
+              class ItemsConnection < BaseConnection
+              end
+
+              field :title, String, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Group all field definitions together.
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            class UserType < BaseType
+              field :name, String, null: false
+
+              field :title, String, null: false
+
+
+              class ItemsConnection < BaseConnection
+              end
+            end
+          RUBY
+        end
+      end
     end
   end
 
