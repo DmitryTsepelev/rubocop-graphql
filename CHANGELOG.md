@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#201](https://github.com/DmitryTsepelev/rubocop-graphql/pull/201) `GraphQL/UnnecessaryFieldAlias` autocorrect keeps a comment trailing the previous argument when the unnecessary keyword is the last one ([@a-lavis][])
 - [PR#200](https://github.com/DmitryTsepelev/rubocop-graphql/pull/200) `GraphQL/FieldDefinitions` still reports, but no longer autocorrects, a field that references a class, module or constant defined between it and the first field, since hoisting it would raise `NameError` on load ([@a-lavis][])
 - [PR#198](https://github.com/DmitryTsepelev/rubocop-graphql/pull/198) `GraphQL/UnnecessaryFieldAlias` autocorrect no longer leaves a stray `,` (a syntax error) when the unnecessary keyword is on its own line ([@a-lavis][])
 - [PR#195](https://github.com/DmitryTsepelev/rubocop-graphql/pull/195) Drop the `bundler` development dependency from the gemspec, so contributors are no longer limited to Bundler 2.x ([@a-lavis][])

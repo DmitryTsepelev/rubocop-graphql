@@ -39,20 +39,53 @@ module RuboCop
               kwarg_node = node.last_argument.pairs.find do |pair|
                 pair.key.value == unnecessary_kwarg.to_sym
               end
-              corrector.remove(range_to_remove(kwarg_node))
+              remove_pair(corrector, kwarg_node)
             end
           end
         end
 
         private
 
-        def range_to_remove(pair)
+        def remove_pair(corrector, pair)
           if (next_pair = pair.right_sibling)
-            range_between(pair.source_range.begin_pos, next_pair.source_range.begin_pos)
+            corrector.remove(pair.source_range.begin.join(next_pair.source_range.begin))
           else
-            previous = pair.left_sibling || pair.parent.left_sibling
-            range_between(previous.source_range.end_pos, pair.source_range.end_pos)
+            remove_last_pair(corrector, pair)
           end
+        end
+
+        def remove_last_pair(corrector, pair)
+          previous = pair.left_sibling || pair.parent.left_sibling
+          comment = trailing_comment(previous)
+
+          if comment
+            corrector.remove(comma_range(previous, comment))
+            corrector.remove(comment.source_range.end.join(pair.source_range.end))
+          else
+            corrector.remove(previous.source_range.end.join(pair.source_range.end))
+          end
+        end
+
+        # A comment that follows the separating comma on the line where `node` ends.
+        def trailing_comment(node)
+          comment = processed_source.comment_at_line(node.last_line)
+          return unless comment && comma_before?(node, comment)
+
+          comment
+        end
+
+        def comma_before?(node, comment)
+          gap_before(node, comment).match?(/\A\s*,\s*\z/)
+        end
+
+        def comma_range(node, comment)
+          comma_pos = node.source_range.end_pos + gap_before(node, comment).index(",")
+
+          range_between(comma_pos, comma_pos + 1)
+        end
+
+        def gap_before(node, comment)
+          processed_source.buffer.source[node.source_range.end_pos...comment.source_range.begin_pos]
         end
 
         def validate_kwargs(field) # rubocop:disable Metrics/CyclomaticComplexity
