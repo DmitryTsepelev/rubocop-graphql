@@ -181,6 +181,26 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
         RUBY
       end
 
+      it "does not move a closing parenthesis into the comment of the previous keyword" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field(:question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  null: false, # keep me
+                  method: :question)
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field(:question,
+                  String,
+                  null: false)
+          end
+        RUBY
+      end
+
       it "removes the whole line when it is the only keyword" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
