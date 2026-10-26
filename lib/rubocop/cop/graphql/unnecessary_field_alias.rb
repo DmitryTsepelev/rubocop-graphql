@@ -52,7 +52,7 @@ module RuboCop
 
           if comma
             corrector.remove(comma)
-            corrector.remove(range_between(comment.source_range.end_pos, pair.source_range.end_pos))
+            corrector.remove(range_between(comment.source_range.end_pos, end_of_line(pair)))
           else
             corrector.remove(range_to_remove(pair))
           end
@@ -68,15 +68,18 @@ module RuboCop
         end
 
         def comment_before_last_pair(pair)
-          return if pair.right_sibling || !last_on_its_line?(pair)
+          return if pair.right_sibling || !only_comment_after?(pair)
 
           previous = pair.left_sibling || pair.parent.left_sibling
           processed_source.comment_at_line(previous.last_line)
         end
 
-        def last_on_its_line?(node)
-          line_end = processed_source.buffer.line_range(node.last_line).end_pos
-          range_between(node.source_range.end_pos, line_end).source.strip.empty?
+        def only_comment_after?(node)
+          range_between(node.source_range.end_pos, end_of_line(node)).source.match?(/\A\s*(#.*)?\z/)
+        end
+
+        def end_of_line(node)
+          processed_source.buffer.line_range(node.last_line).end_pos
         end
 
         def comma_before(comment)

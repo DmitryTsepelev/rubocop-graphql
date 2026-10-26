@@ -163,6 +163,26 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
         RUBY
       end
 
+      it "keeps the previous comment and drops the removed keyword's own trailing comment" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  null: false, # keep me
+                  method: :question # about the method
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :question,
+                  String,
+                  null: false # keep me
+          end
+        RUBY
+      end
+
       it "keeps a comment trailing the previous argument when it is the only keyword" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
