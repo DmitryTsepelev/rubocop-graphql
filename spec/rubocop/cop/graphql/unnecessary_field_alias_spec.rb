@@ -201,7 +201,7 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
         RUBY
       end
 
-      it "does not move a closing parenthesis into the comment of the previous keyword" do
+      it "moves the previous comment after a closing parenthesis" do
         expect_offense(<<~RUBY)
           class UserType < BaseType
             field(:question,
@@ -216,7 +216,27 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
           class UserType < BaseType
             field(:question,
                   String,
-                  null: false)
+                  null: false) # keep me
+          end
+        RUBY
+      end
+
+      it "moves the previous comment after a closing parenthesis and drops the keyword's own" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field(:question,
+            ^^^^^^^^^^^^^^^^ Unnecessary :method configured
+                  String,
+                  null: false, # keep me
+                  method: :question) # about the method
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field(:question,
+                  String,
+                  null: false) # keep me
           end
         RUBY
       end

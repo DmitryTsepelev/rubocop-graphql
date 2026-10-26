@@ -51,8 +51,8 @@ module RuboCop
           comma = comma_before(comment) if comment
 
           if comma
-            corrector.remove(comma)
-            corrector.remove(range_between(comment.source_range.end_pos, end_of_line(pair)))
+            replaced = range_between(comma.begin_pos, end_of_line(pair))
+            corrector.replace(replaced, "#{code_after(pair)} #{comment.source}")
           else
             corrector.remove(range_to_remove(pair))
           end
@@ -68,14 +68,18 @@ module RuboCop
         end
 
         def comment_before_last_pair(pair)
-          return if pair.right_sibling || !only_comment_after?(pair)
+          return if pair.right_sibling
 
           previous = pair.left_sibling || pair.parent.left_sibling
-          processed_source.comment_at_line(previous.last_line)
+          comment = processed_source.comment_at_line(previous.last_line)
+          comment if comment && comment.source_range.end_pos <= pair.source_range.begin_pos
         end
 
-        def only_comment_after?(node)
-          range_between(node.source_range.end_pos, end_of_line(node)).source.match?(/\A\s*(#.*)?\z/)
+        def code_after(pair)
+          own_comment = processed_source.comment_at_line(pair.last_line)
+          stop = own_comment ? own_comment.source_range.begin_pos : end_of_line(pair)
+
+          range_between(pair.source_range.end_pos, stop).source.rstrip
         end
 
         def end_of_line(node)
