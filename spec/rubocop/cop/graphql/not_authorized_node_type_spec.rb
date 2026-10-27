@@ -19,6 +19,23 @@ RSpec.describe RuboCop::Cop::GraphQL::NotAuthorizedNodeType, :config do
     end
   end
 
+  context "when type has no superclass" do
+    it "does not raise for an empty class" do
+      expect_no_offenses(<<~RUBY, "graphql/types/user_type.rb")
+        class UserType; end
+      RUBY
+    end
+
+    it "registers an offense when it implements Node without an .authorized? check" do
+      expect_offense(<<~RUBY, "graphql/types/user_type.rb")
+        class UserType
+        ^^^^^^^^^^^^^^ .authorized? should be defined for types implementing Node interface.
+          implements GraphQL::Types::Relay::Node
+        end
+      RUBY
+    end
+  end
+
   context "when type implements Node interface" do
     context "when type has .authorized? check" do
       specify do
