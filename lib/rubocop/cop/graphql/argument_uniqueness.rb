@@ -84,13 +84,17 @@ module RuboCop
 
           return field_name(node.parent) unless is_field_block
 
-          first_argument = node.send_node.first_argument
-          if first_argument.lvar_type?
-            variable_name = first_argument.children.first
-            return "with name from `#{variable_name}` variable"
-          end
+          describe_field_name(node.send_node.first_argument)
+        end
 
-          "`#{first_argument.value}`"
+        def describe_field_name(name_node)
+          if name_node.type?(:sym, :str)
+            "`#{name_node.value}`"
+          elsif name_node.lvar_type?
+            "with name from `#{name_node.children.first}` variable"
+          else
+            "with name from `#{name_node.source}` expression"
+          end
         end
 
         # @!method argument_declarations(node)

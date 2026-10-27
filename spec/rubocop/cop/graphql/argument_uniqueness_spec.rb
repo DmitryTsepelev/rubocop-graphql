@@ -88,6 +88,48 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness, :config do
         RUBY
       end
     end
+
+    context "when field name is a constant" do
+      it "registers an offense" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field FIELD_NAME, PostType do
+              argument :created_after, ISO8601DateTime, required: false
+              argument :created_after, ISO8601DateTime, required: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Argument names should only be defined once per block. Argument `created_after` is duplicated in field with name from `FIELD_NAME` expression.
+            end
+          end
+        RUBY
+      end
+
+      it "does not register an offense for the same argument in different fields" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field FIRST_NAME, PostType do
+              argument :created_after, ISO8601DateTime, required: false
+            end
+
+            field SECOND_NAME, PostType do
+              argument :created_after, ISO8601DateTime, required: false
+            end
+          end
+        RUBY
+      end
+    end
+
+    context "when field name is a method call" do
+      it "registers an offense" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field name_for(:posts), PostType do
+              argument :created_after, ISO8601DateTime, required: false
+              argument :created_after, ISO8601DateTime, required: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Argument names should only be defined once per block. Argument `created_after` is duplicated in field with name from `name_for(:posts)` expression.
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   context "when a multi-line argument is duplicated" do
