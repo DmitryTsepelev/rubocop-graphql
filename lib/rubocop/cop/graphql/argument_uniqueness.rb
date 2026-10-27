@@ -88,7 +88,9 @@ module RuboCop
         end
 
         def describe_field_name(name_node)
-          if name_node.type?(:sym, :str)
+          if name_node.nil?
+            "without a name"
+          elsif name_node.type?(:sym, :str)
             "`#{name_node.value}`"
           elsif name_node.lvar_type?
             "with name from `#{name_node.children.first}` variable"
