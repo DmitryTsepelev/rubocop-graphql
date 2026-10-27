@@ -130,6 +130,31 @@ RSpec.describe RuboCop::Cop::GraphQL::ArgumentUniqueness, :config do
         RUBY
       end
     end
+
+    context "when the field has no name" do
+      it "registers an offense for a duplicated argument" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field do
+              argument :created_after, ISO8601DateTime, required: false
+              argument :created_after, ISO8601DateTime, required: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Argument names should only be defined once per block. Argument `created_after` is duplicated in field without a name.
+            end
+          end
+        RUBY
+      end
+
+      it "does not register an offense for different arguments" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field do
+              argument :created_after, ISO8601DateTime, required: false
+              argument :created_before, ISO8601DateTime, required: false
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   context "when a multi-line argument is duplicated" do
