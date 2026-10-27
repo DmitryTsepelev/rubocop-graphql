@@ -39,12 +39,24 @@ module RuboCop
               kwarg_node = node.last_argument.pairs.find do |pair|
                 pair.key.value == unnecessary_kwarg.to_sym
               end
-              corrector.remove(range_to_remove(kwarg_node))
+              remove_pair(corrector, kwarg_node)
             end
           end
         end
 
         private
+
+        def remove_pair(corrector, pair)
+          comment = comment_before_last_pair(pair)
+          comma = comma_before(comment) if comment
+
+          if comma
+            replaced = range_between(comma.begin_pos, end_of_line(pair))
+            corrector.replace(replaced, "#{code_after(pair)} #{comment.source}")
+          else
+            corrector.remove(range_to_remove(pair))
+          end
+        end
 
         def range_to_remove(pair)
           if (next_pair = pair.right_sibling)
@@ -53,6 +65,34 @@ module RuboCop
             previous = pair.left_sibling || pair.parent.left_sibling
             range_between(previous.source_range.end_pos, pair.source_range.end_pos)
           end
+        end
+
+        def comment_before_last_pair(pair)
+          return if pair.right_sibling
+
+          previous = pair.left_sibling || pair.parent.left_sibling
+          comment = processed_source.comment_at_line(previous.last_line)
+          comment if comment && comment.source_range.end_pos <= pair.source_range.begin_pos
+        end
+
+        def code_after(pair)
+          own_comment = processed_source.comment_at_line(pair.last_line)
+          stop = own_comment ? own_comment.source_range.begin_pos : end_of_line(pair)
+
+          range_between(pair.source_range.end_pos, stop).source.rstrip
+        end
+
+        def end_of_line(node)
+          processed_source.buffer.line_range(node.last_line).end_pos
+        end
+
+        def comma_before(comment)
+          comment_begin = comment.source_range.begin_pos
+          line_begin = comment_begin - comment.loc.column
+          offset = processed_source.buffer.source[line_begin...comment_begin].rindex(/,\s*\z/)
+          return unless offset
+
+          range_between(line_begin + offset, line_begin + offset + 1)
         end
 
         def validate_kwargs(field) # rubocop:disable Metrics/CyclomaticComplexity
