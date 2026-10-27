@@ -95,13 +95,18 @@ module RuboCop
           range_between(line_begin + offset, line_begin + offset + 1)
         end
 
-        def validate_kwargs(field) # rubocop:disable Metrics/CyclomaticComplexity
+        def validate_kwargs(field)
           case field.name
           when field.kwargs.alias then "alias"
-          when field.kwargs.method&.value&.value then "method"
+          when symbol_value(field.kwargs.method) then "method"
           when field.kwargs.resolver_method_name then "resolver_method"
-          when field.kwargs.hash_key&.value&.value then "hash_key"
+          when symbol_value(field.kwargs.hash_key) then "hash_key"
           end
+        end
+
+        def symbol_value(kwarg)
+          value = kwarg&.value
+          value.value if value&.sym_type?
         end
       end
     end
