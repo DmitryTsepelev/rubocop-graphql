@@ -100,6 +100,46 @@ RSpec.describe RuboCop::Cop::GraphQL::FieldHashKey, :config do
       end
     end
 
+    context "when the field call has other layouts" do
+      it "registers an offense and keeps the code valid when the call is parenthesized" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field(:phone, String, null: true)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use hash_key: :home_phone
+
+            def phone
+              object[:home_phone]
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field(:phone, String, null: true, hash_key: :home_phone)
+          end
+        RUBY
+      end
+
+      it "registers an offense and keeps the code valid when the call has a block argument" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :phone, String, null: true, &blk
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use hash_key: :home_phone
+
+            def phone
+              object[:home_phone]
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class UserType < BaseType
+            field :phone, String, null: true, hash_key: :home_phone, &blk
+          end
+        RUBY
+      end
+    end
+
     context "when suggested hash_key name would conflict with Ruby or GraphQL-Ruby keywords" do
       it "does not register an offense" do
         expect_no_offenses(<<~RUBY)

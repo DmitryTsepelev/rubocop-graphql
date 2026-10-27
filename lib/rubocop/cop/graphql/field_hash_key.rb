@@ -75,7 +75,7 @@ module RuboCop
           suggested_hash_key_name = hash_key_to_use(method_definition)
 
           corrector.insert_after(
-            node, ", hash_key: #{suggested_hash_key_name.inspect}"
+            field.last_non_block_argument, ", hash_key: #{suggested_hash_key_name.inspect}"
           )
 
           range = range_with_surrounding_space(

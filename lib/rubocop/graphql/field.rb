@@ -73,6 +73,10 @@ module RuboCop
         @block ||= Field::Block.new(@node.parent)
       end
 
+      def last_non_block_argument
+        @node.arguments.reject(&:block_pass_type?).last
+      end
+
       def schema_member
         @schema_member ||= SchemaMember.new(root_node)
       end
