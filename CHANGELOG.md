@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#206](https://github.com/DmitryTsepelev/rubocop-graphql/pull/206) `GraphQL/ArgumentUniqueness` no longer crashes with `NoMethodError` on a `field` block that has no arguments ([@a-lavis][])
 - [PR#205](https://github.com/DmitryTsepelev/rubocop-graphql/pull/205) `GraphQL/ArgumentUniqueness` no longer crashes with `NoMethodError` when the name of the enclosing `field` is a constant, an instance variable or a method call ([@a-lavis][])
 - [PR#204](https://github.com/DmitryTsepelev/rubocop-graphql/pull/204) `GraphQL/NotAuthorizedNodeType` no longer crashes with `NoMethodError` on a class that has no superclass, such as `class Foo; end` ([@a-lavis][])
 - [PR#203](https://github.com/DmitryTsepelev/rubocop-graphql/pull/203) `GraphQL/UnnecessaryFieldAlias` no longer crashes with `NoMethodError` when `method:` or `hash_key:` is a constant or a method call instead of a symbol ([@a-lavis][])
