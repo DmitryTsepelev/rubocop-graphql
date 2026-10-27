@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#204](https://github.com/DmitryTsepelev/rubocop-graphql/pull/204) `GraphQL/NotAuthorizedNodeType` no longer crashes with `NoMethodError` on a class that has no superclass, such as `class Foo; end` ([@a-lavis][])
 - [PR#201](https://github.com/DmitryTsepelev/rubocop-graphql/pull/201) `GraphQL/UnnecessaryFieldAlias` autocorrect keeps a comment trailing the previous argument when the unnecessary keyword is the last one ([@a-lavis][])
 - [PR#200](https://github.com/DmitryTsepelev/rubocop-graphql/pull/200) `GraphQL/FieldDefinitions` still reports, but no longer autocorrects, a field that references a class, module or constant defined between it and the first field, since hoisting it would raise `NameError` on load ([@a-lavis][])
 - [PR#198](https://github.com/DmitryTsepelev/rubocop-graphql/pull/198) `GraphQL/UnnecessaryFieldAlias` autocorrect no longer leaves a stray `,` (a syntax error) when the unnecessary keyword is on its own line ([@a-lavis][])
