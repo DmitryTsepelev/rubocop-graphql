@@ -23,6 +23,7 @@ module RuboCop
       class UnnecessaryFieldAlias < Base
         extend AutoCorrector
         include RangeHelp
+        include RuboCop::GraphQL::Heredoc
         include RuboCop::GraphQL::NodePattern
 
         MSG = "Unnecessary :%<kwarg>s configured"
@@ -36,6 +37,8 @@ module RuboCop
           if (unnecessary_kwarg = validate_kwargs(field))
             message = format(self.class::MSG, kwarg: unnecessary_kwarg)
             add_offense(node, message: message) do |corrector|
+              next if node.each_descendant(:str, :dstr).any? { |str| heredoc?(str) }
+
               kwarg_node = node.last_argument.pairs.find do |pair|
                 pair.key.value == unnecessary_kwarg.to_sym
               end

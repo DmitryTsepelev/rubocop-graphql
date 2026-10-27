@@ -378,4 +378,33 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
       end
     end
   end
+
+  context "when the field has a heredoc" do
+    it "reports the keyword but does not correct it when the keyword is last" do
+      expect_offense(<<~RUBY)
+        class UserType < BaseType
+          field :question, String, null: false, description: <<~DOCS, method: :question
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :method configured
+            Body.
+          DOCS
+        end
+      RUBY
+
+      expect_no_corrections
+    end
+
+    it "reports the keyword but does not correct it when the keyword is in the middle" do
+      expect_offense(<<~RUBY)
+        class UserType < BaseType
+          field :question, String, description: <<~DOCS, method: :question,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :method configured
+            Body.
+          DOCS
+            null: false
+        end
+      RUBY
+
+      expect_no_corrections
+    end
+  end
 end
