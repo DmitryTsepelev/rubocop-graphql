@@ -58,6 +58,33 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
       end
     end
 
+    context "when the method is not a symbol literal" do
+      it "does not register an offense for a constant" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true, method: METHOD
+          end
+        RUBY
+      end
+
+      it "does not register an offense for a method call" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true, method: method_name
+          end
+        RUBY
+      end
+
+      it "still registers an offense for another unnecessary keyword" do
+        expect_offense(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true, method: METHOD, hash_key: :first_name
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Unnecessary :hash_key configured
+          end
+        RUBY
+      end
+    end
+
     context "when the unnecessary method is laid out over several lines" do
       it "removes the whole line when it is in the middle" do
         expect_offense(<<~RUBY)
@@ -328,6 +355,24 @@ RSpec.describe RuboCop::Cop::GraphQL::UnnecessaryFieldAlias, :config do
         expect_correction(<<~RUBY)
           class UserType < BaseType
             field :first_name, String, null: true
+          end
+        RUBY
+      end
+    end
+
+    context "when the hash_key is not a symbol literal" do
+      it "does not register an offense for a constant" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true, hash_key: KEY
+          end
+        RUBY
+      end
+
+      it "does not register an offense for a method call" do
+        expect_no_offenses(<<~RUBY)
+          class UserType < BaseType
+            field :first_name, String, null: true, hash_key: key_name
           end
         RUBY
       end
