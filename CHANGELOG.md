@@ -2,6 +2,7 @@
 
 ## master
 
+- [PR#207](https://github.com/DmitryTsepelev/rubocop-graphql/pull/207) `GraphQL/FieldMethod` and `GraphQL/FieldHashKey` autocorrect no longer produces a syntax error when the `field` call is parenthesized or ends with a block argument ([@a-lavis][])
 - [PR#206](https://github.com/DmitryTsepelev/rubocop-graphql/pull/206) `GraphQL/ArgumentUniqueness` no longer crashes with `NoMethodError` on a `field` block that has no arguments ([@a-lavis][])
 - [PR#205](https://github.com/DmitryTsepelev/rubocop-graphql/pull/205) `GraphQL/ArgumentUniqueness` no longer crashes with `NoMethodError` when the name of the enclosing `field` is a constant, an instance variable or a method call ([@a-lavis][])
 - [PR#204](https://github.com/DmitryTsepelev/rubocop-graphql/pull/204) `GraphQL/NotAuthorizedNodeType` no longer crashes with `NoMethodError` on a class that has no superclass, such as `class Foo; end` ([@a-lavis][])
